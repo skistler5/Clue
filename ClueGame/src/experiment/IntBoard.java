@@ -7,7 +7,11 @@ import java.util.Set;
 
 public class IntBoard {
 	private Map<BoardCell, Set<BoardCell>> adjMap;
-
+	
+	
+	/**
+	 * Creates adjacency map
+	 */
 	private void calcAdjacencies(){
 		int maxr = 4;
 		int maxc = 4;
@@ -33,6 +37,12 @@ public class IntBoard {
 		return;
 	}
 	
+	
+	/**
+	 * Returns a list of adjacent cells to the startCell
+	 * @param startCell
+	 * @return
+	 */
 	private ArrayList<BoardCell> getAdjList(BoardCell startCell){
 		ArrayList<BoardCell> ourList = new ArrayList<BoardCell>();
 		for(BoardCell temp : adjMap.get(startCell)){
@@ -42,6 +52,12 @@ public class IntBoard {
 
 	}
 	
+	/**
+	 * Finds all possible target cells from the start cell
+	 * @param startCell
+	 * @param pathLength
+	 * @return
+	 */
 	private Set<BoardCell> calcTargets(BoardCell startCell, int pathLength){
 		Set<BoardCell> visited = null;
 		Set<BoardCell> targets = null;
@@ -58,6 +74,7 @@ public class IntBoard {
 				}
 			}
 		}
+		return targets;
 	}
 
 
