@@ -2,23 +2,36 @@ package experiment;
 
 import java.awt.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class IntBoard {
-	private Map<BoardCell, Set<BoardCell>> adjMap;
+	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>();
+	private HashSet<BoardCell> targets = new HashSet<BoardCell>();
+	private Set<BoardCell> visited = new HashSet<BoardCell>();
+	private final int maxr = 4;
+	private final int maxc = 4;
+	private BoardCell[][] grid = new BoardCell[maxr][maxc];
 	
 	
+	
+	public IntBoard() {
+		this.calcAdjacencies();
+	}
+
+
 	/**
 	 * Creates adjacency map
 	 */
 	private void calcAdjacencies(){
-		int maxr = 4;
-		int maxc = 4;
 		for(int i = 0; i < maxr; i++){
 			for(int j = 0; j < maxc; j++){
 				BoardCell origin = new BoardCell(i,j);
-				Set<BoardCell> adjs = null;
+				HashSet<BoardCell> adjs = new HashSet<BoardCell>();
 				if (i - 1 >= 0){
 					adjs.add(new BoardCell(i-1, j));
 				}
@@ -29,9 +42,10 @@ public class IntBoard {
 					adjs.add(new BoardCell(i, j-1));
 				}
 				if(j+1 < maxc){
-					adjs.add(new BoardCell(i,j+1));
+					adjs.add(new BoardCell(i, j+1));
 				}
 				adjMap.put(origin, adjs);
+				grid[i][j] = origin;
 			}
 		}
 		return;
@@ -43,11 +57,9 @@ public class IntBoard {
 	 * @param startCell
 	 * @return
 	 */
-	private ArrayList<BoardCell> getAdjList(BoardCell startCell){
-		ArrayList<BoardCell> ourList = new ArrayList<BoardCell>();
-		for(BoardCell temp : adjMap.get(startCell)){
-			ourList.add(temp);
-		}
+	public HashSet<BoardCell> getAdjList(BoardCell startCell){
+		HashSet<BoardCell> ourList = new HashSet<BoardCell>();
+		ourList = adjMap.get(startCell);
 		return ourList;
 
 	}
@@ -58,26 +70,41 @@ public class IntBoard {
 	 * @param pathLength
 	 * @return
 	 */
-	private Set<BoardCell> calcTargets(BoardCell startCell, int pathLength){
-		Set<BoardCell> visited = null;
-		Set<BoardCell> targets = null;
-		BoardCell[][] grid;
+	public void calcTargets(BoardCell startCell, int pathLength){
 		int numSteps = pathLength;
-		for(int i = 0; i < getAdjList(startCell).size(); i++){
-			if(!visited.contains(getAdjList(startCell).get(i))){
-				visited.add(getAdjList(startCell).get(i));
+		HashSet<BoardCell> s = getAdjList(startCell);
+		for(BoardCell b : s){
+			b = getCell(b.getRow(), b.getCol());
+			if(!visited.contains(b)){
+				visited.add(b);
 				if(numSteps == 1){
-					targets.add(getAdjList(startCell).get(i));
+					targets.add(b);
 				}
 				else{
-					calcTargets(getAdjList(startCell).get(i), numSteps - 1);
+					calcTargets(b, numSteps - 1);
+				}
+				visited.remove(visited.size() - 1);
+			}
+		}
+	}
+	
+	public Set<BoardCell> getTargets(){
+		return targets;
+	}
+	
+	public BoardCell getCell(int row, int col){
+		BoardCell b1 = null;
+		for(int i = 0; i < maxr; i++){
+			for(int j = 0; j < maxc; j++){
+				if(row == i){
+					if(col == j){
+						b1 = grid[i][j];
+					}
 				}
 			}
 		}
-		return targets;
+		return b1;
 	}
-
-
-
+	
 
 }
