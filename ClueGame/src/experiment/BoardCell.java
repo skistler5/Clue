@@ -1,3 +1,8 @@
+/**
+ * Author: Shannon Bride and Stephen Kistler
+ * 
+ * BoardCell class stores row and cell number
+ */
 package experiment;
 
 public class BoardCell {
@@ -7,5 +12,11 @@ public class BoardCell {
 		super();
 		this.row = row;
 		this.col = col;
+	}
+	public int getRow() {
+		return row;
+	}
+	public int getCol() {
+		return col;
 	}
 }
