@@ -106,4 +106,8 @@ public class IntBoard {
 	public BoardCell getCell(int row, int col){
 		return grid[row][col];
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 11e074dfd88b341d05d8be7fb29db1740659b868
