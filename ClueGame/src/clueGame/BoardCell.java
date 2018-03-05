@@ -19,9 +19,6 @@ public class BoardCell {
 	public int getCol() {
 		return col;
 	}
-<<<<<<< HEAD
-}
-=======
 	
 	//stubs
 	public boolean isWalkway(){
@@ -36,4 +33,3 @@ public class BoardCell {
 		return false;
 	}
 }
->>>>>>> 11e074dfd88b341d05d8be7fb29db1740659b868
