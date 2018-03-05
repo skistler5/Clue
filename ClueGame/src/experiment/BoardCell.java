@@ -1,3 +1,8 @@
+/**
+ * Author: Shannon Bride and Stephen Kistler
+ * 
+ * BoardCell class stores row and cell number
+ */
 package experiment;
 
 public class BoardCell {
