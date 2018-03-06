@@ -25,8 +25,8 @@ import clueGame.DoorDirection;
 public class CTest_FileInitTests {
 	// Constants that I will use to test whether the file was loaded correctly
 	public static final int LEGEND_SIZE = 11;
-	public static final int NUM_ROWS = 22;
-	public static final int NUM_COLUMNS = 23;
+	public static final int NUM_ROWS = 23;
+	public static final int NUM_COLUMNS = 14;
 
 	// NOTE: I made Board static because I only want to set it up one 
 	// time (using @BeforeClass), no need to do setup before each test.
@@ -51,12 +51,12 @@ public class CTest_FileInitTests {
 		// from the hash, including the first and last in the file and a few others
 		assertEquals("Chapter Room", legend.get('C'));
 		assertEquals("Bathroom", legend.get('B'));
-		assertEquals("Recrational Room", legend.get('R'));
+		assertEquals("Recreational Room", legend.get('R'));
 		assertEquals("Dining Room", legend.get('D'));
 		assertEquals("Walkway", legend.get('W'));
 		assertEquals("Kitchen", legend.get('K'));
 		assertEquals("Library", legend.get('L'));
-		assertEquals("Storage Room", legend.get('S'));
+		assertEquals("Storage", legend.get('S'));
 		assertEquals("Bowling Alley", legend.get('O'));
 		assertEquals("Hall", legend.get('H'));
 		assertEquals("Closet", legend.get('X'));		
@@ -74,23 +74,23 @@ public class CTest_FileInitTests {
 	// These cells are white on the planning spreadsheet
 	@Test
 	public void FourDoorDirections() {
-		BoardCell room = board.getCellAt(4, 3);
+		BoardCell room = board.getCellAt(8, 0);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.RIGHT, room.getDoorDirection());
-		room = board.getCellAt(4, 8);
+		room = board.getCellAt(18, 0);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.DOWN, room.getDoorDirection());
-		room = board.getCellAt(15, 18);
+		room = board.getCellAt(3, 10);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.LEFT, room.getDoorDirection());
-		room = board.getCellAt(14, 11);
+		room = board.getCellAt(2, 5);
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.UP, room.getDoorDirection());
 		// Test that room pieces that aren't doors know it
-		room = board.getCellAt(14, 14);
+		room = board.getCellAt(14, 0);
 		assertFalse(room.isDoorway());	
 		// Test that walkways are not doors
-		BoardCell cell = board.getCellAt(0, 6);
+		BoardCell cell = board.getCellAt(4, 2);
 		assertFalse(cell.isDoorway());		
 
 	}
@@ -106,7 +106,7 @@ public class CTest_FileInitTests {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(16, numDoors);
+		Assert.assertEquals(12, numDoors);
 	}
 
 	// Test a few room cells to ensure the room initial is correct.

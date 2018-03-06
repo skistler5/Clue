@@ -9,9 +9,10 @@ public class BoardCell {
 	private int row;
 	private int col;
 	private char initial;
+	private DoorDirection dd;
+	boolean door;
 	
 	public BoardCell(int row, int col) {
-		super();
 		this.row = row;
 		this.col = col;
 	}
@@ -33,16 +34,41 @@ public class BoardCell {
 	}
 	
 	public boolean isDoorway(){
-		return false;
+		return door;
 	}
 
 	
-	public Object getDoorDirection() {
+	public DoorDirection getDoorDirection() {
 		// TODO Auto-generated method stub
-		return null;
+		return dd;
 	}
 	
+	public void setDoorWay(boolean b){
+		door = b;
+	}
+	
+	public void setDoorDirection(char c){
+		if(c == 'U'){
+			dd = DoorDirection.UP;
+		}
+		else if(c == 'D'){
+			dd = DoorDirection.DOWN;
+		}
+		else if(c == 'R'){
+			dd = DoorDirection.RIGHT;
+		}
+		else if(c == 'L'){
+			dd = DoorDirection.LEFT;
+		}
+		else{
+			dd = DoorDirection.NONE;
+		}
+	}
 	public char getInitial() {
 		return initial;
+	}
+	
+	public void setInitial(char c){
+		this.initial = c;
 	}
 }
