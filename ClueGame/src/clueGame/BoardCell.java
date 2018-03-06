@@ -8,6 +8,8 @@ package clueGame;
 public class BoardCell {
 	private int row;
 	private int col;
+	private char initial;
+	
 	public BoardCell(int row, int col) {
 		super();
 		this.row = row;
@@ -19,9 +21,7 @@ public class BoardCell {
 	public int getCol() {
 		return col;
 	}
-<<<<<<< HEAD
-}
-=======
+
 	
 	//stubs
 	public boolean isWalkway(){
@@ -35,5 +35,14 @@ public class BoardCell {
 	public boolean isDoorway(){
 		return false;
 	}
+
+	
+	public Object getDoorDirection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public char getInitial() {
+		return initial;
+	}
 }
->>>>>>> 11e074dfd88b341d05d8be7fb29db1740659b868

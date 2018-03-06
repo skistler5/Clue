@@ -145,8 +145,4 @@ public class IntBoardTests {
 		assertTrue(targets.contains(board.getCell(1, 0)));
 		assertTrue(targets.contains(board.getCell(1, 2)));
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 11e074dfd88b341d05d8be7fb29db1740659b868
