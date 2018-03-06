@@ -21,8 +21,8 @@ import clueGame.BoardCell;
 
 public class Board {
 	public static final int MAX_BOARD_SIZE = 50;
-	private int maxr = MAX_BOARD_SIZE;
-	private int maxc = MAX_BOARD_SIZE;
+	private int row;
+	private int col;
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>();
 	private BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>();
@@ -109,9 +109,9 @@ public class Board {
 			}
 			
 			if(rowCount == 0){
-				maxc = words.length;
+				col = words.length;
 			}
-			else if(words.length != maxc){
+			else if(words.length != col){
 				throw new BadConfigFormatException("Number of columns is inconsistent");
 			}
 			
@@ -120,23 +120,23 @@ public class Board {
 		
 		input.close();
 		
-		maxr = rowCount;
+		row = rowCount;
 	}
 	
 	public void calcAdjacencies(){
-		for(int i = 0; i < maxr; i++){
-			for(int j = 0; j < maxc; j++){
+		for(int i = 0; i < row; i++){
+			for(int j = 0; j < col; j++){
 				HashSet<BoardCell> adjs = new HashSet<BoardCell>();
 				if (i - 1 >= 0){
 					adjs.add(board[i-1][j]);
 				}
-				if(i + 1 < maxr){
+				if(i + 1 < row){
 					adjs.add(board[i+1][j]);
 				}
 				if(j-1 >= 0){
 					adjs.add(board[i][j-1]);
 				}
-				if(j+1 < maxc){
+				if(j+1 < col){
 					adjs.add(board[i][j+1]);
 				}
 				adjMap.put(board[i][j], adjs);
@@ -145,7 +145,8 @@ public class Board {
 		return;
 	}
 	
-	public void calcTargets(BoardCell cell, int pathLength){
+	public void calcTargets(int row, int col, int pathLength){
+		BoardCell cell = board[row][col];
 		if(!visited.contains(cell)){
 			visited.add(cell);
 		}
@@ -158,7 +159,7 @@ public class Board {
 				targets.add(b);
 			}
 			else{
-				calcTargets(b, pathLength - 1);
+				calcTargets(b.getRow(), b.getCol(), pathLength - 1);
 			}
 			visited.remove(b);
 		}
@@ -185,15 +186,26 @@ public class Board {
 
 	public int getNumRows() {
 		// TODO Auto-generated method stub
-		return maxr;
+		return row;
 	}
 
 	public int getNumColumns() {
 		// TODO Auto-generated method stub
-		return maxc;
+		return col;
 	}
 
 	public BoardCell getCellAt(int i, int j) {
 		return board[i][j];
+	}
+
+	public Set<BoardCell> getAdjList(int i, int j) {
+		// TODO Auto-generated method stub
+		BoardCell temp = board[i][j];
+		return adjMap.get(temp);
+	}
+
+	public Set<BoardCell> getTargets() {
+		// TODO Auto-generated method stub
+		return targets;
 	}
 }
