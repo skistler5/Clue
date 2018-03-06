@@ -1,0 +1,11 @@
+C, Chapter Room, Card
+K, Kitchen, Card
+B, Bathroom, Card
+R, Recreational Room, Card
+L, Library, Card
+S, Storage, Card
+D, Dining Room, Card
+O, Bowling Alley, Card
+H, Hall, Card
+X, Closet, Other
+W, Walkway, Other

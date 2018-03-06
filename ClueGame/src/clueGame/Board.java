@@ -1,3 +1,7 @@
+/*
+ * Authors: Stephen Kistler and Shannon Bride
+ */
+
 package clueGame;
 
 import java.io.BufferedReader;
@@ -16,8 +20,8 @@ import experiment.BoardCell;
 
 public class Board {
 	public static final int MAX_BOARD_SIZE = 50;
-	private final int maxr = 5;
-	private final int maxc = 5;
+	private final int maxr = 23;
+	private final int maxc = 14;
 	private clueGame.BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>();
 	private Set<BoardCell> targets = new HashSet<BoardCell>();
