@@ -11,7 +11,14 @@ public class BoardCell {
 	private char initial;
 	private DoorDirection dd;
 	boolean door;
+	boolean room;
 	
+	public void setRow(int row) {
+		this.row = row;
+	}
+	public void setCol(int col) {
+		this.col = col;
+	}
 	public BoardCell(int row, int col) {
 		this.row = row;
 		this.col = col;
@@ -26,11 +33,13 @@ public class BoardCell {
 	
 	//stubs
 	public boolean isWalkway(){
-		return false;
+		Character c = new Character(getInitial());
+		return c.equals('W');
 	}
 	
 	public boolean isRoom(){
-		return false;
+		Character c = new Character(getInitial());
+		return !c.equals('W');
 	}
 	
 	public boolean isDoorway(){
