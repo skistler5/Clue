@@ -81,7 +81,7 @@ public class C14A_1_Tests {
 		//TEST DOORWAY UP, WHERE THERE'S A WALKWAY BELOW
 		testList = board.getAdjList(2, 5);
 		assertEquals(1, testList.size());
-		assertTrue(testList.contains(board.getCellAt(3, 5)));
+		assertTrue(testList.contains(board.getCellAt(1, 5)));
 		
 	}
 	
@@ -242,7 +242,7 @@ public class C14A_1_Tests {
 		// directly down
 		assertTrue(targets.contains(board.getCellAt(3, 6)));
 		// into the room
-		assertTrue(targets.contains(board.getCellAt(1, 5)));		
+		assertTrue(targets.contains(board.getCellAt(2, 5)));		
 		
 	}
 

@@ -39,7 +39,7 @@ public class BoardCell {
 	
 	public boolean isRoom(){
 		Character c = new Character(getInitial());
-		return !c.equals('W');
+		return (!c.equals('W') && !door);
 	}
 	
 	public boolean isDoorway(){

@@ -293,7 +293,7 @@ public class CTest_BoardAdjTargetTests {
 		assertTrue(targets.contains(board.getCellAt(10, 8)));
 		// into the rooms
 		assertTrue(targets.contains(board.getCellAt(11, 6)));
-		assertTrue(targets.contains(board.getCellAt(10, 6)));		
+		assertTrue(targets.contains(board.getCellAt(10, 6)));
 		// 
 		assertTrue(targets.contains(board.getCellAt(11, 7)));		
 		assertTrue(targets.contains(board.getCellAt(12, 8)));		
