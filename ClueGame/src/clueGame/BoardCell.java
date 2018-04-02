@@ -18,8 +18,7 @@ public class BoardCell {
 	private char initial;
 	private DoorDirection doorDirection;
 	boolean door;
-	boolean room;
-	
+
 	public void setRow(int row) {
 		this.row = row;
 	}
@@ -37,8 +36,8 @@ public class BoardCell {
 		return col;
 	}
 
-	
-	
+
+
 	/**
 	 * figure out if it's a walkway
 	 * @return
@@ -47,7 +46,7 @@ public class BoardCell {
 		Character c = new Character(getInitial());
 		return c.equals('W');
 	}
-	
+
 	/**
 	 * figure out if it's a room
 	 * @return
@@ -56,7 +55,7 @@ public class BoardCell {
 		Character c = new Character(getInitial());
 		return (!c.equals('W') && !door);
 	}
-	
+
 	/**
 	 * figure out if it's a doorway
 	 * @return
@@ -65,16 +64,16 @@ public class BoardCell {
 		return door;
 	}
 
-	
+
 	public DoorDirection getDoorDirection() {
 		// TODO Auto-generated method stub
 		return doorDirection;
 	}
-	
+
 	public void setDoorWay(boolean b){
 		door = b;
 	}
-	
+
 	public void setDoorDirection(char c){
 		if(c == 'U'){
 			doorDirection = DoorDirection.UP;
@@ -95,7 +94,7 @@ public class BoardCell {
 	public char getInitial() {
 		return initial;
 	}
-	
+
 	public void setInitial(char c){
 		this.initial = c;
 	}

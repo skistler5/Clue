@@ -65,7 +65,7 @@ public class Board {
 		calcAdjacencies();
 	}
 
-	
+
 	/**
 	 * 
 	 * loads room info from document
@@ -76,7 +76,7 @@ public class Board {
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(roomConfigFile); 
 		Scanner input = new Scanner(reader);
-		
+
 		//reads in room names, symbols, and type
 		while(input.hasNextLine()){
 			String line = input.nextLine();
@@ -86,7 +86,6 @@ public class Board {
 			if(!words[2].equals("Card") && !words[2].equals("Other")){throw new BadConfigFormatException("This is not a valid option");}
 			legend.put(words[0].charAt(0), words[1]);
 		}
-
 		input.close();
 	}
 
@@ -107,7 +106,6 @@ public class Board {
 			String[] words = line.split("\\s*,\\s*");
 
 			for(int i = 0; i < words.length; i++){
-				
 				board[rowCount][i] = new BoardCell(rowCount,i);
 				BoardCell currentCell = board[rowCount][i]; //holds board[rowCount][i] for less typing
 				currentCell.setInitial(words[i].charAt(0));
@@ -142,12 +140,11 @@ public class Board {
 		input.close();
 	}
 
-	
+
 	/**
 	 * finds valid adjacencies 
 	 */
 	public void calcAdjacencies(){
-		
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
 				HashSet<BoardCell> adjs = new HashSet<BoardCell>(); //temp set to input into map
@@ -230,10 +227,10 @@ public class Board {
 	public void calcTargets(int row, int col, int pathLength){
 		visited.clear();
 		targets.clear();
-		
+
 		findTargets(row, col, pathLength);
 	}
-	
+
 	/**
 	 * uses algorithm given to calculate targets
 	 * from a certain cell with a certain num of steps
