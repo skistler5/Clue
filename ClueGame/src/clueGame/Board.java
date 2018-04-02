@@ -21,7 +21,7 @@ public class Board {
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>();
 	private BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>();
-	private HashSet<BoardCell> targets = new HashSet<BoardCell>();
+	private Set<BoardCell> targets = new HashSet<BoardCell>();
 	private Set<BoardCell> visited = new HashSet<BoardCell>();
 	private String boardConfigFile = new String();
 	private String roomConfigFile = new String();
@@ -146,10 +146,7 @@ public class Board {
 						adjs.add(board[i][j-1]);
 					}
 				}
-				else if(board[i][j].isRoom()){
-					//do nothing
-				}
-				else{
+				else if(!board[i][j].isRoom()){
 					if (i - 1 >= 0){
 						Character c = new Character(board[i-1][j].getInitial());
 						if(c.equals('W')){
