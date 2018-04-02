@@ -16,7 +16,7 @@ public class BoardCell {
 	private int row;
 	private int col;
 	private char initial;
-	private DoorDirection dd;
+	private DoorDirection doorDirection;
 	boolean door;
 	boolean room;
 	
@@ -68,7 +68,7 @@ public class BoardCell {
 	
 	public DoorDirection getDoorDirection() {
 		// TODO Auto-generated method stub
-		return dd;
+		return doorDirection;
 	}
 	
 	public void setDoorWay(boolean b){
@@ -77,19 +77,19 @@ public class BoardCell {
 	
 	public void setDoorDirection(char c){
 		if(c == 'U'){
-			dd = DoorDirection.UP;
+			doorDirection = DoorDirection.UP;
 		}
 		else if(c == 'D'){
-			dd = DoorDirection.DOWN;
+			doorDirection = DoorDirection.DOWN;
 		}
 		else if(c == 'R'){
-			dd = DoorDirection.RIGHT;
+			doorDirection = DoorDirection.RIGHT;
 		}
 		else if(c == 'L'){
-			dd = DoorDirection.LEFT;
+			doorDirection = DoorDirection.LEFT;
 		}
 		else{
-			dd = DoorDirection.NONE;
+			doorDirection = DoorDirection.NONE;
 		}
 	}
 	public char getInitial() {
