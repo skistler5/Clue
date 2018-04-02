@@ -107,25 +107,26 @@ public class Board {
 			String[] words = line.split("\\s*,\\s*");
 
 			for(int i = 0; i < words.length; i++){
+				
 				board[rowCount][i] = new BoardCell(rowCount,i);
-				board[rowCount][i].setInitial(words[i].charAt(0));
+				BoardCell currentCell = board[rowCount][i]; //holds board[rowCount][i] for less typing
+				currentCell.setInitial(words[i].charAt(0));
 				if(words[i].length() > 1){
-					board[rowCount][i].setDoorDirection(words[i].charAt(1));
-					board[rowCount][i].setDoorWay(true);
+					currentCell.setDoorDirection(words[i].charAt(1));
+					currentCell.setDoorWay(true);
 
 					Character c = new Character(words[i].charAt(1)); //need this to compare to other constants
 					if(c.equals('N')){
-						board[rowCount][i].setDoorWay(false);
-						board[rowCount][i].setDoorDirection('N');
+						currentCell.setDoorWay(false);
+						currentCell.setDoorDirection('N');
 					}
 					if(!c.equals('U') && !c.equals('D') && !c.equals('R') && !c.equals('L') && !c.equals('N')){
 						throw new BadConfigFormatException("Invalid Door Direction");
 					}
 				}
-
 				else{
-					board[rowCount][i].setDoorDirection('N');
-					board[rowCount][i].setDoorWay(false);
+					currentCell.setDoorDirection('N');
+					currentCell.setDoorWay(false);
 				}
 			}
 
@@ -135,11 +136,10 @@ public class Board {
 			else if(words.length != col){
 				throw new BadConfigFormatException("Number of columns is inconsistent");
 			}
-
 			rowCount++;
 		}
-		input.close();
 		row = rowCount;
+		input.close();
 	}
 
 	
