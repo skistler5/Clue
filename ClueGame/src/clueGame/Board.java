@@ -44,13 +44,6 @@ public class Board {
 	public void initialize(){
 		try{
 			loadRoomConfig();
-		}catch(FileNotFoundException e){
-			System.out.println(e.getMessage());
-		}catch(BadConfigFormatException e){
-			System.out.println(e.getMessage());
-		}
-
-		try{
 			loadBoardConfig();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getMessage());
