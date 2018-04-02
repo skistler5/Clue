@@ -16,13 +16,13 @@ import clueGame.BoardCell;
 
 public class Board {
 	public static final int MAX_BOARD_SIZE = 50;
-	private int row;
+	private int row; 
 	private int col;
-	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>();
+	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
 	private BoardCell[][] board;
-	private Map<Character, String> legend = new HashMap<Character, String>();
-	private Set<BoardCell> targets = new HashSet<BoardCell>();
-	private Set<BoardCell> visited = new HashSet<BoardCell>();
+	private Map<Character, String> legend = new HashMap<Character, String>(); //stores room names and short hand for them
+	private Set<BoardCell> targets = new HashSet<BoardCell>(); //places player can move to with given steps
+	private Set<BoardCell> visited = new HashSet<BoardCell>(); //already visited cells 
 	private String boardConfigFile = new String();
 	private String roomConfigFile = new String();
 
@@ -53,10 +53,12 @@ public class Board {
 		calcAdjacencies();
 	}
 
+	
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException{
-		FileReader reader = new FileReader(roomConfigFile);
+		FileReader reader = new FileReader(roomConfigFile); 
 		Scanner input = new Scanner(reader);
-
+		
+		//reads in room names, symbols, and type
 		while(input.hasNextLine()){
 			String line = input.nextLine();
 			String[] words = line.split(", ");
@@ -75,7 +77,7 @@ public class Board {
 		int rowCount = 0;
 		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
 
-
+		//reads csv line by line and figures out if it's a doorway
 		while(input.hasNextLine()){
 			String line = input.nextLine();
 			String[] words = line.split("\\s*,\\s*");
@@ -122,9 +124,11 @@ public class Board {
 	}
 
 	public void calcAdjacencies(){
+		
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
-				HashSet<BoardCell> adjs = new HashSet<BoardCell>();
+				HashSet<BoardCell> adjs = new HashSet<BoardCell>(); //temp set to input into map
+				//doorways only have one adjacency
 				if(board[i][j].isDoorway()){
 					if(board[i][j].getDoorDirection().equals(DoorDirection.UP)){
 						adjs.add(board[i-1][j]);
@@ -139,6 +143,7 @@ public class Board {
 						adjs.add(board[i][j-1]);
 					}
 				}
+				//calculates walkway adjacencies
 				else if(!board[i][j].isRoom()){
 					if (i - 1 >= 0){
 						Character c = new Character(board[i-1][j].getInitial());
@@ -213,7 +218,6 @@ public class Board {
 
 			if(pathLength == 1 || b.isDoorway()){
 				targets.add(b);
-				//System.out.println(b.getRow() + "," + b.getCol());
 			}
 			else{
 				findTargets(b.getRow(), b.getCol(), pathLength - 1);
