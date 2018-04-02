@@ -14,6 +14,14 @@ import java.util.Set;
 
 import clueGame.BoardCell;
 
+/**
+ * 
+ * @author Shannon Bride
+ * @author Stephen Kistler
+ * 
+ * 
+ */
+
 public class Board {
 	public static final int MAX_BOARD_SIZE = 50;
 	private int row; 
@@ -41,6 +49,10 @@ public class Board {
 	}
 
 
+	/**
+	 * calls room and board config functions
+	 * 
+	 */
 	public void initialize(){
 		try{
 			loadRoomConfig();
@@ -54,6 +66,13 @@ public class Board {
 	}
 
 	
+	/**
+	 * 
+	 * loads room info from document
+	 * 
+	 * @throws BadConfigFormatException
+	 * @throws FileNotFoundException
+	 */
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(roomConfigFile); 
 		Scanner input = new Scanner(reader);
@@ -71,6 +90,11 @@ public class Board {
 		input.close();
 	}
 
+	/**
+	 * loads board info from csv
+	 * @throws BadConfigFormatException
+	 * @throws FileNotFoundException
+	 */
 	public void loadBoardConfig() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(boardConfigFile);
 		Scanner input = new Scanner(reader);
@@ -123,6 +147,10 @@ public class Board {
 		row = rowCount;
 	}
 
+	
+	/**
+	 * finds valid adjacencies 
+	 */
 	public void calcAdjacencies(){
 		
 		for(int i = 0; i < row; i++){
@@ -198,6 +226,12 @@ public class Board {
 	}
 
 
+	/**
+	 * calls findTargets
+	 * @param row
+	 * @param col
+	 * @param pathLength
+	 */
 	public void calcTargets(int row, int col, int pathLength){
 		visited.clear();
 		targets.clear();
@@ -205,6 +239,14 @@ public class Board {
 		findTargets(row, col, pathLength);
 	}
 	
+	/**
+	 * uses algorithm given to calculate targets
+	 * from a certain cell with a certain num of steps
+	 * 
+	 * @param row
+	 * @param col
+	 * @param pathLength
+	 */
 	public void findTargets(int row, int col, int pathLength){
 		BoardCell cell = board[row][col];
 		if(!visited.contains(cell)){
@@ -225,6 +267,7 @@ public class Board {
 			visited.remove(b);
 		}
 	}
+
 
 	public void setConfigFiles(String board, String room) {
 		// TODO Auto-generated method stub

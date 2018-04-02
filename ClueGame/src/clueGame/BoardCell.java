@@ -5,6 +5,13 @@
  */
 package clueGame;
 
+
+/**
+ * 
+ * @author Shannon Bride
+ * @author Stephen Kistler
+ *
+ */
 public class BoardCell {
 	private int row;
 	private int col;
@@ -31,17 +38,29 @@ public class BoardCell {
 	}
 
 	
-	//stubs
+	
+	/**
+	 * figure out if it's a walkway
+	 * @return
+	 */
 	public boolean isWalkway(){
 		Character c = new Character(getInitial());
 		return c.equals('W');
 	}
 	
+	/**
+	 * figure out if it's a room
+	 * @return
+	 */
 	public boolean isRoom(){
 		Character c = new Character(getInitial());
 		return (!c.equals('W') && !door);
 	}
 	
+	/**
+	 * figure out if it's a doorway
+	 * @return
+	 */
 	public boolean isDoorway(){
 		return door;
 	}
