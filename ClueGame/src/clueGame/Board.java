@@ -113,17 +113,12 @@ public class Board {
 					board[rowCount][i].setDoorDirection(words[i].charAt(1));
 					board[rowCount][i].setDoorWay(true);
 
-					Character c = new Character(words[i].charAt(1));
-					Character u = new Character('U');
-					Character d = new Character('D');
-					Character r = new Character('R');
-					Character l = new Character('L');
-
+					Character c = new Character(words[i].charAt(1)); //need this to compare to other constants
 					if(c.equals('N')){
 						board[rowCount][i].setDoorWay(false);
 						board[rowCount][i].setDoorDirection('N');
 					}
-					if(!c.equals(u) && !c.equals(d) && !c.equals(r) && !c.equals(l) && !c.equals('N')){
+					if(!c.equals('U') && !c.equals('D') && !c.equals('R') && !c.equals('L') && !c.equals('N')){
 						throw new BadConfigFormatException("Invalid Door Direction");
 					}
 				}
