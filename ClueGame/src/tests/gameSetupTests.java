@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.Card;
+import clueGame.CardType;
 import clueGame.Player;
 
 
@@ -54,6 +56,35 @@ public class gameSetupTests {
 		assertEquals(players.get(5).getCol(),13);
 		assertEquals(players.get(5).getColor(),test3);
 		assertTrue(players.get(5).isComputer());
+	}
+	
+	@Test
+	public void loadCards(){
+		ArrayList<Card> deck;
+		deck = board.getDeck();
+		
+		//test that deck has 21 cards
+		assertEquals(deck.size(), 21);
+		
+		//test that deck has 6 players, 6 weapons, and 9 rooms
+		int p = 0;
+		int w = 0;
+		int r = 0;
+		for(int i = 0; i < deck.size(); i++){
+			if(deck.get(i).getCardType() == CardType.PERSON){
+				p++;
+			}
+			else if(deck.get(i).getCardType() == CardType.ROOM){
+				r++;
+			}
+			else{
+				w++;
+			}
+		}
+		assertEquals(p, 6);
+		assertEquals(r, 9);
+		assertEquals(w, 6);
+		
 	}
 	
 	

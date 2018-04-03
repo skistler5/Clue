@@ -38,6 +38,7 @@ public class Board {
 	private String roomConfigFile = new String();
 	private String peopleFile = new String();
 	private String weaponFile = new String();
+	private ArrayList<Card> deck = new ArrayList<Card>();
 
 
 
@@ -67,12 +68,17 @@ public class Board {
 			loadRoomConfig();
 			loadBoardConfig();
 			loadPeople();
+			loadWeapons();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getMessage());
 		}catch(BadConfigFormatException e){
 			System.out.println(e.getMessage());
 		}
 		calcAdjacencies();
+	}
+	
+	public void loadWeapons(){
+		
 	}
 
 	public void loadPeople() throws BadConfigFormatException, FileNotFoundException{
@@ -91,6 +97,8 @@ public class Board {
 			int b = Integer.parseInt(words[4]);
 			Player temp = new Player(words[0], row, col, r, g, b, words[5]);
 			players.add(temp);
+			Card temp1 = new Card(words[0], CardType.PERSON);
+			deck.add(temp1);
 		}
 		input.close();
 	}
@@ -114,6 +122,8 @@ public class Board {
 			if(words.length < 3){throw new BadConfigFormatException("NO ROOM TYPE");}
 			if(!words[2].equals("Card") && !words[2].equals("Other")){throw new BadConfigFormatException("This is not a valid option");}
 			legend.put(words[0].charAt(0), words[1]);
+			Card temp = new Card(words[1], CardType.ROOM);
+			deck.add(temp);
 		}
 		input.close();
 	}
@@ -337,6 +347,10 @@ public class Board {
 	
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+	
+	public ArrayList<Card> getDeck(){
+		return deck;
 	}
 	
 }
