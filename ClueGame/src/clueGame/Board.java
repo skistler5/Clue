@@ -6,6 +6,7 @@ package clueGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class Board {
 	public static final int MAX_BOARD_SIZE = 50;
 	private int row; 
 	private int col;
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
 	private BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>(); //stores room names and short hand for them
@@ -299,4 +301,9 @@ public class Board {
 		// TODO Auto-generated method stub
 		return targets;
 	}
+	
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	
 }

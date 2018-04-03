@@ -8,6 +8,7 @@ public class Player {
 	private int row;
 	private int col;
 	private Color color;
+	private boolean isComp;
 	
 	public Card disproveSuggestion(Solution suggestion){
 		
@@ -53,6 +54,10 @@ public class Player {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public boolean isComputer() {
+		return isComp;
 	}
 	
 }
