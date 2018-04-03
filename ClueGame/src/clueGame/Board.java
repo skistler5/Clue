@@ -76,9 +76,16 @@ public class Board {
 		}
 		calcAdjacencies();
 	}
-	
-	public void loadWeapons(){
-		
+
+	public void loadWeapons() throws FileNotFoundException{
+		FileReader reader = new FileReader(weaponFile);
+		Scanner input = new Scanner(reader);
+
+		while(input.hasNextLine()){
+			String line = input.nextLine();
+			Card temp = new Card(line, CardType.WEAPON);
+			deck.add(temp);
+		}
 	}
 
 	public void loadPeople() throws BadConfigFormatException, FileNotFoundException{
@@ -122,8 +129,10 @@ public class Board {
 			if(words.length < 3){throw new BadConfigFormatException("NO ROOM TYPE");}
 			if(!words[2].equals("Card") && !words[2].equals("Other")){throw new BadConfigFormatException("This is not a valid option");}
 			legend.put(words[0].charAt(0), words[1]);
-			Card temp = new Card(words[1], CardType.ROOM);
-			deck.add(temp);
+			if(words[2].equals("Card")){
+				Card temp = new Card(words[1], CardType.ROOM);
+				deck.add(temp);
+			}
 		}
 		input.close();
 	}
@@ -298,7 +307,7 @@ public class Board {
 			visited.remove(b);
 		}
 	}
-	
+
 	public void setCardFiles(String people, String weapons){
 		peopleFile = people;
 		weaponFile = weapons;
@@ -344,13 +353,13 @@ public class Board {
 		// TODO Auto-generated method stub
 		return targets;
 	}
-	
+
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+
 	public ArrayList<Card> getDeck(){
 		return deck;
 	}
-	
+
 }

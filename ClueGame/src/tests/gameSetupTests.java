@@ -84,6 +84,25 @@ public class gameSetupTests {
 		assertEquals(p, 6);
 		assertEquals(r, 9);
 		assertEquals(w, 6);
+			
+		//test that Shannon, the rope, and the library are in the deck
+		for(int i = 0; i < deck.size(); i++){
+			if(deck.get(i).getCardType() == CardType.PERSON){
+				if(deck.get(i).getCardName() == "Shannon"){
+					assertEquals(deck.get(i).getCardName(), "Shannon");
+				}
+			}
+			else if(deck.get(i).getCardType() == CardType.ROOM){
+				if(deck.get(i).getCardName() == "Library"){
+					assertEquals(deck.get(i).getCardName(), "Library");
+				}
+			}
+			else{
+				if(deck.get(i).getCardName() == "Rope"){
+					assertEquals(deck.get(i).getCardName(), "Rope");
+				}
+			}
+		}
 		
 	}
 	
