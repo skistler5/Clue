@@ -10,6 +10,20 @@ public class Player {
 	private Color color;
 	private boolean isComp;
 	
+	public Player(String name, int row, int col, int r, int g, int b, String comp){
+		playerName = name;
+		this.row = row;
+		this.col = col;
+		this.color = new Color(r,g,b);
+		
+		if(comp.equals("c")){
+			isComp = true;
+		}
+		else{
+			isComp = false;
+		}
+	}
+	
 	public Card disproveSuggestion(Solution suggestion){
 		
 	}

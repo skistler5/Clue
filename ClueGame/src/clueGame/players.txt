@@ -1,7 +1,0 @@
-Shannon,0-2,Orange,c
-Stephen,0-6,Blue,c
-Gary,10-0,Red,h
-Bob,20-0,Yellow,c
-Patricia,22-11,Purple,c
-Ellie,11-13,Green,c
-

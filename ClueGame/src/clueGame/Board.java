@@ -4,6 +4,7 @@
 
 package clueGame;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class Board {
 	private Set<BoardCell> visited = new HashSet<BoardCell>(); //already visited cells 
 	private String boardConfigFile = new String();
 	private String roomConfigFile = new String();
+	private String peopleFile = new String();
+	private String weaponFile = new String();
 
 
 
@@ -53,12 +56,17 @@ public class Board {
 
 	/**
 	 * calls room and board config functions
+	 * @throws SecurityException 
+	 * @throws NoSuchFieldException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 * 
 	 */
-	public void initialize(){
+	public void initialize() {
 		try{
 			loadRoomConfig();
 			loadBoardConfig();
+			loadPeople();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getMessage());
 		}catch(BadConfigFormatException e){
@@ -67,6 +75,25 @@ public class Board {
 		calcAdjacencies();
 	}
 
+	public void loadPeople() throws BadConfigFormatException, FileNotFoundException{
+		FileReader reader = new FileReader(peopleFile); 
+		Scanner input = new Scanner(reader);
+
+		//reads in room names, symbols, and type
+		while(input.hasNextLine()){
+			String line = input.nextLine();
+			String[] words = line.split(",");
+			String[] loc = words[1].split("-");
+			int row = Integer.parseInt(loc[0]);
+			int col = Integer.parseInt(loc[1]);
+			int r = Integer.parseInt(words[2]);
+			int g = Integer.parseInt(words[3]);
+			int b = Integer.parseInt(words[4]);
+			Player temp = new Player(words[0], row, col, r, g, b, words[5]);
+			players.add(temp);
+		}
+		input.close();
+	}
 
 	/**
 	 * 
@@ -260,6 +287,12 @@ public class Board {
 			}
 			visited.remove(b);
 		}
+	}
+	
+	public void setCardFiles(String people, String weapons){
+		peopleFile = people;
+		weaponFile = weapons;
+		return;
 	}
 
 
