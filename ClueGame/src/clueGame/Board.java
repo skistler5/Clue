@@ -30,6 +30,7 @@ public class Board {
 	private int col;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
+	private Map<Player, ArrayList<Card>> playerCards = new HashMap<Player, ArrayList<Card>>();
 	private BoardCell[][] board;
 	private Map<Character, String> legend = new HashMap<Character, String>(); //stores room names and short hand for them
 	private Set<BoardCell> targets = new HashSet<BoardCell>(); //places player can move to with given steps
@@ -75,6 +76,10 @@ public class Board {
 			System.out.println(e.getMessage());
 		}
 		calcAdjacencies();
+	}
+	
+	public void dealCards(){
+		
 	}
 
 	public void loadWeapons() throws FileNotFoundException{
@@ -360,6 +365,9 @@ public class Board {
 
 	public ArrayList<Card> getDeck(){
 		return deck;
+	}
+	public Map<Player, ArrayList<Card>> getPlayerCards() {
+		return playerCards;
 	}
 
 }
