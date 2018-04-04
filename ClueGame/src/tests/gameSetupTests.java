@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,8 +21,8 @@ import clueGame.Player;
 public class gameSetupTests {
 	private static Board board;
 
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files

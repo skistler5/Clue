@@ -5,9 +5,9 @@ public class Card {
 	private String cardName;
 	private CardType cardType;
 	
-	public boolean equals(){
-		
-	}
+//	public boolean equals(){
+//		
+//	}
 	
 	//Getters and Setters
 	public String getCardName() {

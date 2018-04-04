@@ -78,10 +78,32 @@ public class Board {
 		calcAdjacencies();
 	}
 	
+	/**
+	 * Deals the cards to the players and clears the deck so that it is empty
+	 */
 	public void dealCards(){
-		
+		int numPlayers = players.size();
+		int count = 0;
+		int i = 0;
+		for(Card c: deck){
+			if(playerCards.containsKey(players.get(i))){
+				playerCards.get(players.get(i)).add(c);
+			}
+			else{
+				ArrayList<Card> temp = new ArrayList<Card>();
+				temp.add(c);
+				playerCards.put(players.get(i), temp);
+			}
+			count++;
+			i = count % numPlayers;
+		}
+		deck.clear();
 	}
 
+	/**
+	 * loads from the weapons file into the deck
+	 * @throws FileNotFoundException
+	 */
 	public void loadWeapons() throws FileNotFoundException{
 		FileReader reader = new FileReader(weaponFile);
 		Scanner input = new Scanner(reader);
@@ -92,7 +114,12 @@ public class Board {
 			deck.add(temp);
 		}
 	}
-
+	
+	/**
+	 * loads from the people file into the deck
+	 * @throws BadConfigFormatException
+	 * @throws FileNotFoundException
+	 */
 	public void loadPeople() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(peopleFile); 
 		Scanner input = new Scanner(reader);
