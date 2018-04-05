@@ -304,11 +304,16 @@ public class Board {
 	 * @param col
 	 * @param pathLength
 	 */
-	public void calcTargets(int row, int col, int pathLength){
+	public void calcTargets(int row, int col, int pathLength, Player player){
 		visited.clear();
 		targets.clear();
 
 		findTargets(row, col, pathLength);
+		chooseTarget(player);
+	}
+	
+	public void chooseTarget(Player player){
+		
 	}
 
 	/**
@@ -396,5 +401,10 @@ public class Board {
 	public Map<Player, ArrayList<Card>> getPlayerCards() {
 		return playerCards;
 	}
+
+	public BoardCell[][] getBoard() {
+		return board;
+	}
+	
 
 }

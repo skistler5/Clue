@@ -9,6 +9,7 @@ public class Player {
 	private int col;
 	private Color color;
 	private boolean isComp;
+	private BoardCell lastVisitedRoom;
 	
 	public Player(String name, int row, int col, int r, int g, int b, String comp){
 		playerName = name;
@@ -73,5 +74,10 @@ public class Player {
 	public boolean isComputer() {
 		return isComp;
 	}
+
+	public BoardCell getLastVisitedRoom() {
+		return lastVisitedRoom;
+	}
+	
 	
 }
