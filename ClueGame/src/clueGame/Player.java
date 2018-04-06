@@ -9,7 +9,7 @@ public class Player {
 	private int col;
 	private Color color;
 	private boolean isComp;
-	private BoardCell lastVisitedRoom;
+	private char lastVisitedRoom;
 	
 	public Player(String name, int row, int col, int r, int g, int b, String comp){
 		playerName = name;
@@ -75,12 +75,12 @@ public class Player {
 		return isComp;
 	}
 
-	public BoardCell getLastVisitedRoom() {
+	public char getLastVisitedRoom() {
 		return lastVisitedRoom;
 	}
 	
 	public void setLastVisitedRoom(BoardCell cell){
-		lastVisitedRoom = cell;
+		lastVisitedRoom = cell.getInitial();
 	}
 	
 }

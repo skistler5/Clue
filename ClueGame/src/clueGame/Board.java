@@ -314,7 +314,28 @@ public class Board {
 	}
 	
 	public void chooseTarget(Player player){
+		for(BoardCell cell: targets){
+			if(cell.isDoorway() && cell.getInitial() != player.getLastVisitedRoom()){
+				player.setRow(cell.getRow());
+				player.setCol(cell.getCol());
+				return;
+			}
+		}
 		
+		int size = targets.size();
+		
+		Random rand = new Random();
+
+		int  n = rand.nextInt(size);
+		int count = 0;
+		for(BoardCell cell: targets){
+			if(count == n){
+				player.setRow(cell.getRow());
+				player.setCol(cell.getCol());
+				return;
+			}
+			count++;
+		}
 	}
 
 	/**
