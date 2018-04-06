@@ -51,6 +51,32 @@ public class gameActionTests {
 		//actual test
 		assertTrue(isThere);
 		
+		//setting player loc for entering room not just visited
+		Player testPlayer2 = new ComputerPlayer("Test Player 2", 21, 3, 100, 100, 100, "c");
+		board.calcTargets(21, 3, 1, testPlayer2);
+		BoardCell cell1 = new BoardCell(0,0);
+		
+		testPlayer2.setLastVisitedRoom(cell1);
+		
+		//tests if player is in room
+		assertEquals(22, testPlayer2.getRow());
+		assertEquals(3, testPlayer2.getCol());
+		
+		//test if player selects randomly when by room that was just visited
+		testPlayer.setRow(21);
+		testPlayer.setCol(3);
+		BoardCell cell = new BoardCell(22,3);
+		testPlayer.setLastVisitedRoom(cell);
+		testRow = testPlayer.getRow();
+		testCol = testPlayer.getCol();
+		isThere = false;
+		
+		for(BoardCell b: possibleTargets){
+			if(b.getRow() == testRow && b.getCol() == testCol){
+				isThere = true;
+			}
+		}
+		
 
 	}
 	

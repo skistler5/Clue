@@ -1,0 +1,53 @@
+commit 5c397c0de32b8e7efeed7fd1f88eb3d0461f6102
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Wed Apr 4 15:53:35 2018 -0600
+
+    All tests passed successfully
+
+commit 09347b079c3b6a84dcb3e4b4064318fe90a46a7f
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Wed Apr 4 15:35:37 2018 -0600
+
+    Made dealCards() test that compiled successfully and failed successfully
+commit 5c397c0de32b8e7efeed7fd1f88eb3d0461f6102
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Wed Apr 4 15:53:35 2018 -0600
+
+    All tests passed successfully
+
+commit 09347b079c3b6a84dcb3e4b4064318fe90a46a7f
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Wed Apr 4 15:35:37 2018 -0600
+
+    Made dealCards() test that compiled successfully and failed successfully
+
+commit 1367eb7b7872b9d41e4c1396b8fb9a0ebef528ce
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Tue Apr 3 15:32:10 2018 -0600
+
+    made the loadCards() pass successfully
+
+commit 6ad4620442629ee7a63c7f0916ddd67cd4a87f64
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Tue Apr 3 15:19:19 2018 -0600
+
+    successfully failed the loadCards() test
+
+commit e47ad17f6660709352c27e24a8c3f9a84a650263
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Tue Apr 3 14:52:07 2018 -0600
+
+    Added code for people test to pass
+
+commit eaf5f9065c61f5bdf9e6b82f90c766cf6143d50f
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Tue Apr 3 13:45:54 2018 -0600
+
+    created failing test for poeple
+
+commit c45761b3d80c484c9b26601a7454365b4d8a48ad
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Tue Apr 3 11:50:29 2018 -0600
+
+    Created templates for player classes
+

@@ -79,5 +79,8 @@ public class Player {
 		return lastVisitedRoom;
 	}
 	
+	public void setLastVisitedRoom(BoardCell cell){
+		lastVisitedRoom = cell;
+	}
 	
 }
