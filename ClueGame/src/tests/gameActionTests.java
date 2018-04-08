@@ -2,7 +2,10 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -10,8 +13,11 @@ import org.junit.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.Card;
+import clueGame.CardType;
 import clueGame.ComputerPlayer;
 import clueGame.Player;
+import clueGame.Solution;
 
 public class gameActionTests {
 	private static Board board;
@@ -87,9 +93,56 @@ public class gameActionTests {
 	}
 	
 	@Test
+	//testing creating a suggestion
+	public void createSuggestion(){
+		
+	}
+	@Test
 	//testing disproviing a suggestion
 	public void disproveSuggestion(){
+		Solution suggestion = new Solution("Shannon", "Bowling Alley", "Toothpick");
 		
+		
+		//test if player has only one matching card it should be returned
+		Player testPlayer = new ComputerPlayer("Test Player", 5, 7, 100, 100, 100, "c");
+		ArrayList<Card> playCards = new ArrayList<Card>();
+		playCards.add(new Card("Shannon", CardType.PERSON));
+		playCards.add(new Card("Rope", CardType.WEAPON));
+		playCards.add(new Card("Kitchen", CardType.ROOM));
+		playCards.add(new Card("Icicle", CardType.WEAPON));
+		
+		Card testCard = testPlayer.disproveSuggestion(suggestion);
+		assertEquals(testCard, new Card("Shannon", CardType.PERSON));
+		
+		//test if players has >1 matching card, returned card should be chosen randomly
+		Player testPlayer1 = new ComputerPlayer("Test Player 1", 20, 17, 100, 100, 100, "c");
+		ArrayList<Card> playCards1 = new ArrayList<Card>();
+
+		playCards1.add(new Card("Shannon", CardType.PERSON));
+		playCards1.add(new Card("Toothpick", CardType.WEAPON));
+		playCards1.add(new Card("Bowling Alley", CardType.ROOM));
+		playCards1.add(new Card("Icicle", CardType.WEAPON));
+		
+		Card testCard1 = testPlayer1.disproveSuggestion(suggestion);
+		boolean isEqual = false;
+		for(int i = 0; i < playCards1.size(); i++){
+			if(testCard1.equals(playCards1.get(i))){
+				isEqual = true;
+			}
+		}
+		assertTrue(isEqual);
+
+		
+		//test if player has no matching cards, null is returned
+		Player testPlayer2 = new ComputerPlayer("Test Player 2", 21, 3, 100, 100, 100, "c");
+		ArrayList<Card> playCards2 = new ArrayList<Card>();
+
+		playCards2.add(new Card("Stephen", CardType.PERSON));
+		playCards2.add(new Card("Kitchen", CardType.WEAPON));
+		playCards2.add(new Card("Icicle", CardType.WEAPON));
+		
+		Card testCard2 = testPlayer2.disproveSuggestion(suggestion);
+		assertEquals(testCard2, null);
 	}
 	
 	@Test
@@ -97,10 +150,5 @@ public class gameActionTests {
 	public void handleSuggestion(){
 		
 	}
-	
-	@Test
-	//testing creating a suggestion
-	public void createSuggestion(){
-		
-	}
+
 }

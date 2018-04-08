@@ -26,18 +26,11 @@ public class Player {
 	}
 	
 	public Card disproveSuggestion(Solution suggestion){
-		
+		Card temp = new Card("Shannon", CardType.PERSON);
+		return temp;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	//Getters and Setters
 	public String getPlayerName() {
 		return playerName;
