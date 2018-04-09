@@ -87,14 +87,15 @@ public class Board {
 		int count = 0;
 		int i = 0;
 		for(Card c: deck){
-			if(playerCards.containsKey(players.get(i))){
-				playerCards.get(players.get(i)).add(c);
-			}
-			else{
-				ArrayList<Card> temp = new ArrayList<Card>();
-				temp.add(c);
-				playerCards.put(players.get(i), temp);
-			}
+			players.get(i).addToHand(c);
+//			if(playerCards.containsKey(players.get(i))){
+//				playerCards.get(players.get(i)).add(c);
+//			}
+//			else{
+//				ArrayList<Card> temp = new ArrayList<Card>();
+//				temp.add(c);
+//				playerCards.put(players.get(i), temp);
+//			}
 			count++;
 			i = count % numPlayers;
 		}

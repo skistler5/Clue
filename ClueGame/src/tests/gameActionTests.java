@@ -98,35 +98,34 @@ public class gameActionTests {
 		
 	}
 	@Test
-	//testing disproviing a suggestion
+	//testing disproving a suggestion
 	public void disproveSuggestion(){
 		Solution suggestion = new Solution("Shannon", "Bowling Alley", "Toothpick");
 		
 		
 		//test if player has only one matching card it should be returned
 		Player testPlayer = new ComputerPlayer("Test Player", 5, 7, 100, 100, 100, "c");
-		ArrayList<Card> playCards = new ArrayList<Card>();
-		playCards.add(new Card("Shannon", CardType.PERSON));
-		playCards.add(new Card("Rope", CardType.WEAPON));
-		playCards.add(new Card("Kitchen", CardType.ROOM));
-		playCards.add(new Card("Icicle", CardType.WEAPON));
+		//testPlayer.clearHand();
+		testPlayer.addToHand(new Card("Shannon", CardType.PERSON));
+		testPlayer.addToHand(new Card("Rope", CardType.WEAPON));
+		testPlayer.addToHand(new Card("Kitchen", CardType.ROOM));
+		testPlayer.addToHand(new Card("Icicle", CardType.WEAPON));
 		
 		Card testCard = testPlayer.disproveSuggestion(suggestion);
-		assertEquals(testCard, new Card("Shannon", CardType.PERSON));
+		assertTrue(testCard.equals(new Card("Shannon", CardType.PERSON)));
 		
 		//test if players has >1 matching card, returned card should be chosen randomly
 		Player testPlayer1 = new ComputerPlayer("Test Player 1", 20, 17, 100, 100, 100, "c");
-		ArrayList<Card> playCards1 = new ArrayList<Card>();
-
-		playCards1.add(new Card("Shannon", CardType.PERSON));
-		playCards1.add(new Card("Toothpick", CardType.WEAPON));
-		playCards1.add(new Card("Bowling Alley", CardType.ROOM));
-		playCards1.add(new Card("Icicle", CardType.WEAPON));
+		//testPlayer1.clearHand();
+		testPlayer1.addToHand(new Card("Shannon", CardType.PERSON));
+		testPlayer1.addToHand(new Card("Toothpick", CardType.WEAPON));
+		testPlayer1.addToHand(new Card("Bowling Alley", CardType.ROOM));
+		testPlayer1.addToHand(new Card("Icicle", CardType.WEAPON));
 		
 		Card testCard1 = testPlayer1.disproveSuggestion(suggestion);
 		boolean isEqual = false;
-		for(int i = 0; i < playCards1.size(); i++){
-			if(testCard1.equals(playCards1.get(i))){
+		for(int i = 0; i < testPlayer1.getPlayerHand().size(); i++){
+			if(testCard1.equals(testPlayer1.getPlayerHand().get(i))){
 				isEqual = true;
 			}
 		}
@@ -135,11 +134,10 @@ public class gameActionTests {
 		
 		//test if player has no matching cards, null is returned
 		Player testPlayer2 = new ComputerPlayer("Test Player 2", 21, 3, 100, 100, 100, "c");
-		ArrayList<Card> playCards2 = new ArrayList<Card>();
-
-		playCards2.add(new Card("Stephen", CardType.PERSON));
-		playCards2.add(new Card("Kitchen", CardType.WEAPON));
-		playCards2.add(new Card("Icicle", CardType.WEAPON));
+		//testPlayer2.clearHand();
+		testPlayer2.addToHand(new Card("Stephen", CardType.PERSON));
+		testPlayer2.addToHand(new Card("Kitchen", CardType.WEAPON));
+		testPlayer2.addToHand(new Card("Icicle", CardType.WEAPON));
 		
 		Card testCard2 = testPlayer2.disproveSuggestion(suggestion);
 		assertEquals(testCard2, null);

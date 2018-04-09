@@ -1,10 +1,15 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
 
 	private String playerName;
+	private ArrayList<Card> playerHand = new ArrayList<Card>();
+
+
 	private int row;
 	private int col;
 	private Color color;
@@ -25,9 +30,43 @@ public class Player {
 		}
 	}
 	
+	public void addToHand(Card c){
+		playerHand.add(c);
+	}
+	
 	public Card disproveSuggestion(Solution suggestion){
-		Card temp = new Card("Shannon", CardType.PERSON);
-		return temp;
+		int numMatches = 0;
+		Card shown = null;
+		ArrayList<Card> correct = new ArrayList<Card>();
+		for(Card c: playerHand){
+			if(c.getCardName().equals(suggestion.person)){
+				numMatches++;
+				shown = c;
+				correct.add(c);
+				
+			}
+			if(c.getCardName().equals(suggestion.weapon)){
+				numMatches++;
+				shown = c;
+				correct.add(c);
+			}
+			if(c.getCardName().equals(suggestion.room)){
+				numMatches++;
+				shown = c;
+				correct.add(c);
+			}
+		}
+		if(numMatches == 0){
+			return null;
+		}
+		else if(numMatches == 1){
+			return shown;
+		}
+		else{
+			Random rand = new Random();
+			int n = rand.nextInt(correct.size());
+			return correct.get(n);
+		}
 	}
 	
 		
@@ -74,6 +113,17 @@ public class Player {
 	
 	public void setLastVisitedRoom(BoardCell cell){
 		lastVisitedRoom = cell.getInitial();
+	}
+	public ArrayList<Card> getPlayerHand() {
+		return playerHand;
+	}
+
+	public void setPlayerHand(ArrayList<Card> playerHand) {
+		this.playerHand = playerHand;
+	}
+	
+	public void clearHand(){
+		playerHand.clear();
 	}
 	
 }

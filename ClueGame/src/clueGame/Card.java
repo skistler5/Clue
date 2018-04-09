@@ -5,9 +5,12 @@ public class Card {
 	private String cardName;
 	private CardType cardType;
 	
-//	public boolean equals(){
-//		
-//	}
+	public boolean equals(Card c){
+		if(c.getCardName().equals(cardName) && c.getCardType().equals(cardType)){
+			return true;
+		}
+		return false;
+	}
 	
 	//Getters and Setters
 	public String getCardName() {
