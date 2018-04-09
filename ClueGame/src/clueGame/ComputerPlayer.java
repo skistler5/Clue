@@ -7,9 +7,9 @@ public class ComputerPlayer extends Player {
 		super(name, row, col, r, g, b, comp);
 		// TODO Auto-generated constructor stub
 	}
-	public BoardCell pickLocation(Set<BoardCell> targets){
-		
-	}
+//	public BoardCell pickLocation(Set<BoardCell> targets){
+//		
+//	}
 	public void makeAccusation(){
 		
 	}

@@ -16,6 +16,7 @@ import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -146,6 +147,64 @@ public class gameActionTests {
 	@Test
 	//testing handing a suggestion
 	public void handleSuggestion(){
+		Solution suggestion = new Solution("Shannon", "Bowling Alley", "Toothpick");
+		board.clearPlayers();
+		
+		
+		//test that suggestion no one can disprove returns null
+		Player tplayer0 =  new ComputerPlayer("tp0", 15, 12, 100, 100, 100, "c");
+		Player tplayer = new ComputerPlayer("tp", 15, 12, 100, 100, 100, "c");
+		Player tplayer1 = new ComputerPlayer("tp1", 15, 12, 100, 100, 100, "c");
+		Player tplayer2 = new HumanPlayer("tp2", 15, 12, 100, 100, 100, "h");
+		ArrayList<Player> tempPlayers = new ArrayList<Player>();
+		tempPlayers.add(tplayer0);
+		tempPlayers.add(tplayer);
+		tempPlayers.add(tplayer1);
+		tempPlayers.add(tplayer2);
+		board.setPlayers(tempPlayers);
+
+		tplayer.addToHand(new Card("Stephen", CardType.PERSON));
+		tplayer.addToHand(new Card("Gary", CardType.PERSON));
+		tplayer.addToHand(new Card("Shotgun", CardType.WEAPON));
+		tplayer1.addToHand(new Card("Bob", CardType.PERSON));
+		tplayer1.addToHand(new Card("Storage", CardType.ROOM));
+		tplayer1.addToHand(new Card("Bathroom", CardType.ROOM));
+		tplayer2.addToHand(new Card("Chapter Room", CardType.ROOM));
+		tplayer2.addToHand(new Card("Library", CardType.ROOM));
+		tplayer2.addToHand(new Card("Icicle", CardType.WEAPON));
+		
+		
+		
+		//test that suggestion only accusing player can disprove returns null
+		Card testCard = board.handleSuggestion(tplayer0, suggestion);
+		assertEquals(testCard, null);
+		
+		//test that suggestion only human can disprove returns answer
+		Solution suggestion1 = new Solution("Stephen", "Bowling Alley", "Toothpick");
+		Card testCard1 = board.handleSuggestion(tplayer0, suggestion1);
+		assertTrue(testCard1.equals(new Card("Stephen", CardType.PERSON)));
+		
+		//test that suggestion only human can disprove, but human is accuser returns null
+		Solution suggestion2 = new Solution("Shannon", "Library", "Toothpick");
+		Card testCard2 = board.handleSuggestion(tplayer2, suggestion2);
+		assertTrue(testCard2.equals(new Card("Library", CardType.ROOM)));
+		
+		
+		//STEPHEN START HERE
+		
+		
+		// test that suggestion that two players can disprove , correct player (based on starting with next
+		//player in list returns answer
+		Solution suggestion3 = new Solution("Bob", "Chapter Room", "Toothpick");
+		Card testCard3 = board.handleSuggestion(tplayer0, suggestion3);
+		System.out.println(testCard3.getCardName());
+		assertTrue(testCard3.equals(new Card("Bob", CardType.PERSON)));
+		
+		//suggestion that human and another player can disprove, other player is next
+		// in list, ensure other player returns answer
+		Solution suggestion4 = new Solution("Bob", "Library", "Toothpick");
+		Card testCard4 = board.handleSuggestion(tplayer0, suggestion4);
+		assertTrue(testCard4.equals(new Card("Bob", CardType.PERSON)));
 		
 	}
 

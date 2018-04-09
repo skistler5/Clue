@@ -16,6 +16,13 @@ public class Player {
 	private boolean isComp;
 	private char lastVisitedRoom;
 	
+	public boolean equals(Player p){
+		if(p.getPlayerName().equals(playerName)){
+			return true;
+		}
+		return false;
+	}
+	
 	public Player(String name, int row, int col, int r, int g, int b, String comp){
 		playerName = name;
 		this.row = row;

@@ -78,7 +78,27 @@ public class Board {
 		}
 		calcAdjacencies();
 	}
+
+	public Card handleSuggestion(Player p, Solution suggestion){
+		Card shown = null;
+		int iter = 0;
+		for(int i = 0; i < players.size(); i++){
+			if(p.equals(players.get(i))){
+				iter = i;
+			}
+		}
 	
+		for(int i = iter; i < (players.size() + iter); i++){
+			Card temp = players.get(i%players.size()).disproveSuggestion(suggestion);
+			if(temp != null){
+				shown = temp;
+			}
+		}
+		return shown;
+
+	}
+
+
 	/**
 	 * Deals the cards to the players and clears the deck so that it is empty
 	 */
@@ -88,14 +108,14 @@ public class Board {
 		int i = 0;
 		for(Card c: deck){
 			players.get(i).addToHand(c);
-//			if(playerCards.containsKey(players.get(i))){
-//				playerCards.get(players.get(i)).add(c);
-//			}
-//			else{
-//				ArrayList<Card> temp = new ArrayList<Card>();
-//				temp.add(c);
-//				playerCards.put(players.get(i), temp);
-//			}
+			//			if(playerCards.containsKey(players.get(i))){
+			//				playerCards.get(players.get(i)).add(c);
+			//			}
+			//			else{
+			//				ArrayList<Card> temp = new ArrayList<Card>();
+			//				temp.add(c);
+			//				playerCards.put(players.get(i), temp);
+			//			}
 			count++;
 			i = count % numPlayers;
 		}
@@ -116,7 +136,7 @@ public class Board {
 			deck.add(temp);
 		}
 	}
-	
+
 	/**
 	 * loads from the people file into the deck
 	 * @throws BadConfigFormatException
@@ -313,7 +333,14 @@ public class Board {
 		findTargets(row, col, pathLength);
 		chooseTarget(player);
 	}
-	
+
+	public void calcTargets(int row, int col, int pathLength){
+		visited.clear();
+		targets.clear();
+
+		findTargets(row, col, pathLength);
+	}
+
 	public void chooseTarget(Player player){
 		for(BoardCell cell: targets){
 			if(cell.isDoorway() && cell.getInitial() != player.getLastVisitedRoom()){
@@ -322,9 +349,9 @@ public class Board {
 				return;
 			}
 		}
-		
+
 		int size = targets.size();
-		
+
 		Random rand = new Random();
 
 		int  n = rand.nextInt(size);
@@ -427,6 +454,13 @@ public class Board {
 
 	public BoardCell[][] getBoard() {
 		return board;
+	}
+	public void clearPlayers(){
+		players.clear();
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 	
 
