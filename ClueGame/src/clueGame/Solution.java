@@ -12,6 +12,16 @@ public class Solution {
 	}
 	
 	public boolean equals(Solution s){
+		if(person != s.person){
+			return false;
+		}
+		else if(room != s.room){
+			return false;
+		}
+		else if(weapon != s.weapon){
+			return false;
+		}
+		
 		return true;
 	}
 }
