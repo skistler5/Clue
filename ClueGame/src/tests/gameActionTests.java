@@ -89,7 +89,20 @@ public class gameActionTests {
 	
 	@Test
 	//testing checking an accusation
-	public void checkAccusation(){
+	public void makeAccusation(){
+		Solution accusation1 = new Solution("Shannon", "Bowling Alley", "Toothpick");
+		Solution accusation2 = new Solution("Stephen", "Bowling Alley", "Toothpick");
+		Solution accusation3 = new Solution("Shannon", "Chapter Room", "Toothpick");
+		Solution accusation4 = new Solution("Shannon", "Bowling ALley", "Shotgun");
+		Solution guess = new Solution("Shannon", "Bowling Alley", "Toothpick");
+		//tests if the solution is the same
+		assertTrue(accusation1.equals(guess));
+		//tests for wrong person
+		assertFalse(accusation2.equals(guess));
+		//tests for wrong room
+		assertFalse(accusation3.equals(guess));
+		//tests for wrong weapon
+		assertFalse(accusation4.equals(guess));
 		
 	}
 	

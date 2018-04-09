@@ -10,4 +10,8 @@ public class Solution {
 		this.room = room;
 		this.weapon = weapon;
 	}
+	
+	public boolean equals(Solution s){
+		return true;
+	}
 }
