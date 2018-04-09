@@ -111,8 +111,42 @@ public class gameActionTests {
 	public void createSuggestion(){
 		Player testPlayer = new Player("Test Player", 2, 7, 100, 100, 100, "c");
 		Solution suggestion = new Solution("Gary", "Library", "Dog Bone");
+		testPlayer.addToWeaponsSeen("Dog Bone");
+		testPlayer.addToWeaponsSeen("Rope");
+		testPlayer.addToWeaponsSeen("Shotgun");
+		testPlayer.addToWeaponsSeen("Knife");
+		testPlayer.addToPlayersSeen("Gary");
+		testPlayer.addToPlayersSeen("Shannon");
+		testPlayer.addToPlayersSeen("Stephen");
+		testPlayer.addToPlayersSeen("Bob");
+		Solution temp = testPlayer.createAccusation();
+		boolean test = false;
 		//tests if suggestion has the same room as the player
 		assertEquals(testPlayer.getRoom(), suggestion.room);
+		
+		//if multiple weapons not seen, one is randomly selected
+		if(temp.weapon == "Toothpick" || temp.weapon == "Icicle"){
+			test = true;
+		}
+		assertTrue(test);
+		
+		//if multiple people not seen, one is selected randomly
+		test = false;
+		if(temp.person == "Patricia" || temp.person == "Ellie"){
+			test = true;
+		}
+		assertTrue(test);
+		
+		testPlayer.addToWeaponsSeen("Toothpick");
+		testPlayer.addToPlayersSeen("Patricia");
+		temp = testPlayer.createAccusation();
+		
+		//if only one weapon not seen it is selected
+		assertEquals(temp.weapon, "Icicle");
+		//if only one person not seen it is selected
+		assertEquals(temp.person, "Ellie");
+		
+		
 		
 	}
 	@Test
@@ -205,9 +239,6 @@ public class gameActionTests {
 		Solution suggestion2 = new Solution("Shannon", "Library", "Toothpick");
 		Card testCard2 = board.handleSuggestion(tplayer2, suggestion2);
 		assertTrue(testCard2.equals(new Card("Library", CardType.ROOM)));
-		
-		
-		//STEPHEN START HERE
 		
 		
 		// test that suggestion that two players can disprove , correct player (based on starting with next

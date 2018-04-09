@@ -8,9 +8,9 @@ public class Player {
 
 	private String playerName;
 	private ArrayList<Card> playerHand = new ArrayList<Card>();
-	private ArrayList<Card> roomsSeen = new ArrayList<Card>();
-	private ArrayList<Card> weaponsSeen = new ArrayList<Card>();
-	private ArrayList<Card> playersSeen = new ArrayList<Card>();
+	private ArrayList<String> roomsSeen = new ArrayList<String>();
+	private ArrayList<String> weaponsSeen = new ArrayList<String>();
+	private ArrayList<String> playersSeen = new ArrayList<String>();
 
 
 	private int row;
@@ -40,8 +40,21 @@ public class Player {
 		}
 	}
 	
+	public Solution createAccusation(){
+		Solution suggestion = new Solution("Gary", "Library", "Dog Bone");
+		return suggestion;
+	}
+	
 	public void addToHand(Card c){
 		playerHand.add(c);
+	}
+	
+	public void addToPlayersSeen(String s){
+		playersSeen.add(s);
+	}
+	
+	public void addToWeaponsSeen(String s){
+		weaponsSeen.add(s);
 	}
 	
 	public Card disproveSuggestion(Solution suggestion){
