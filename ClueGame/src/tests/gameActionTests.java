@@ -109,6 +109,10 @@ public class gameActionTests {
 	@Test
 	//testing creating a suggestion
 	public void createSuggestion(){
+		Player testPlayer = new Player("Test Player", 2, 7, 100, 100, 100, "c");
+		Solution suggestion = new Solution("Gary", "Library", "Dog Bone");
+		//tests if suggestion has the same room as the player
+		assertEquals(testPlayer.getRoom(), suggestion.room);
 		
 	}
 	@Test

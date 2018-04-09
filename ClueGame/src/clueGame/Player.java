@@ -8,6 +8,9 @@ public class Player {
 
 	private String playerName;
 	private ArrayList<Card> playerHand = new ArrayList<Card>();
+	private ArrayList<Card> roomsSeen = new ArrayList<Card>();
+	private ArrayList<Card> weaponsSeen = new ArrayList<Card>();
+	private ArrayList<Card> playersSeen = new ArrayList<Card>();
 
 
 	private int row;
@@ -131,6 +134,10 @@ public class Player {
 	
 	public void clearHand(){
 		playerHand.clear();
+	}
+	
+	public String getRoom(){
+		return "";
 	}
 	
 }

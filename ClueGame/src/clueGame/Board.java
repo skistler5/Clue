@@ -30,6 +30,7 @@ public class Board {
 	private int row; 
 	private int col;
 	private ArrayList<Player> players = new ArrayList<Player>();
+	private ArrayList<String> weapons = new ArrayList<String>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
 	private Map<Player, ArrayList<Card>> playerCards = new HashMap<Player, ArrayList<Card>>();
 	private BoardCell[][] board;
@@ -92,6 +93,7 @@ public class Board {
 			Card temp = players.get(i%players.size()).disproveSuggestion(suggestion);
 			if(temp != null){
 				shown = temp;
+				return shown;
 			}
 		}
 		return shown;
@@ -134,6 +136,7 @@ public class Board {
 			String line = input.nextLine();
 			Card temp = new Card(line, CardType.WEAPON);
 			deck.add(temp);
+			weapons.add(temp.getCardName());
 		}
 	}
 
