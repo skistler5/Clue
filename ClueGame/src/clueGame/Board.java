@@ -466,5 +466,9 @@ public class Board {
 		this.players = players;
 	}
 	
+	public ArrayList<String> getWeapons(){
+		return weapons;
+	}
+	
 
 }

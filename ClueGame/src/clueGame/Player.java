@@ -41,8 +41,17 @@ public class Player {
 	}
 	
 	public Solution createAccusation(){
-		Solution suggestion = new Solution("Gary", "Library", "Dog Bone");
-		return suggestion;
+		Random rand = new Random();
+		String player = new String();
+		String room = new String();
+		String weapon = new String();
+		room = getRoom();
+		for(String w: weaponsSeen){
+			
+		}
+		Solution accusation = new Solution(player, room, weapon);
+		
+		return accusation;
 	}
 	
 	public void addToHand(Card c){
