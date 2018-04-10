@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import clueGame.Board;
@@ -25,6 +26,7 @@ public class gameActionTests {
 	
 	@Before
 	public void setUp(){
+		
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -119,32 +121,34 @@ public class gameActionTests {
 		testPlayer.addToPlayersSeen("Shannon");
 		testPlayer.addToPlayersSeen("Stephen");
 		testPlayer.addToPlayersSeen("Bob");
-		Solution temp = testPlayer.createAccusation();
+		testPlayer.setRoom('L');
+		Solution temp = board.createAccusation(testPlayer);
 		boolean test = false;
+		
 		//tests if suggestion has the same room as the player
-		assertEquals(testPlayer.getRoom(), suggestion.room);
+		assertEquals(suggestion.room, temp.room);
 		
 		//if multiple weapons not seen, one is randomly selected
-		if(temp.weapon == "Toothpick" || temp.weapon == "Icicle"){
+		if(temp.weapon.equals("Toothpick") || temp.weapon.equals("Icicle")){
 			test = true;
 		}
 		assertTrue(test);
 		
 		//if multiple people not seen, one is selected randomly
 		test = false;
-		if(temp.person == "Patricia" || temp.person == "Ellie"){
+		if(temp.person.equals("Patricia") || temp.person.equals("Ellie")){
 			test = true;
 		}
 		assertTrue(test);
 		
 		testPlayer.addToWeaponsSeen("Toothpick");
 		testPlayer.addToPlayersSeen("Patricia");
-		temp = testPlayer.createAccusation();
+		temp = board.createAccusation(testPlayer);
 		
 		//if only one weapon not seen it is selected
-		assertEquals(temp.weapon, "Icicle");
+		assertTrue(temp.weapon.equals("Icicle"));
 		//if only one person not seen it is selected
-		assertEquals(temp.person, "Ellie");
+		assertTrue(temp.person.equals("Ellie"));
 		
 		
 		
@@ -245,7 +249,6 @@ public class gameActionTests {
 		//player in list returns answer
 		Solution suggestion3 = new Solution("Bob", "Chapter Room", "Toothpick");
 		Card testCard3 = board.handleSuggestion(tplayer0, suggestion3);
-		System.out.println(testCard3.getCardName());
 		assertTrue(testCard3.equals(new Card("Bob", CardType.PERSON)));
 		
 		//suggestion that human and another player can disprove, other player is next

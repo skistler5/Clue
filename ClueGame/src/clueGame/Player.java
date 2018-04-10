@@ -18,6 +18,7 @@ public class Player {
 	private Color color;
 	private boolean isComp;
 	private char lastVisitedRoom;
+	private char roomInitial;
 	
 	public boolean equals(Player p){
 		if(p.getPlayerName().equals(playerName)){
@@ -40,19 +41,7 @@ public class Player {
 		}
 	}
 	
-	public Solution createAccusation(){
-		Random rand = new Random();
-		String player = new String();
-		String room = new String();
-		String weapon = new String();
-		room = getRoom();
-		for(String w: weaponsSeen){
-			
-		}
-		Solution accusation = new Solution(player, room, weapon);
-		
-		return accusation;
-	}
+
 	
 	public void addToHand(Card c){
 		playerHand.add(c);
@@ -158,8 +147,21 @@ public class Player {
 		playerHand.clear();
 	}
 	
-	public String getRoom(){
-		return "";
+	public Character getRoom(){
+		return roomInitial;
 	}
+	
+	public void setRoom(Character c){
+		roomInitial = c;
+	}
+	
+	public ArrayList<String> getWeaponsSeen() {
+		return weaponsSeen;
+	}
+
+	public ArrayList<String> getPlayersSeen() {
+		return playersSeen;
+	}
+
 	
 }

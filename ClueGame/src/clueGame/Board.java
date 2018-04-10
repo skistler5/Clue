@@ -67,6 +67,7 @@ public class Board {
 	 * 
 	 */
 	public void initialize() {
+		clearPlayers();
 		try{
 			loadRoomConfig();
 			loadBoardConfig();
@@ -78,6 +79,40 @@ public class Board {
 			System.out.println(e.getMessage());
 		}
 		calcAdjacencies();
+	}
+	
+	public Solution createAccusation(Player p){
+		Random rand = new Random();
+		String room = new String();
+		ArrayList<String> possibleWeapons = new ArrayList<String>();
+		ArrayList<String> possiblePlayers = new ArrayList<String>();
+		room = legend.get(p.getRoom());
+		possibleWeapons = weapons;
+		for(int i = 0; i < players.size(); i++){
+			possiblePlayers.add(players.get(i).getPlayerName());
+		}
+		
+		for(int i = 0; i < possibleWeapons.size(); i++){
+			if(p.getWeaponsSeen().contains(possibleWeapons.get(i))){
+				possibleWeapons.remove(i);
+				i--;
+			}
+		}
+		for(int i = 0; i < possiblePlayers.size(); i++){
+			if(p.getPlayersSeen().contains(possiblePlayers.get(i))){
+				possiblePlayers.remove(i);
+				i--;
+			}
+		}
+		
+		int weaponNum = possibleWeapons.size();
+		int playerNum = possiblePlayers.size();
+		int wit = rand.nextInt(weaponNum);
+		int pit = rand.nextInt(playerNum);
+		
+		Solution accusation = new Solution(possiblePlayers.get(pit), room, possibleWeapons.get(wit));
+		
+		return accusation;
 	}
 
 	public Card handleSuggestion(Player p, Solution suggestion){
@@ -367,6 +402,8 @@ public class Board {
 			}
 			count++;
 		}
+		
+		player.setRoom(board[player.getRow()][player.getCol()].getInitial());
 	}
 
 	/**
