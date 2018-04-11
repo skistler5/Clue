@@ -27,11 +27,13 @@ public class GUI_Test extends JPanel{
 	public void createLayout(){
 		JLabel turnLabel = new JLabel("Whose Turn:");
 		turn = new JTextField(5);
+		turn.setEditable(false);
 		add(turnLabel, BorderLayout.EAST);
 		add(turn, BorderLayout.EAST);
 		
 		JLabel dieRollLabel = new JLabel("Die Roll:");
 		dieRoll = new JTextField(5);
+		dieRoll.setEditable(false);
 		add(dieRollLabel, BorderLayout.EAST);
 		add(dieRoll, BorderLayout.EAST);
 		
@@ -42,6 +44,7 @@ public class GUI_Test extends JPanel{
 		
 		JLabel guessResultLabel = new JLabel("Guess Result:");
 		guessResult = new JTextField(5);
+		guess.setEditable(false);
 		add(guessResultLabel, BorderLayout.EAST);
 		add(guessResult, BorderLayout.EAST);
 		
@@ -56,7 +59,7 @@ public class GUI_Test extends JPanel{
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("GUI Example");
-		frame.setSize(250, 150);
+		frame.setSize(500, 200);
 		
 		GUI_Test gui = new GUI_Test();
 		frame.add(gui, BorderLayout.CENTER);
