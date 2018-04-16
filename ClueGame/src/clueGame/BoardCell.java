@@ -5,6 +5,7 @@
  */
 package clueGame;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 
@@ -47,11 +48,14 @@ public class BoardCell {
 			
 		}
 		else if(isWalkway()){
-			g.drawRect(drawRow, drawCol, drawRow + 5, drawCol + 5);
-			g.fillRect(drawRow + 1, drawCol + 1, drawRow + 4, drawCol + 4);
+			g.setColor(Color.BLACK);
+			g.drawRect(drawRow, drawCol, 5, 5);
+			g.setColor(Color.YELLOW);
+			g.fillRect(drawRow + 1, drawCol + 1, 4, 4);
 		}
 		else if(isRoom()){
-			
+			g.setColor(Color.BLACK);
+			g.fillRect(drawRow, drawCol, 5, 5);
 		}
 	}
 

@@ -84,7 +84,9 @@ public class Board extends JPanel{
 		calcAdjacencies();
 	}
 	
+	@Override
 	public void paintComponent(Graphics g){
+		super.paintComponent(g);
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
 				board[i][j].draw(g);

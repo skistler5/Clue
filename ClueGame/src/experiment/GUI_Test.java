@@ -68,7 +68,7 @@ public class GUI_Test extends JPanel{
 		JFrame frame2 = new JFrame();
 		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame2.setTitle("Board Example");
-		frame2.setSize(1000, 1000);
+		frame2.setSize(500, 500);
 		frame2.add(board, BorderLayout.CENTER);
 		
 		GUI_Test gui = new GUI_Test();
