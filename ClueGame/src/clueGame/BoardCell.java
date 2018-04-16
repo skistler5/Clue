@@ -7,6 +7,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 
 /**
@@ -21,16 +22,15 @@ public class BoardCell {
 	private int drawRow;
 	private int drawCol;
 	private char initial;
+	public static final int CELL_SIZE = 25;
 	private DoorDirection doorDirection;
 	boolean door;
 
 	public void setRow(int row) {
 		this.row = row;
-		drawRow = row*5;
 	}
 	public void setCol(int col) {
 		this.col = col;
-		drawCol = col*5;
 	}
 	public BoardCell(int row, int col) {
 		this.row = row;
@@ -44,18 +44,26 @@ public class BoardCell {
 	}
 	
 	public void draw(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		drawRow = CELL_SIZE*row;
+		drawCol = CELL_SIZE*col;
 		if(isDoorway()){
-			
+			g2.setColor(Color.BLUE);
+			g2.fillRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
 		}
 		else if(isWalkway()){
-			g.setColor(Color.BLACK);
-			g.drawRect(drawRow, drawCol, 5, 5);
-			g.setColor(Color.YELLOW);
-			g.fillRect(drawRow + 1, drawCol + 1, 4, 4);
+			g2.setColor(Color.YELLOW);
+			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
+			g2.setColor(Color.BLACK);
+			g2.fillRect(drawRow, drawCol, CELL_SIZE - 1, CELL_SIZE - 1);
 		}
 		else if(isRoom()){
-			g.setColor(Color.BLACK);
-			g.fillRect(drawRow, drawCol, 5, 5);
+			g2.setColor(Color.GRAY);
+			g2.fillRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
+		}
+		else{
+			g2.setColor(Color.blue);
+			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
 		}
 	}
 

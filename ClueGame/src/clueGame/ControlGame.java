@@ -16,14 +16,17 @@ public class ControlGame extends JFrame{
 	private JTextField dieRoll;
 	private JTextField guess;
 	private JTextField guessResult;
+	
 	public ControlGame(){
 		board = Board.getInstance();
+		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
+		board.setCardFiles("players.txt", "weapons.txt");
+		board.initialize();
 	}
 	
 	public JPanel createBoardPanel(){
 		JPanel boardPrint = new JPanel();
-		boardPrint.setLayout(new FlowLayout());
-		boardPrint.setSize(500, 500);
+		boardPrint.setSize(23*25, 14*25);
 		boardPrint.add(board, BorderLayout.CENTER);
 		
 		return boardPrint;
@@ -48,6 +51,7 @@ public class ControlGame extends JFrame{
 		
 		JLabel guessLabel = new JLabel("Guess:");
 		guess = new JTextField(5);
+		guess.setEditable(false);
 		controlPanel.add(guessLabel, BorderLayout.EAST);
 		controlPanel.add(guess, BorderLayout.EAST);
 		
@@ -69,7 +73,6 @@ public class ControlGame extends JFrame{
 	public static void main(String[] args){
 		ControlGame game = new ControlGame();
 		JFrame gui = new JFrame();
-		JPanel boardPanel = new JPanel();
 		
 		gui.add(game.createBoardPanel(), BorderLayout.CENTER);
 		gui.add(game.createControlPanel(), BorderLayout.SOUTH);
