@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,14 +23,50 @@ public class ControlGame extends JFrame{
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
 		board.setCardFiles("players.txt", "weapons.txt");
 		board.initialize();
+		board.dealCards();
 	}
 	
 	public JPanel createBoardPanel(){
 		JPanel boardPrint = new JPanel();
-		boardPrint.setSize(23*25, 14*25);
 		boardPrint.add(board, BorderLayout.CENTER);
 		
 		return boardPrint;
+	}
+	
+	public JPanel createCardPanel(){
+		ArrayList<Card> playersHand = findPlayersCards();
+		JPanel cardPanel = new JPanel();
+		JTextField myCard = new JTextField(playersHand.get(2).getCardName());
+		myCard.setEditable(false);
+		JLabel myCardLabel = new JLabel("Person:");
+		JTextField myWeapon = new JTextField(playersHand.get(1).getCardName());
+		myWeapon.setEditable(false);
+		JLabel myWeaponLabel = new JLabel("Weapon:");
+		JTextField myRoom = new JTextField(playersHand.get(0).getCardName());
+		myRoom.setEditable(false);
+		JLabel myRoomLabel = new JLabel("Room:");
+		
+		cardPanel.setLayout(new GridLayout(6,1));
+		
+		cardPanel.add(myCardLabel, BorderLayout.CENTER);
+		cardPanel.add(myCard, BorderLayout.CENTER);
+		cardPanel.add(myWeaponLabel, BorderLayout.CENTER);
+		cardPanel.add(myWeapon, BorderLayout.CENTER);
+		cardPanel.add(myRoomLabel, BorderLayout.CENTER);
+		cardPanel.add(myRoom, BorderLayout.CENTER);
+		
+		return cardPanel;
+	}
+	
+	public ArrayList<Card> findPlayersCards(){
+		ArrayList<Card> playersCards = new ArrayList<Card>();
+		for(Player p: board.getPlayers()){
+			if(!p.isComputer()){
+				playersCards = p.getPlayerHand();
+			}
+		}
+		
+		return playersCards;
 	}
 	
 	public JPanel createControlPanel(){
@@ -76,6 +113,7 @@ public class ControlGame extends JFrame{
 		
 		gui.add(game.createBoardPanel(), BorderLayout.CENTER);
 		gui.add(game.createControlPanel(), BorderLayout.SOUTH);
+		gui.add(game.createCardPanel(), BorderLayout.EAST);
 		
 		
 		gui.setSize(1000,1000);

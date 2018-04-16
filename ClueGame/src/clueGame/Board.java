@@ -72,6 +72,7 @@ public class Board extends JPanel{
 	 */
 	public void initialize() {
 		clearPlayers();
+		
 		try{
 			loadRoomConfig();
 			loadBoardConfig();
@@ -88,12 +89,10 @@ public class Board extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setColor(Color.GRAY);
-		g2.fillRect(0, 0, BoardCell.CELL_SIZE * col, BoardCell.CELL_SIZE * row);
+		g.fillRect(0, 0, BoardCell.CELL_SIZE * col, BoardCell.CELL_SIZE * row);
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
-				board[i][j].draw(g2);
+				board[i][j].draw(g);
 			}	
 		}
 		repaint();

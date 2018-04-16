@@ -41,8 +41,6 @@ public class Player {
 		}
 	}
 	
-
-	
 	public void addToHand(Card c){
 		playerHand.add(c);
 	}
