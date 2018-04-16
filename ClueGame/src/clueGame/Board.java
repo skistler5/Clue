@@ -5,6 +5,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.JPanel;
 
 import clueGame.BoardCell;
 
@@ -25,7 +28,7 @@ import clueGame.BoardCell;
  * 
  */
 
-public class Board {
+public class Board extends JPanel{
 	public static final int MAX_BOARD_SIZE = 50;
 	private int row; 
 	private int col;
@@ -79,6 +82,15 @@ public class Board {
 			System.out.println(e.getMessage());
 		}
 		calcAdjacencies();
+	}
+	
+	public void paintComponent(Graphics g){
+		for(int i = 0; i < row; i++){
+			for(int j = 0; j < col; j++){
+				board[i][j].draw(g);
+			}
+			
+		}
 	}
 	
 	public Solution createAccusation(Player p){

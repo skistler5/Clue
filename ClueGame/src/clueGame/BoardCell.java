@@ -5,6 +5,8 @@
  */
 package clueGame;
 
+import java.awt.Graphics;
+
 
 /**
  * 
@@ -15,15 +17,19 @@ package clueGame;
 public class BoardCell {
 	private int row;
 	private int col;
+	private int drawRow;
+	private int drawCol;
 	private char initial;
 	private DoorDirection doorDirection;
 	boolean door;
 
 	public void setRow(int row) {
 		this.row = row;
+		drawRow = row*5;
 	}
 	public void setCol(int col) {
 		this.col = col;
+		drawCol = col*5;
 	}
 	public BoardCell(int row, int col) {
 		this.row = row;
@@ -35,7 +41,19 @@ public class BoardCell {
 	public int getCol() {
 		return col;
 	}
-
+	
+	public void draw(Graphics g){
+		if(isDoorway()){
+			
+		}
+		else if(isWalkway()){
+			g.drawRect(drawRow, drawCol, drawRow + 5, drawCol + 5);
+			g.fillRect(drawRow + 1, drawCol + 1, drawRow + 4, drawCol + 4);
+		}
+		else if(isRoom()){
+			
+		}
+	}
 
 
 	/**

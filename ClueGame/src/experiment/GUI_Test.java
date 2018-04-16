@@ -1,5 +1,6 @@
 package experiment;
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +12,8 @@ import javax.swing.border.TitledBorder;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import clueGame.Board;
 
 public class GUI_Test extends JPanel{
 	private JTextField turn;
@@ -56,14 +59,23 @@ public class GUI_Test extends JPanel{
 	}
 	
 	public static void main(String[] args){
+		clueGame.Board board = Board.getInstance();
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("GUI Example");
 		frame.setSize(500, 200);
 		
+		JFrame frame2 = new JFrame();
+		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.setTitle("Board Example");
+		frame2.setSize(1000, 1000);
+		frame2.add(board, BorderLayout.CENTER);
+		
 		GUI_Test gui = new GUI_Test();
 		frame.add(gui, BorderLayout.CENTER);
 		
 		frame.setVisible(true);
+		
+		frame2.setVisible(true);
 	}
 }
