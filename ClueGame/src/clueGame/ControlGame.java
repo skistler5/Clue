@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.SplashScreen;
@@ -20,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -29,10 +31,11 @@ public class ControlGame extends JFrame{
 	private JTextField dieRoll;
 	private JTextField guess;
 	private JTextField guessResult;
-	
-	public ControlGame(){
 
-		
+	public ControlGame(){
+		//		JWindow window = new JWindow();
+		//		window.getContentPane().add("Welcome to Clue", window);
+
 		JMenuBar menuBar = new JMenuBar();
 		board = Board.getInstance();
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
@@ -42,6 +45,7 @@ public class ControlGame extends JFrame{
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 		
+
 //		final SplashScreen splash = SplashScreen.getSplashScreen();
 //		if(splash == null){
 //			System.out.println("SplashScreen.getSplashScren() returned null");
@@ -52,24 +56,24 @@ public class ControlGame extends JFrame{
 //			System.out.println("g is null");
 //			return;
 //		}
-		
-		
+
+
 		setSize(900, 900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		add(board, BorderLayout.CENTER);
 		add(createControlPanel(), BorderLayout.SOUTH);
 		add(createCardPanel(), BorderLayout.EAST);
 
 	}
-	
+
 	public JMenu createFileMenu(){
 		JMenu menu = new JMenu("File");
 		menu.add(createFileExitItem());
 		menu.add(createDetectiveNotesItem());
 		return menu;
 	}
-	
+
 	public JMenuItem createFileExitItem(){
 		JMenuItem item = new JMenuItem("Exit");
 		class ExitItemListener implements ActionListener{
@@ -80,7 +84,7 @@ public class ControlGame extends JFrame{
 		item.addActionListener(new ExitItemListener());
 		return item;
 	}
-	
+
 	public JMenuItem createDetectiveNotesItem(){
 		JMenuItem detectiveNotes = new JMenuItem("Notes");
 		final JDialog notes = new DetectiveDialog(board.getPlayers(), board.getWeapons(), board.getRooms());
@@ -92,19 +96,19 @@ public class ControlGame extends JFrame{
 		detectiveNotes.addActionListener(new DetectiveItemListener());
 		return detectiveNotes;
 	}
-	
-	
+
+
 	public JPanel createCardPanel(){
 		ArrayList<Card> playersHand = findPlayersCards();
 		JPanel cardPanel = new JPanel();
-		
+
 		JTextArea myCard = new JTextArea(2,1);
 		myCard.setEditable(false);
 		JTextArea myWeapon = new JTextArea(2,1);
 		myWeapon.setEditable(false);
 		JTextArea myRoom = new JTextArea(2,1);
 		myRoom.setEditable(false);
-		
+
 		for(Card c: playersHand){
 			if(c.getCardType().equals(CardType.PERSON)){
 				myCard.append(c.getCardName() + "\n");
@@ -116,26 +120,26 @@ public class ControlGame extends JFrame{
 				myRoom.append(c.getCardName() + "\n");
 			}
 		}
-		
-		
+
+
 		JLabel myCardLabel = new JLabel("Players:");
 		JLabel myWeaponLabel = new JLabel("Weapons:");
 		JLabel myRoomLabel = new JLabel("Rooms:");
-		
+
 		cardPanel.setLayout(new GridLayout(6,1));
 		cardPanel.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
 		cardPanel.setPreferredSize(new Dimension(200, 0));
-		
+
 		cardPanel.add(myCardLabel, BorderLayout.CENTER);
 		cardPanel.add(myCard, BorderLayout.CENTER);
 		cardPanel.add(myWeaponLabel, BorderLayout.CENTER);
 		cardPanel.add(myWeapon, BorderLayout.CENTER);
 		cardPanel.add(myRoomLabel, BorderLayout.CENTER);
 		cardPanel.add(myRoom, BorderLayout.CENTER);
-		
+
 		return cardPanel;
 	}
-	
+
 	public ArrayList<Card> findPlayersCards(){
 		ArrayList<Card> playersCards = new ArrayList<Card>();
 		for(Player p: board.getPlayers()){
@@ -143,29 +147,29 @@ public class ControlGame extends JFrame{
 				playersCards = p.getPlayerHand();
 			}
 		}
-		
+
 		return playersCards;
 	}
-	
+
 	public JPanel createControlPanel(){
 		JPanel controlPanel = new JPanel();
-		
+
 		controlPanel.setLayout(new GridLayout(5,6));
-		
+
 		JLabel turnLabel = new JLabel("Whose Turn:");
 		turn = new JTextField(5);
 		turn.setText(board.getCurrentPlayer().getPlayerName());
 		turn.setEditable(false);
 		controlPanel.add(turnLabel, BorderLayout.EAST);
 		controlPanel.add(turn, BorderLayout.EAST);
-		
+
 		JLabel dieRollLabel = new JLabel("Die Roll:");
 		dieRoll = new JTextField(5);
 		dieRoll.setText(board.getDieRoll());
 		dieRoll.setEditable(false);
 		controlPanel.add(dieRollLabel, BorderLayout.EAST);
 		controlPanel.add(dieRoll, BorderLayout.EAST);
-		
+
 		JLabel guessLabel = new JLabel("Guess:");
 		guess = new JTextField(5);
 		Solution accu = board.createAccusation(board.getCurrentPlayer());
@@ -173,26 +177,28 @@ public class ControlGame extends JFrame{
 		guess.setEditable(false);
 		controlPanel.add(guessLabel, BorderLayout.EAST);
 		controlPanel.add(guess, BorderLayout.EAST);
-		
+
 		JLabel guessResultLabel = new JLabel("Guess Result:");
 		guessResult = new JTextField(5);
 		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
 		guess.setEditable(false);
 		controlPanel.add(guessResultLabel, BorderLayout.EAST);
 		controlPanel.add(guessResult, BorderLayout.EAST);
-		
+
 		JButton nextPlayer = new JButton("Next Player");
 		JButton makeAccusation = new JButton("Make an Accusation");
 		controlPanel.add(makeAccusation, BorderLayout.EAST);
 		controlPanel.add(nextPlayer, BorderLayout.WEST);
-		
+
 		return controlPanel;
-		
+
 	}
-	
+
+
 	public static void main(String[] args){
+
 		ControlGame gui = new ControlGame();
-		
+
 		gui.setVisible(true);
 	}
 }

@@ -564,7 +564,7 @@ public class Board extends JPanel{
 	public String getDieRoll(){
 		String num = new String();
 		Random rand = new Random();
-		dieRoll = rand.nextInt(5) + 1;
+		dieRoll = rand.nextInt(6) + 1;
 		num = Integer.toString(dieRoll);		
 		return num;
 	}
