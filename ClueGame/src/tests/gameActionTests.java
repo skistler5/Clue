@@ -139,6 +139,7 @@ public class gameActionTests {
 		if(temp.person.equals("Patricia") || temp.person.equals("Ellie")){
 			test = true;
 		}
+		
 		assertTrue(test);
 		
 		testPlayer.addToWeaponsSeen("Toothpick");

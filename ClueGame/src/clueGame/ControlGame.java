@@ -3,7 +3,9 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -28,6 +31,8 @@ public class ControlGame extends JFrame{
 	private JTextField guessResult;
 	
 	public ControlGame(){
+
+		
 		JMenuBar menuBar = new JMenuBar();
 		board = Board.getInstance();
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
@@ -36,6 +41,18 @@ public class ControlGame extends JFrame{
 		board.dealCards();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
+		
+//		final SplashScreen splash = SplashScreen.getSplashScreen();
+//		if(splash == null){
+//			System.out.println("SplashScreen.getSplashScren() returned null");
+//			return;
+//		}
+//		Graphics2D g = splash.createGraphics();
+//		if(g == null){
+//			System.out.println("g is null");
+//			return;
+//		}
+		
 		
 		setSize(900, 900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,15 +97,30 @@ public class ControlGame extends JFrame{
 	public JPanel createCardPanel(){
 		ArrayList<Card> playersHand = findPlayersCards();
 		JPanel cardPanel = new JPanel();
-		JTextField myCard = new JTextField(playersHand.get(2).getCardName());
+		
+		JTextArea myCard = new JTextArea(2,1);
 		myCard.setEditable(false);
-		JLabel myCardLabel = new JLabel("Person:");
-		JTextField myWeapon = new JTextField(playersHand.get(1).getCardName());
+		JTextArea myWeapon = new JTextArea(2,1);
 		myWeapon.setEditable(false);
-		JLabel myWeaponLabel = new JLabel("Weapon:");
-		JTextField myRoom = new JTextField(playersHand.get(0).getCardName());
+		JTextArea myRoom = new JTextArea(2,1);
 		myRoom.setEditable(false);
-		JLabel myRoomLabel = new JLabel("Room:");
+		
+		for(Card c: playersHand){
+			if(c.getCardType().equals(CardType.PERSON)){
+				myCard.append(c.getCardName() + "\n");
+			}
+			else if(c.getCardType().equals(CardType.WEAPON)){
+				myWeapon.append(c.getCardName() + "\n");
+			}
+			else{
+				myRoom.append(c.getCardName() + "\n");
+			}
+		}
+		
+		
+		JLabel myCardLabel = new JLabel("Players:");
+		JLabel myWeaponLabel = new JLabel("Weapons:");
+		JLabel myRoomLabel = new JLabel("Rooms:");
 		
 		cardPanel.setLayout(new GridLayout(6,1));
 		cardPanel.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
@@ -122,24 +154,29 @@ public class ControlGame extends JFrame{
 		
 		JLabel turnLabel = new JLabel("Whose Turn:");
 		turn = new JTextField(5);
+		turn.setText(board.getCurrentPlayer().getPlayerName());
 		turn.setEditable(false);
 		controlPanel.add(turnLabel, BorderLayout.EAST);
 		controlPanel.add(turn, BorderLayout.EAST);
 		
 		JLabel dieRollLabel = new JLabel("Die Roll:");
 		dieRoll = new JTextField(5);
+		dieRoll.setText(board.getDieRoll());
 		dieRoll.setEditable(false);
 		controlPanel.add(dieRollLabel, BorderLayout.EAST);
 		controlPanel.add(dieRoll, BorderLayout.EAST);
 		
 		JLabel guessLabel = new JLabel("Guess:");
 		guess = new JTextField(5);
+		Solution accu = board.createAccusation(board.getCurrentPlayer());
+		guess.setText(accu.person + " " + accu.room + " " + accu.weapon);
 		guess.setEditable(false);
 		controlPanel.add(guessLabel, BorderLayout.EAST);
 		controlPanel.add(guess, BorderLayout.EAST);
 		
 		JLabel guessResultLabel = new JLabel("Guess Result:");
 		guessResult = new JTextField(5);
+		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
 		guess.setEditable(false);
 		controlPanel.add(guessResultLabel, BorderLayout.EAST);
 		controlPanel.add(guessResult, BorderLayout.EAST);

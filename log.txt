@@ -1,53 +1,106 @@
-commit 5c397c0de32b8e7efeed7fd1f88eb3d0461f6102
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Wed Apr 4 15:53:35 2018 -0600
-
-    All tests passed successfully
-
-commit 09347b079c3b6a84dcb3e4b4064318fe90a46a7f
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Wed Apr 4 15:35:37 2018 -0600
-
-    Made dealCards() test that compiled successfully and failed successfully
-commit 5c397c0de32b8e7efeed7fd1f88eb3d0461f6102
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Wed Apr 4 15:53:35 2018 -0600
-
-    All tests passed successfully
-
-commit 09347b079c3b6a84dcb3e4b4064318fe90a46a7f
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Wed Apr 4 15:35:37 2018 -0600
-
-    Made dealCards() test that compiled successfully and failed successfully
-
-commit 1367eb7b7872b9d41e4c1396b8fb9a0ebef528ce
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Tue Apr 3 15:32:10 2018 -0600
-
-    made the loadCards() pass successfully
-
-commit 6ad4620442629ee7a63c7f0916ddd67cd4a87f64
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Tue Apr 3 15:19:19 2018 -0600
-
-    successfully failed the loadCards() test
-
-commit e47ad17f6660709352c27e24a8c3f9a84a650263
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Tue Apr 3 14:52:07 2018 -0600
-
-    Added code for people test to pass
-
-commit eaf5f9065c61f5bdf9e6b82f90c766cf6143d50f
-Author: Stephen Kistler <skistler@mymail.mines.edu>
-Date:   Tue Apr 3 13:45:54 2018 -0600
-
-    created failing test for poeple
-
-commit c45761b3d80c484c9b26601a7454365b4d8a48ad
+commit eceee8875ec8bc126ac0ddaa5c82c0620ba4de33
 Author: Shannon Bride <sbride@mines.edu>
-Date:   Tue Apr 3 11:50:29 2018 -0600
+Date:   Tue Apr 10 11:50:46 2018 -0600
 
-    Created templates for player classes
+    GOT ALL ACTION TESTS WORKING
 
+commit 3ca3f02a79e8d1d4e7b48ed63745888a92d3c44f
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 22:33:30 2018 -0600
+
+    Started the createAccusation() method in player
+
+commit 5aeac5c19870ce6b7a29c88b5ddbe5d1527ebe81
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 16:01:55 2018 -0600
+
+    Made create suggestion test fail successfully
+
+commit eec963ada267df92f85fde83e4eafbe98c9def28
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:40:50 2018 -0600
+
+    handleSuggestion test passes successfully
+
+commit f0b1a29b14dc9a8c70eb20082a805bf7acf20de2
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:11:40 2018 -0600
+
+    Made the makeAccusation test pass successfully
+
+commit cccb719b4f208a0bb699392c16b228221cdfd6ed
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:10:41 2018 -0600
+
+    Made the makeAccusation test fail successfully
+
+commit 358e20bba878eb5c0feb67fd51b9bfb1b5eb753a
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 19:07:52 2018 -0600
+
+    working on handling suggestion tests
+
+commit acb135592ca185c82c6192f1ce83d78f5380a060
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 18:03:11 2018 -0600
+
+    passing dispoving suggestion tests
+
+commit d1a3cf4a54824a8b8f138cbde1234516eba188ca
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 17:30:56 2018 -0600
+
+    failing tests for disproving a suggestion
+commit eceee8875ec8bc126ac0ddaa5c82c0620ba4de33 (HEAD -> master, origin/master, origin/HEAD)
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Tue Apr 10 11:50:46 2018 -0600
+
+    GOT ALL ACTION TESTS WORKING
+
+commit 3ca3f02a79e8d1d4e7b48ed63745888a92d3c44f
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 22:33:30 2018 -0600
+
+    Started the createAccusation() method in player
+
+commit 5aeac5c19870ce6b7a29c88b5ddbe5d1527ebe81
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 16:01:55 2018 -0600
+
+    Made create suggestion test fail successfully
+
+commit eec963ada267df92f85fde83e4eafbe98c9def28
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:40:50 2018 -0600
+
+    handleSuggestion test passes successfully
+
+commit f0b1a29b14dc9a8c70eb20082a805bf7acf20de2
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:11:40 2018 -0600
+
+    Made the makeAccusation test pass successfully
+
+commit cccb719b4f208a0bb699392c16b228221cdfd6ed
+Author: Stephen Kistler <skistler@mymail.mines.edu>
+Date:   Mon Apr 9 15:10:41 2018 -0600
+
+    Made the makeAccusation test fail successfully
+
+commit 358e20bba878eb5c0feb67fd51b9bfb1b5eb753a
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 19:07:52 2018 -0600
+
+    working on handling suggestion tests
+
+commit acb135592ca185c82c6192f1ce83d78f5380a060
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 18:03:11 2018 -0600
+
+    passing dispoving suggestion tests
+
+commit d1a3cf4a54824a8b8f138cbde1234516eba188ca
+Author: Shannon Bride <sbride@mines.edu>
+Date:   Sun Apr 8 17:30:56 2018 -0600
+
+    failing tests for disproving a suggestion

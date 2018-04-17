@@ -34,6 +34,7 @@ public class Board extends JPanel{
 	private int row; 
 	private int col;
 	private ArrayList<Player> players = new ArrayList<Player>();
+	private Player currentPlayer = null;
 	private ArrayList<String> weapons = new ArrayList<String>();
 	private ArrayList<String> rooms = new ArrayList<String>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
@@ -48,6 +49,7 @@ public class Board extends JPanel{
 	private String weaponFile = new String();
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	public ArrayList<BoardCell> centers = new ArrayList<BoardCell>();
+	private int dieRoll = 0;
 
 
 
@@ -227,6 +229,9 @@ public class Board extends JPanel{
 			int b = Integer.parseInt(words[4]);
 			Player temp = new Player(words[0], row, col, r, g, b, words[5]);
 			players.add(temp);
+			if(!temp.isComputer()){
+				currentPlayer = temp;
+			}
 			Card temp1 = new Card(words[0], CardType.PERSON);
 			deck.add(temp1);
 		}
@@ -551,4 +556,17 @@ public class Board extends JPanel{
 	public ArrayList<String> getRooms(){
 		return rooms;
 	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public String getDieRoll(){
+		String num = new String();
+		Random rand = new Random();
+		dieRoll = rand.nextInt(5) + 1;
+		num = Integer.toString(dieRoll);		
+		return num;
+	}
+	
 }
