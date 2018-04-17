@@ -97,9 +97,8 @@ public class BoardCell {
 	public void drawName(Graphics g, Board board) {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("SansSerif", Font.PLAIN, 12));
-//		if (board.centers.contains(this)) { //If this RoomCell is a center label			
-//			g.drawString(board.getRooms().get(initial).toUpperCase(), col * CELL_SIZE, row * CELL_SIZE);
-//		}
+			
+		g.drawString(board.legend.get(initial).toUpperCase(), col * CELL_SIZE, row * CELL_SIZE);
 	}
 	/**
 	 * figure out if it's a walkway
