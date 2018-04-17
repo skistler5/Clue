@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -33,8 +34,6 @@ public class ControlGame extends JFrame{
 	private JTextField guessResult;
 
 	public ControlGame(){
-		//		JWindow window = new JWindow();
-		//		window.getContentPane().add("Welcome to Clue", window);
 
 		JMenuBar menuBar = new JMenuBar();
 		board = Board.getInstance();
@@ -45,18 +44,12 @@ public class ControlGame extends JFrame{
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 		
-
-//		final SplashScreen splash = SplashScreen.getSplashScreen();
-//		if(splash == null){
-//			System.out.println("SplashScreen.getSplashScren() returned null");
-//			return;
-//		}
-//		Graphics2D g = splash.createGraphics();
-//		if(g == null){
-//			System.out.println("g is null");
-//			return;
-//		}
-
+		
+		String message = "You are " + board.getCurrentPlayer().getPlayerName() + ", press next Player to begin play";
+		JFrame splash = new JFrame("Welcome to Clue");
+		splash.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JOptionPane.showMessageDialog(splash, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+		
 
 		setSize(900, 900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -196,9 +189,7 @@ public class ControlGame extends JFrame{
 
 
 	public static void main(String[] args){
-
 		ControlGame gui = new ControlGame();
-
 		gui.setVisible(true);
 	}
 }
