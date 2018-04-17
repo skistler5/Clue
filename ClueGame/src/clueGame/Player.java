@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,6 +40,11 @@ public class Player {
 		else{
 			isComp = false;
 		}
+	}
+	
+	public void draw(Graphics g){
+		g.setColor(color);
+		g.fillOval(col*BoardCell.CELL_SIZE, row*BoardCell.CELL_SIZE, BoardCell.CELL_SIZE - 1, BoardCell.CELL_SIZE - 1);
 	}
 	
 	public void addToHand(Card c){

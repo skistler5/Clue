@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class ControlGame extends JFrame{
 	private Board board;
@@ -33,6 +36,13 @@ public class ControlGame extends JFrame{
 		board.dealCards();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
+		
+		setSize(900, 900);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		add(board, BorderLayout.CENTER);
+		add(createControlPanel(), BorderLayout.SOUTH);
+		add(createCardPanel(), BorderLayout.EAST);
 
 	}
 	
@@ -66,11 +76,6 @@ public class ControlGame extends JFrame{
 		return detectiveNotes;
 	}
 	
-	public JPanel createBoardPanel(){
-		JPanel boardPanel = new JPanel();
-		boardPanel.add(board, BorderLayout.CENTER);
-		return boardPanel;
-	}
 	
 	public JPanel createCardPanel(){
 		ArrayList<Card> playersHand = findPlayersCards();
@@ -86,6 +91,8 @@ public class ControlGame extends JFrame{
 		JLabel myRoomLabel = new JLabel("Room:");
 		
 		cardPanel.setLayout(new GridLayout(6,1));
+		cardPanel.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
+		cardPanel.setPreferredSize(new Dimension(200, 0));
 		
 		cardPanel.add(myCardLabel, BorderLayout.CENTER);
 		cardPanel.add(myCard, BorderLayout.CENTER);
@@ -147,15 +154,7 @@ public class ControlGame extends JFrame{
 	}
 	
 	public static void main(String[] args){
-//		ControlGame game = new ControlGame();
 		ControlGame gui = new ControlGame();
-		
-		gui.setSize(900, 900);
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		gui.add(gui.createBoardPanel(), BorderLayout.CENTER);
-		gui.add(gui.createControlPanel(), BorderLayout.SOUTH);
-		gui.add(gui.createCardPanel(), BorderLayout.EAST);
 		
 		gui.setVisible(true);
 	}

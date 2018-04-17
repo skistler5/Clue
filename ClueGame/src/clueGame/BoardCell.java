@@ -6,6 +6,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -42,33 +43,64 @@ public class BoardCell {
 	public int getCol() {
 		return col;
 	}
-	
+
 	public void draw(Graphics g){
-		Graphics2D g2 = (Graphics2D)g;
 		drawRow = CELL_SIZE*row;
 		drawCol = CELL_SIZE*col;
 		if(isDoorway()){
-			g2.setColor(Color.BLUE);
-			g2.fillRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
+			g.setColor(Color.BLUE);
+			if(doorDirection == DoorDirection.LEFT){
+				g.drawLine(drawCol, drawRow, drawCol, drawRow + CELL_SIZE - 1);
+				g.drawLine(drawCol + 1, drawRow, drawCol + 1, drawRow + CELL_SIZE - 1);
+				g.drawLine(drawCol + 2, drawRow, drawCol + 2, drawRow + CELL_SIZE - 1);
+			}
+			if(doorDirection == DoorDirection.DOWN){
+				g.drawLine(drawCol, drawRow + CELL_SIZE - 1, drawCol + CELL_SIZE - 1, drawRow + CELL_SIZE - 1);
+				g.drawLine(drawCol, drawRow + CELL_SIZE - 2, drawCol + CELL_SIZE - 1, drawRow + CELL_SIZE - 2);
+				g.drawLine(drawCol, drawRow + CELL_SIZE - 3, drawCol + CELL_SIZE - 1, drawRow + CELL_SIZE - 3);
+			}
+			if(doorDirection == DoorDirection.UP){
+				g.drawLine(drawCol, drawRow, drawCol + CELL_SIZE - 1, drawRow);
+				g.drawLine(drawCol, drawRow + 1, drawCol + CELL_SIZE - 1, drawRow + 1);
+				g.drawLine(drawCol, drawRow + 2, drawCol + CELL_SIZE - 1, drawRow + 2);
+			}
+			if(doorDirection == DoorDirection.RIGHT){
+				g.drawLine(drawCol + CELL_SIZE - 1, drawRow, drawCol + CELL_SIZE - 1, drawRow + CELL_SIZE - 1);
+				g.drawLine(drawCol + CELL_SIZE - 2, drawRow, drawCol + CELL_SIZE - 2, drawRow + CELL_SIZE - 1);
+				g.drawLine(drawCol + CELL_SIZE - 3, drawRow, drawCol + CELL_SIZE - 3, drawRow + CELL_SIZE - 1);
+			}
 		}
 		else if(isWalkway()){
-			g2.setColor(Color.YELLOW);
-			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
-			g2.setColor(Color.BLACK);
-			g2.fillRect(drawRow - 1, drawCol - 1, CELL_SIZE - 2, CELL_SIZE - 2);
+			g.setColor(Color.BLACK);
+			g.drawRect(drawCol, drawRow, CELL_SIZE, CELL_SIZE);
+			g.setColor(Color.YELLOW);
+			g.fillRect(drawCol - 1, drawRow - 1, CELL_SIZE - 2, CELL_SIZE - 2);
 		}
 		else if(isRoom()){
-			g2.setColor(Color.GRAY);
-			g2.fillRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
+			g.setColor(Color.GRAY);
+			g.fillRect(drawCol, drawRow, CELL_SIZE, CELL_SIZE);
 		}
 		else{
-			g2.setColor(Color.BLUE);
-			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
+			g.setColor(Color.BLUE);
+			g.drawRect(drawCol, drawRow, CELL_SIZE, CELL_SIZE);
 		}
 
 	}
+	
+	public void drawTargets(Graphics g){
+		g.setColor(Color.BLACK);
+		g.drawRect(drawCol, drawRow, CELL_SIZE, CELL_SIZE);
+		g.setColor(Color.CYAN);
+		g.fillRect(drawCol - 1, drawRow - 1, CELL_SIZE - 2, CELL_SIZE - 2);
+	}
 
-
+	public void drawName(Graphics g, Board board) {
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("SansSerif", Font.PLAIN, 12));
+//		if (board.centers.contains(this)) { //If this RoomCell is a center label			
+//			g.drawString(board.getRooms().get(initial).toUpperCase(), col * CELL_SIZE, row * CELL_SIZE);
+//		}
+	}
 	/**
 	 * figure out if it's a walkway
 	 * @return

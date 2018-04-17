@@ -39,7 +39,7 @@ public class Board extends JPanel{
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
 	private Map<Player, ArrayList<Card>> playerCards = new HashMap<Player, ArrayList<Card>>();
 	private BoardCell[][] board;
-	private Map<Character, String> legend = new HashMap<Character, String>(); //stores room names and short hand for them
+	public Map<Character, String> legend = new HashMap<Character, String>(); //stores room names and short hand for them
 	private Set<BoardCell> targets = new HashSet<BoardCell>(); //places player can move to with given steps
 	private Set<BoardCell> visited = new HashSet<BoardCell>(); //already visited cells 
 	private String boardConfigFile = new String();
@@ -47,6 +47,7 @@ public class Board extends JPanel{
 	private String peopleFile = new String();
 	private String weaponFile = new String();
 	private ArrayList<Card> deck = new ArrayList<Card>();
+	public ArrayList<BoardCell> centers = new ArrayList<BoardCell>();
 
 
 
@@ -90,11 +91,24 @@ public class Board extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		g.fillRect(0, 0, BoardCell.CELL_SIZE * col, BoardCell.CELL_SIZE * row);
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, BoardCell.CELL_SIZE*col, BoardCell.CELL_SIZE*row);
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
 				(board[i][j]).draw(g);
 			}	
+		}
+		for(Player p: players){
+			p.draw(g);
+			if(!p.isComputer()){
+				calcTargets(p.getRow(), p.getCol(), 3, p);
+				for(BoardCell b: targets){
+					b.drawTargets(g);
+				}
+			}
+		}
+		for(BoardCell b: centers){
+			b.drawName(g, this);
 		}
 	}
 	
@@ -267,17 +281,26 @@ public class Board extends JPanel{
 				board[rowCount][i] = new BoardCell(rowCount,i);
 				BoardCell currentCell = board[rowCount][i]; //holds board[rowCount][i] for less typing
 				currentCell.setInitial(words[i].charAt(0));
+				
 				if(words[i].length() > 1){
-					currentCell.setDoorDirection(words[i].charAt(1));
-					currentCell.setDoorWay(true);
-
 					Character c = new Character(words[i].charAt(1)); //need this to compare to other constants
-					if(c.equals('N')){
+					if(c.equals('S')){
 						currentCell.setDoorWay(false);
 						currentCell.setDoorDirection('N');
+						centers.add(currentCell);
 					}
-					if(!c.equals('U') && !c.equals('D') && !c.equals('R') && !c.equals('L') && !c.equals('N')){
-						throw new BadConfigFormatException("Invalid Door Direction");
+					else{
+						currentCell.setDoorDirection(c);
+						currentCell.setDoorWay(true);
+
+
+						if(c.equals('N')){
+							currentCell.setDoorWay(false);
+							currentCell.setDoorDirection('N');
+						}
+						if(!c.equals('U') && !c.equals('D') && !c.equals('R') && !c.equals('L') && !c.equals('N') && !c.equals('S')){
+							throw new BadConfigFormatException("Invalid Door Direction");
+						}
 					}
 				}
 				else{
