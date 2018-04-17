@@ -3,11 +3,17 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -19,18 +25,51 @@ public class ControlGame extends JFrame{
 	private JTextField guessResult;
 	
 	public ControlGame(){
+		JMenuBar menuBar = new JMenuBar();
 		board = Board.getInstance();
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
 		board.setCardFiles("players.txt", "weapons.txt");
 		board.initialize();
 		board.dealCards();
+		setJMenuBar(menuBar);
+		menuBar.add(createFileMenu());
+
+	}
+	
+	public JMenu createFileMenu(){
+		JMenu menu = new JMenu("File");
+		menu.add(createFileExitItem());
+		menu.add(createDetectiveNotesItem());
+		return menu;
+	}
+	
+	public JMenuItem createFileExitItem(){
+		JMenuItem item = new JMenuItem("Exit");
+		class ExitItemListener implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+		}
+		item.addActionListener(new ExitItemListener());
+		return item;
+	}
+	
+	public JMenuItem createDetectiveNotesItem(){
+		JMenuItem detectiveNotes = new JMenuItem("Notes");
+		final JDialog notes = new DetectiveDialog(board.getPlayers(), board.getWeapons(), board.getRooms());
+		class DetectiveItemListener implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				notes.setVisible(true);
+			}
+		}
+		detectiveNotes.addActionListener(new DetectiveItemListener());
+		return detectiveNotes;
 	}
 	
 	public JPanel createBoardPanel(){
-		JPanel boardPrint = new JPanel();
-		boardPrint.add(board, BorderLayout.CENTER);
-		
-		return boardPrint;
+		JPanel boardPanel = new JPanel();
+		boardPanel.add(board, BorderLayout.CENTER);
+		return boardPanel;
 	}
 	
 	public JPanel createCardPanel(){
@@ -108,16 +147,16 @@ public class ControlGame extends JFrame{
 	}
 	
 	public static void main(String[] args){
-		ControlGame game = new ControlGame();
-		JFrame gui = new JFrame();
+//		ControlGame game = new ControlGame();
+		ControlGame gui = new ControlGame();
 		
-		gui.add(game.createBoardPanel(), BorderLayout.CENTER);
-		gui.add(game.createControlPanel(), BorderLayout.SOUTH);
-		gui.add(game.createCardPanel(), BorderLayout.EAST);
-		
-		
-		gui.setSize(1000,1000);
-		gui.setVisible(true);
+		gui.setSize(900, 900);
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		gui.add(gui.createBoardPanel(), BorderLayout.CENTER);
+		gui.add(gui.createControlPanel(), BorderLayout.SOUTH);
+		gui.add(gui.createCardPanel(), BorderLayout.EAST);
+		
+		gui.setVisible(true);
 	}
 }

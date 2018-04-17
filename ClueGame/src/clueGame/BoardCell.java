@@ -55,16 +55,17 @@ public class BoardCell {
 			g2.setColor(Color.YELLOW);
 			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
 			g2.setColor(Color.BLACK);
-			g2.fillRect(drawRow, drawCol, CELL_SIZE - 1, CELL_SIZE - 1);
+			g2.fillRect(drawRow - 1, drawCol - 1, CELL_SIZE - 2, CELL_SIZE - 2);
 		}
 		else if(isRoom()){
 			g2.setColor(Color.GRAY);
 			g2.fillRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
 		}
 		else{
-			g2.setColor(Color.blue);
+			g2.setColor(Color.BLUE);
 			g2.drawRect(drawRow, drawCol, CELL_SIZE, CELL_SIZE);
 		}
+
 	}
 
 

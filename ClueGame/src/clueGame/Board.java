@@ -35,6 +35,7 @@ public class Board extends JPanel{
 	private int col;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<String> weapons = new ArrayList<String>();
+	private ArrayList<String> rooms = new ArrayList<String>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
 	private Map<Player, ArrayList<Card>> playerCards = new HashMap<Player, ArrayList<Card>>();
 	private BoardCell[][] board;
@@ -92,10 +93,9 @@ public class Board extends JPanel{
 		g.fillRect(0, 0, BoardCell.CELL_SIZE * col, BoardCell.CELL_SIZE * row);
 		for(int i = 0; i < row; i++){
 			for(int j = 0; j < col; j++){
-				board[i][j].draw(g);
+				(board[i][j]).draw(g);
 			}	
 		}
-		repaint();
 	}
 	
 	public Solution createAccusation(Player p){
@@ -241,6 +241,7 @@ public class Board extends JPanel{
 			if(words[2].equals("Card")){
 				Card temp = new Card(words[1], CardType.ROOM);
 				deck.add(temp);
+				rooms.add(temp.getCardName());
 			}
 		}
 		input.close();
@@ -524,5 +525,7 @@ public class Board extends JPanel{
 		return weapons;
 	}
 	
-
+	public ArrayList<String> getRooms(){
+		return rooms;
+	}
 }
