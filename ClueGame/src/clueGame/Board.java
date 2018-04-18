@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -173,9 +174,12 @@ public class Board extends JPanel{
 	 * Deals the cards to the players and clears the deck so that it is empty
 	 */
 	public void dealCards(){
+		Collections.shuffle(deck);
+		
 		int numPlayers = players.size();
 		int count = 0;
 		int i = 0;
+		
 		for(Card c: deck){
 			players.get(i).addToHand(c);
 			//			if(playerCards.containsKey(players.get(i))){
