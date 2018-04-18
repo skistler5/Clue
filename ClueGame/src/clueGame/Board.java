@@ -120,6 +120,7 @@ public class Board extends JPanel{
 		String room = new String();
 		ArrayList<String> possibleWeapons = new ArrayList<String>();
 		ArrayList<String> possiblePlayers = new ArrayList<String>();
+		System.out.println(p.getRoom());
 		room = legend.get(p.getRoom());
 		possibleWeapons = weapons;
 		for(int i = 0; i < players.size(); i++){

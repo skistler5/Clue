@@ -32,10 +32,10 @@ public class ControlGame extends JFrame{
 	private JTextField dieRoll;
 	private JTextField guess;
 	private JTextField guessResult;
+	JMenuBar menuBar = new JMenuBar();
+	JFrame splash = new JFrame();
 
 	public ControlGame(){
-
-		JMenuBar menuBar = new JMenuBar();
 		board = Board.getInstance();
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
 		board.setCardFiles("players.txt", "weapons.txt");
@@ -44,20 +44,21 @@ public class ControlGame extends JFrame{
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 		
-		
-		String message = "You are " + board.getCurrentPlayer().getPlayerName() + ", press next Player to begin play";
-		JFrame splash = new JFrame("Welcome to Clue");
-		splash.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JOptionPane.showMessageDialog(splash, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-		
-
-		setSize(900, 900);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		createSplashScreen();
 
 		add(board, BorderLayout.CENTER);
 		add(createControlPanel(), BorderLayout.SOUTH);
 		add(createCardPanel(), BorderLayout.EAST);
 
+	}
+	
+	public void createSplashScreen(){
+		String message = "You are " + board.getCurrentPlayer().getPlayerName() + ", press next Player to begin play";
+		JFrame splashScreen = new JFrame("Welcome to Clue");
+		splashScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JOptionPane.showMessageDialog(splashScreen, message, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+		setSize(900, 900);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public JMenu createFileMenu(){
@@ -166,7 +167,7 @@ public class ControlGame extends JFrame{
 		JLabel guessLabel = new JLabel("Guess:");
 		guess = new JTextField(5);
 		Solution accu = board.createAccusation(board.getCurrentPlayer());
-		guess.setText(accu.person + " " + accu.room + " " + accu.weapon);
+		guess.setText(accu.person + ", " + accu.room + ", " + accu.weapon);
 		guess.setEditable(false);
 		controlPanel.add(guessLabel, BorderLayout.EAST);
 		controlPanel.add(guess, BorderLayout.EAST);
