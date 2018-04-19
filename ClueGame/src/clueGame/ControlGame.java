@@ -43,7 +43,7 @@ public class ControlGame extends JFrame{
 		board.dealCards();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
-		
+
 		createSplashScreen();
 
 		add(board, BorderLayout.CENTER);
@@ -51,7 +51,7 @@ public class ControlGame extends JFrame{
 		add(createCardPanel(), BorderLayout.EAST);
 
 	}
-	
+
 	public void createSplashScreen(){
 		String message = "You are " + board.getCurrentPlayer().getPlayerName() + ", press next Player to begin play";
 		JFrame splashScreen = new JFrame("Welcome to Clue");
@@ -173,6 +173,7 @@ public class ControlGame extends JFrame{
 		controlPanel.add(guess, BorderLayout.EAST);
 
 		JLabel guessResultLabel = new JLabel("Guess Result:");
+
 		guessResult = new JTextField(5);
 		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
 		guess.setEditable(false);
@@ -180,6 +181,26 @@ public class ControlGame extends JFrame{
 		controlPanel.add(guessResult, BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
+		//		class ButtonListener implements ActionListener{
+		//		public void actionPerformed(ActionEvent e){
+		//			JDialog dialog = new JDialog();
+		//			dialog.setVisible(true);
+		//		}
+		//	}
+		nextPlayer.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(board.isTargetSelected()){
+					board.playerTurn(board.getNextPlayer());
+				}
+				else{
+					//error message
+				}
+				//setVisible(false);
+			}
+		});
+		//add(nextPlayer);
+
+
 		JButton makeAccusation = new JButton("Make an Accusation");
 		controlPanel.add(makeAccusation, BorderLayout.EAST);
 		controlPanel.add(nextPlayer, BorderLayout.WEST);

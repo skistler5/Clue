@@ -7,6 +7,10 @@ package clueGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -51,7 +55,8 @@ public class Board extends JPanel{
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	public ArrayList<BoardCell> centers = new ArrayList<BoardCell>();
 	private int dieRoll = 0;
-
+	private boolean targetSelected = true;
+	private Card cardShown = null;
 
 
 	//variable used for singleton pattern
@@ -114,6 +119,29 @@ public class Board extends JPanel{
 			b.drawName(g, this);
 		}
 	}
+	
+	public void playerTurn(Player p){
+		int r = p.getRow();
+		int c = p.getCol();
+		Random rand = new Random();
+		int pl = rand.nextInt(6) + 1;
+		calcTargets(r, c, pl, p);
+		cardShown = handleSuggestion(p, createAccusation(p));
+	}
+
+	public void humanTurn(Player h){
+
+	}
+
+	public Player getNextPlayer(){
+		for(int i = 0; i < players.size() + 1; i++){
+			if(players.get(i).equals(currentPlayer)){
+				currentPlayer = players.get((i+1)%players.size());
+			}
+		}
+		return currentPlayer;
+	}
+
 	
 	public Solution createAccusation(Player p){
 		Random rand = new Random();
@@ -431,31 +459,64 @@ public class Board extends JPanel{
 	}
 
 	public void chooseTarget(Player player){
-		for(BoardCell cell: targets){
-			if(cell.isDoorway() && cell.getInitial() != player.getLastVisitedRoom()){
-				player.setRow(cell.getRow());
-				player.setCol(cell.getCol());
-				return;
+		if(player.isComputer()){
+			for(BoardCell cell: targets){
+				if(cell.isDoorway() && cell.getInitial() != player.getLastVisitedRoom()){
+					player.setRow(cell.getRow());
+					player.setCol(cell.getCol());
+					return;
+				}
 			}
-		}
-
-		int size = targets.size();
-
-		Random rand = new Random();
-
-		int  n = rand.nextInt(size);
-		int count = 0;
-		for(BoardCell cell: targets){
-			if(count == n){
-				player.setRow(cell.getRow());
-				player.setCol(cell.getCol());
-				return;
+			int size = targets.size();
+			Random rand = new Random();
+			int  n = rand.nextInt(size);
+			int count = 0;
+			for(BoardCell cell: targets){
+				if(count == n){
+					player.setRow(cell.getRow());
+					player.setCol(cell.getCol());
+					targetSelected = true;
+					return;
+				}
+				count++;
 			}
-			count++;
+			player.setRoom(board[player.getRow()][player.getCol()].getInitial());
 		}
-		
-		player.setRoom(board[player.getRow()][player.getCol()].getInitial());
+		else{
+			//idk do something
+			
+		}
 	}
+	
+
+	private class spotListener implements MouseListener{
+		BoardCell clicked = null;
+		public void mousePressed(MouseEvent event){}
+		public void mouseReleased(MouseEvent event){}
+		public void mouseEntered(MouseEvent event){}
+		public void mouseExited(MouseEvent event){}
+		public void mouseClicked(MouseEvent event){
+			int x = event.getX();
+			int y = event.getY();
+			for(BoardCell c: targets){
+				if(containsClick(x,y,c)){
+					clicked = c;
+				}
+			}
+		}
+	}
+	
+	public boolean containsClick(int mouseX, int mouseY, BoardCell cell){
+		Rectangle rect = new Rectangle(cell.getDrawRow(), cell.getDrawCol(), cell.CELL_SIZE, cell.CELL_SIZE);
+		if(rect.contains(new Point(mouseX, mouseY))){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	
 
 	/**
 	 * uses algorithm given to calculate targets
@@ -572,6 +633,13 @@ public class Board extends JPanel{
 		dieRoll = rand.nextInt(6) + 1;
 		num = Integer.toString(dieRoll);		
 		return num;
+	}
+	public boolean isTargetSelected() {
+		return targetSelected;
+	}
+
+	public Card getCardShown() {
+		return cardShown;
 	}
 	
 }

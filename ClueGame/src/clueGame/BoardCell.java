@@ -160,4 +160,11 @@ public class BoardCell {
 	public void setInitial(char c){
 		this.initial = c;
 	}
+	public int getDrawRow() {
+		return drawRow;
+	}
+	public int getDrawCol() {
+		return drawCol;
+	}
+	
 }
