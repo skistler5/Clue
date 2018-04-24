@@ -34,7 +34,7 @@ import clueGame.BoardCell;
  * 
  */
 
-public class Board extends JPanel{
+public class Board extends JPanel implements MouseListener{
 	public static final int MAX_BOARD_SIZE = 50;
 	private int row; 
 	private int col;
@@ -71,7 +71,6 @@ public class Board extends JPanel{
 		return theInstance;
 	}
 
-
 	/**
 	 * calls room and board config functions
 	 * @throws SecurityException 
@@ -94,6 +93,41 @@ public class Board extends JPanel{
 			System.out.println(e.getMessage());
 		}
 		calcAdjacencies();
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		boolean isValid = false;
+		BoardCell returnCell = null;
+		int x = e.getX();
+		int y = e.getY();
+		
+		for(BoardCell cell: targets){
+			if(y<=(cell.getRow()*BoardCell.CELL_SIZE + 3*BoardCell.CELL_SIZE-1) && y >=(cell.getRow()*BoardCell.CELL_SIZE + 50)&&
+					x<=(cell.getCol()*BoardCell.CELL_SIZE + BoardCell.CELL_SIZE-1) && x >=(cell.getCol()*BoardCell.CELL_SIZE)){
+				returnCell = cell;
+				isValid = true;
+				//if it's a room cell, they need to make a guess
+				
+			}
+		}
+		if(isValid){
+			players.get(2).setRow(returnCell.getRow());
+			players.get(2).setCol(returnCell.getCol());
+			repaint();
+		}
+		else{
+			ControlGame.errorMessage();
+		}
+
 	}
 	
 	@Override
@@ -121,17 +155,34 @@ public class Board extends JPanel{
 	}
 	
 	public void playerTurn(Player p){
-		int r = p.getRow();
-		int c = p.getCol();
 		Random rand = new Random();
-		int pl = rand.nextInt(6) + 1;
-		calcTargets(r, c, pl, p);
-		cardShown = handleSuggestion(p, createAccusation(p));
+		int numRoll = rand.nextInt(6) + 1;
+		if(p.isComputer()){
+			int r = p.getRow();
+			int c = p.getCol();
+			calcTargets(r,c,numRoll);
+			chooseTarget(p);
+			cardShown = handleSuggestion(p, createAccusation(p));
+			if(cardShown.getCardType().equals(CardType.PERSON)){
+				p.addToPlayersSeen(cardShown.getCardName());
+			}
+			else if(cardShown.getCardType().equals(CardType.WEAPON)){
+				p.addToWeaponsSeen(cardShown.getCardName());
+			}
+			else{
+				//p.addToRoomsSeen(cardShown.getCardName());
+			}
+
+		}
+		
+		else{
+			targetSelected = true;
+			Solution guess = createAccusation(p);
+			cardShown = handleSuggestion(p, guess);
+		}
+		repaint();
 	}
 
-	public void humanTurn(Player h){
-
-	}
 
 	public Player getNextPlayer(){
 		for(int i = 0; i < players.size() + 1; i++){
@@ -482,40 +533,7 @@ public class Board extends JPanel{
 			}
 			player.setRoom(board[player.getRow()][player.getCol()].getInitial());
 		}
-		else{
-			//idk do something
-			
-		}
 	}
-	
-
-	private class spotListener implements MouseListener{
-		BoardCell clicked = null;
-		public void mousePressed(MouseEvent event){}
-		public void mouseReleased(MouseEvent event){}
-		public void mouseEntered(MouseEvent event){}
-		public void mouseExited(MouseEvent event){}
-		public void mouseClicked(MouseEvent event){
-			int x = event.getX();
-			int y = event.getY();
-			for(BoardCell c: targets){
-				if(containsClick(x,y,c)){
-					clicked = c;
-				}
-			}
-		}
-	}
-	
-	public boolean containsClick(int mouseX, int mouseY, BoardCell cell){
-		Rectangle rect = new Rectangle(cell.getDrawRow(), cell.getDrawCol(), cell.CELL_SIZE, cell.CELL_SIZE);
-		if(rect.contains(new Point(mouseX, mouseY))){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-
 	
 
 	/**

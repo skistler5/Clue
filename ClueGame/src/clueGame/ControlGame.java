@@ -34,6 +34,7 @@ public class ControlGame extends JFrame{
 	private JTextField guessResult;
 	JMenuBar menuBar = new JMenuBar();
 	JFrame splash = new JFrame();
+	private static ControlGame gui;
 
 	public ControlGame(){
 		board = Board.getInstance();
@@ -49,9 +50,14 @@ public class ControlGame extends JFrame{
 		add(board, BorderLayout.CENTER);
 		add(createControlPanel(), BorderLayout.SOUTH);
 		add(createCardPanel(), BorderLayout.EAST);
+		turn(board.getCurrentPlayer());
 
 	}
-
+	
+	public static void errorMessage(){
+		JOptionPane.showMessageDialog(gui, "Invalid cell chosen, pick another", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	public void createSplashScreen(){
 		String message = "You are " + board.getCurrentPlayer().getPlayerName() + ", press next Player to begin play";
 		JFrame splashScreen = new JFrame("Welcome to Clue");
@@ -176,7 +182,7 @@ public class ControlGame extends JFrame{
 
 		guessResult = new JTextField(5);
 		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
-		guess.setEditable(false);
+		guessResult.setEditable(false);
 		controlPanel.add(guessResultLabel, BorderLayout.EAST);
 		controlPanel.add(guessResult, BorderLayout.EAST);
 
@@ -208,9 +214,18 @@ public class ControlGame extends JFrame{
 		return controlPanel;
 
 	}
+	
+	public void turn(Player p){
+		board.playerTurn(p);
+		board.repaint();
+		menuBar.repaint();
+		board.repaint();
+		createControlPanel();
+	}
 
 
 	public static void main(String[] args){
+
 		ControlGame gui = new ControlGame();
 		gui.setVisible(true);
 	}
