@@ -51,6 +51,10 @@ public class Player {
 		playerHand.add(c);
 	}
 	
+	public void addToRoomsSeen(String s){
+		roomsSeen.add(s);
+	}
+	
 	public void addToPlayersSeen(String s){
 		playersSeen.add(s);
 	}
