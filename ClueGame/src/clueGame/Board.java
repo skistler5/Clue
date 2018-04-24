@@ -92,6 +92,7 @@ public class Board extends JPanel implements MouseListener{
 		}catch(BadConfigFormatException e){
 			System.out.println(e.getMessage());
 		}
+		addMouseListener(this);
 		calcAdjacencies();
 	}
 	
@@ -152,6 +153,7 @@ public class Board extends JPanel implements MouseListener{
 		for(BoardCell b: centers){
 			b.drawName(g, this);
 		}
+		
 	}
 	
 	public void playerTurn(Player p){
@@ -188,13 +190,13 @@ public class Board extends JPanel implements MouseListener{
 		for(int i = 0; i < players.size() + 1; i++){
 			if(i == players.size() - 1){
 				currentPlayer = players.get(0);
-				break;
+				return currentPlayer;
 			}
 			if(players.get(i).equals(currentPlayer)){
 				currentPlayer = players.get(i+1);
+				return currentPlayer;
 			}
 		}
-		System.out.println(currentPlayer.getPlayerName());
 		return currentPlayer;
 	}
 
