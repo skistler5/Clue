@@ -39,7 +39,6 @@ public class Board extends JPanel implements MouseListener{
 	private int row; 
 	private int col;
 	private ArrayList<Player> players = new ArrayList<Player>();
-	private Player currentPlayer = null;
 	private ArrayList<String> weapons = new ArrayList<String>();
 	private ArrayList<String> rooms = new ArrayList<String>();
 	private Map<BoardCell, HashSet<BoardCell>> adjMap = new HashMap<BoardCell, HashSet<BoardCell>>(); //contains sets of adjacencies for each cell
@@ -57,6 +56,7 @@ public class Board extends JPanel implements MouseListener{
 	private int dieRoll = 0;
 	private boolean targetSelected = true;
 	private Card cardShown = null;
+	private Player currentPlayer = null;
 
 
 	//variable used for singleton pattern
@@ -186,10 +186,15 @@ public class Board extends JPanel implements MouseListener{
 
 	public Player getNextPlayer(){
 		for(int i = 0; i < players.size() + 1; i++){
+			if(i == players.size() - 1){
+				currentPlayer = players.get(0);
+				break;
+			}
 			if(players.get(i).equals(currentPlayer)){
-				currentPlayer = players.get((i+1)%players.size());
+				currentPlayer = players.get(i+1);
 			}
 		}
+		System.out.println(currentPlayer.getPlayerName());
 		return currentPlayer;
 	}
 

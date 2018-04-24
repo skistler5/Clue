@@ -187,12 +187,12 @@ public class ControlGame extends JFrame{
 		controlPanel.add(guessResult, BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
-		//		class ButtonListener implements ActionListener{
-		//		public void actionPerformed(ActionEvent e){
-		//			JDialog dialog = new JDialog();
-		//			dialog.setVisible(true);
-		//		}
-		//	}
+//		class ButtonListener implements ActionListener{
+//			public void actionPerformed(ActionEvent e){
+//				JDialog dialog = new JDialog();
+//				dialog.setVisible(true);
+//			}
+//		}
 		nextPlayer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(board.isTargetSelected()){
@@ -204,7 +204,7 @@ public class ControlGame extends JFrame{
 				//setVisible(false);
 			}
 		});
-		//add(nextPlayer);
+		controlPanel.add(nextPlayer, BorderLayout.EAST);
 
 
 		JButton makeAccusation = new JButton("Make an Accusation");
