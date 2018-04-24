@@ -55,7 +55,7 @@ public class ControlGame extends JFrame{
 	}
 	
 	public static void errorMessage(){
-		JOptionPane.showMessageDialog(gui, "Invalid cell chosen, pick another", "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(gui, "Invalid Move", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public void createSplashScreen(){
@@ -195,11 +195,13 @@ public class ControlGame extends JFrame{
 //		}
 		nextPlayer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(board.isTargetSelected()){
-					board.playerTurn(board.getNextPlayer());
+				if(board.getHumanSelection()){
+					Player p = board.getNextPlayer();
+					board.playerTurn(p);
 				}
 				else{
 					//error message
+					JOptionPane.showMessageDialog(gui, "Human player has not chosen a target", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				//setVisible(false);
 			}
@@ -220,12 +222,10 @@ public class ControlGame extends JFrame{
 		board.repaint();
 		menuBar.repaint();
 		board.repaint();
-		createControlPanel();
 	}
 
 
 	public static void main(String[] args){
-
 		ControlGame gui = new ControlGame();
 		gui.setVisible(true);
 	}

@@ -54,7 +54,8 @@ public class Board extends JPanel implements MouseListener{
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	public ArrayList<BoardCell> centers = new ArrayList<BoardCell>();
 	private int dieRoll = 0;
-	private boolean targetSelected = true;
+	private boolean targetSelected = false;
+	private boolean humanSelection = false;
 	private Card cardShown = null;
 	private Player currentPlayer = null;
 
@@ -106,6 +107,10 @@ public class Board extends JPanel implements MouseListener{
 	public void mouseExited(MouseEvent e) {}
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(humanSelection){
+			ControlGame.errorMessage();
+			return;
+		}
 		boolean isValid = false;
 		BoardCell returnCell = null;
 		int x = e.getX();
@@ -123,6 +128,7 @@ public class Board extends JPanel implements MouseListener{
 		if(isValid){
 			players.get(2).setRow(returnCell.getRow());
 			players.get(2).setCol(returnCell.getCol());
+			humanSelection = true;
 			repaint();
 		}
 		else{
@@ -157,6 +163,7 @@ public class Board extends JPanel implements MouseListener{
 	}
 	
 	public void playerTurn(Player p){
+		humanSelection = false;
 		Random rand = new Random();
 		int numRoll = rand.nextInt(6) + 1;
 		if(p.isComputer()){
@@ -172,27 +179,29 @@ public class Board extends JPanel implements MouseListener{
 				p.addToWeaponsSeen(cardShown.getCardName());
 			}
 			else{
-				//p.addToRoomsSeen(cardShown.getCardName());
+				p.addToRoomsSeen(cardShown.getCardName());
 			}
 
 		}
 		
 		else{
-			targetSelected = true;
 			Solution guess = createAccusation(p);
 			cardShown = handleSuggestion(p, guess);
 		}
 		repaint();
+		if(getNextPlayer().isComputer()){
+			playerTurn(currentPlayer);
+		}
 	}
 
 
 	public Player getNextPlayer(){
 		for(int i = 0; i < players.size() + 1; i++){
-			if(i == players.size() - 1){
-				currentPlayer = players.get(0);
-				return currentPlayer;
-			}
 			if(players.get(i).equals(currentPlayer)){
+				if(i == players.size() - 1){
+					currentPlayer = players.get(0);
+					return currentPlayer;
+				}
 				currentPlayer = players.get(i+1);
 				return currentPlayer;
 			}
@@ -665,6 +674,10 @@ public class Board extends JPanel implements MouseListener{
 
 	public Card getCardShown() {
 		return cardShown;
+	}
+	
+	public boolean getHumanSelection(){
+		return humanSelection;
 	}
 	
 }
