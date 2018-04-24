@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
@@ -22,6 +23,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import clueGame.BoardCell;
@@ -56,7 +58,10 @@ public class Board extends JPanel{
 	public ArrayList<BoardCell> centers = new ArrayList<BoardCell>();
 	private int dieRoll = 0;
 	private boolean targetSelected = true;
-	private Card cardShown = null;
+	private Solution currentAccusation = new Solution(" ", " ", " ");
+	private Card cardShown = new Card(" ", CardType.PERSON);
+	private String room = " ";
+	private ClickListener cl;
 
 
 	//variable used for singleton pattern
@@ -88,10 +93,16 @@ public class Board extends JPanel{
 			loadBoardConfig();
 			loadPeople();
 			loadWeapons();
+
 		}catch(FileNotFoundException e){
 			System.out.println(e.getMessage());
 		}catch(BadConfigFormatException e){
 			System.out.println(e.getMessage());
+		}
+		for(Player p : players){
+			if(!p.isComputer()){
+				currentPlayer = p;
+			}
 		}
 		calcAdjacencies();
 	}
@@ -108,8 +119,8 @@ public class Board extends JPanel{
 		}
 		for(Player p: players){
 			p.draw(g);
-			if(!p.isComputer()){
-				calcTargets(p.getRow(), p.getCol(), 3, p);
+			if(!p.isComputer() && !currentPlayer.isComputer()){
+				calcTargets(p.getRow(), p.getCol(), dieRoll);
 				for(BoardCell b: targets){
 					b.drawTargets(g);
 				}
@@ -121,22 +132,106 @@ public class Board extends JPanel{
 	}
 	
 	public void playerTurn(Player p){
+		targetSelected = false;
 		int r = p.getRow();
 		int c = p.getCol();
 		Random rand = new Random();
-		int pl = rand.nextInt(6) + 1;
-		calcTargets(r, c, pl, p);
-		cardShown = handleSuggestion(p, createAccusation(p));
+		dieRoll = rand.nextInt(6) + 1;
+		calcTargets(r,c,dieRoll);
+		repaint();
+		if(p.isComputer()){
+			chooseTarget(p);
+			Solution guess = createAccusation(p);
+			cardShown = handleSuggestion(p, guess);
+			if(cardShown.getCardType().equals(CardType.PERSON)){
+				p.addToPlayersSeen(cardShown.getCardName());
+			}
+			else if(cardShown.getCardType().equals(CardType.WEAPON)){
+				p.addToWeaponsSeen(cardShown.getCardName());
+			}
+			else{
+				p.addToRoomsSeen(cardShown.getCardName());
+			}
+		}
+		else{
+			targetSelected = true;
+			Solution guess = createAccusation(p);
+			cardShown = handleSuggestion(p, guess);
+		}
+		repaint();
+		if(getNextPlayer().isComputer()){
+			playerTurn(currentPlayer);
+		}
+
+	}
+	
+	private class ClickListener implements MouseListener{
+		public void mouseReleased(MouseEvent event){}
+		public void mouseEntered(MouseEvent event){}
+		public void mouseExited(MouseEvent event){}
+		public void mousePressed(MouseEvent event) {}
+		public void mouseClicked(MouseEvent event){
+			BoardCell clicked = null;
+			boolean isValid = false;
+			int x = event.getX();
+			int y = event.getY();
+			clicked = board[y][x];
+			for(BoardCell c: targets){
+				if(clicked.equals(c)){
+					isValid = true;
+				}
+			}
+			if(isValid){
+				players.get(2).setRow(y);
+				players.get(2).setCol(x);
+			}
+			else{
+				ControlGame.errorMessage();
+			}
+			
+		}
+	}
+	public class mouses implements MouseListener{
+		mouses(){
+			
+		}
+		BoardCell clicked = null;
+		public void mousePressed(MouseEvent event){
+
+		}
+		public void mouseReleased(MouseEvent event){}
+		public void mouseEntered(MouseEvent event){}
+		public void mouseExited(MouseEvent event){}
+		public void mouseClicked(MouseEvent event){
+
+		}
+	}
+	
+	private void addMouseListener(MouseAdapter mouseAdapter) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void humanTurn(Player h){
-
+	public boolean containsClick(int mouseX, int mouseY, BoardCell cell){
+		Rectangle rect = new Rectangle(cell.getDrawRow(), cell.getDrawCol(), BoardCell.CELL_SIZE, BoardCell.CELL_SIZE);
+		if(rect.contains(new Point(mouseX, mouseY))){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
-
 	public Player getNextPlayer(){
-		for(int i = 0; i < players.size() + 1; i++){
+		for(int i = 0; i < players.size(); i++){
 			if(players.get(i).equals(currentPlayer)){
-				currentPlayer = players.get((i+1)%players.size());
+				if(i == players.size() - 1){
+					currentPlayer = players.get(1);
+					return currentPlayer;
+				}
+				else{
+					currentPlayer = players.get((i+1));
+					return currentPlayer;
+				}
 			}
 		}
 		return currentPlayer;
@@ -145,10 +240,8 @@ public class Board extends JPanel{
 	
 	public Solution createAccusation(Player p){
 		Random rand = new Random();
-		String room = new String();
 		ArrayList<String> possibleWeapons = new ArrayList<String>();
 		ArrayList<String> possiblePlayers = new ArrayList<String>();
-		System.out.println(p.getRoom());
 		room = legend.get(p.getRoom());
 		possibleWeapons = weapons;
 		for(int i = 0; i < players.size(); i++){
@@ -173,9 +266,9 @@ public class Board extends JPanel{
 		int wit = rand.nextInt(weaponNum);
 		int pit = rand.nextInt(playerNum);
 		
-		Solution accusation = new Solution(possiblePlayers.get(pit), room, possibleWeapons.get(wit));
-		
-		return accusation;
+		currentAccusation = new Solution(possiblePlayers.get(pit), room, possibleWeapons.get(wit));
+		return currentAccusation;
+
 	}
 
 	public Card handleSuggestion(Player p, Solution suggestion){
@@ -211,14 +304,15 @@ public class Board extends JPanel{
 		
 		for(Card c: deck){
 			players.get(i).addToHand(c);
-			//			if(playerCards.containsKey(players.get(i))){
-			//				playerCards.get(players.get(i)).add(c);
-			//			}
-			//			else{
-			//				ArrayList<Card> temp = new ArrayList<Card>();
-			//				temp.add(c);
-			//				playerCards.put(players.get(i), temp);
-			//			}
+			if(c.getCardType().equals(CardType.PERSON)){
+				players.get(i).addToPlayersSeen(c.getCardName());
+			}
+			else if(c.getCardType().equals(CardType.ROOM)){
+				players.get(i).addToRoomsSeen(c.getCardName());
+			}
+			else{
+				players.get(i).addToWeaponsSeen(c.getCardName());
+			}
 			count++;
 			i = count % numPlayers;
 		}
@@ -239,6 +333,7 @@ public class Board extends JPanel{
 			deck.add(temp);
 			weapons.add(temp.getCardName());
 		}
+		input.close();
 	}
 
 	/**
@@ -280,11 +375,11 @@ public class Board extends JPanel{
 	 */
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(roomConfigFile); 
-		Scanner input = new Scanner(reader);
+		Scanner input1 = new Scanner(reader);
 
 		//reads in room names, symbols, and type
-		while(input.hasNextLine()){
-			String line = input.nextLine();
+		while(input1.hasNextLine()){
+			String line = input1.nextLine();
 			String[] words = line.split(", ");
 			if(words[0].length() > 1){throw new BadConfigFormatException("Room abbreviation is in the wrong format");}
 			if(words.length < 3){throw new BadConfigFormatException("NO ROOM TYPE");}
@@ -296,7 +391,8 @@ public class Board extends JPanel{
 				rooms.add(temp.getCardName());
 			}
 		}
-		input.close();
+		
+		input1.close();
 	}
 
 	/**
@@ -306,13 +402,13 @@ public class Board extends JPanel{
 	 */
 	public void loadBoardConfig() throws BadConfigFormatException, FileNotFoundException{
 		FileReader reader = new FileReader(boardConfigFile);
-		Scanner input = new Scanner(reader);
+		Scanner input2 = new Scanner(reader);
 		int rowCount = 0;
 		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
 
 		//reads csv line by line and figures out if it's a doorway
-		while(input.hasNextLine()){
-			String line = input.nextLine();
+		while(input2.hasNextLine()){
+			String line = input2.nextLine();
 			String[] words = line.split("\\s*,\\s*");
 
 			for(int i = 0; i < words.length; i++){
@@ -356,7 +452,7 @@ public class Board extends JPanel{
 			rowCount++;
 		}
 		row = rowCount;
-		input.close();
+		input2.close();
 	}
 
 
@@ -443,19 +539,19 @@ public class Board extends JPanel{
 	 * @param col
 	 * @param pathLength
 	 */
-	public void calcTargets(int row, int col, int pathLength, Player player){
-		visited.clear();
-		targets.clear();
-
-		findTargets(row, col, pathLength);
-		chooseTarget(player);
-	}
-
 	public void calcTargets(int row, int col, int pathLength){
 		visited.clear();
 		targets.clear();
 
 		findTargets(row, col, pathLength);
+	}
+	
+	public void calcTargets(int row, int col, int pathLength, Player p){
+		visited.clear();
+		targets.clear();
+
+		findTargets(row, col, pathLength);
+		chooseTarget(p);
 	}
 
 	public void chooseTarget(Player player){
@@ -481,6 +577,7 @@ public class Board extends JPanel{
 				count++;
 			}
 			player.setRoom(board[player.getRow()][player.getCol()].getInitial());
+			targetSelected = true;
 		}
 		else{
 			//idk do something
@@ -489,32 +586,7 @@ public class Board extends JPanel{
 	}
 	
 
-	private class spotListener implements MouseListener{
-		BoardCell clicked = null;
-		public void mousePressed(MouseEvent event){}
-		public void mouseReleased(MouseEvent event){}
-		public void mouseEntered(MouseEvent event){}
-		public void mouseExited(MouseEvent event){}
-		public void mouseClicked(MouseEvent event){
-			int x = event.getX();
-			int y = event.getY();
-			for(BoardCell c: targets){
-				if(containsClick(x,y,c)){
-					clicked = c;
-				}
-			}
-		}
-	}
-	
-	public boolean containsClick(int mouseX, int mouseY, BoardCell cell){
-		Rectangle rect = new Rectangle(cell.getDrawRow(), cell.getDrawCol(), cell.CELL_SIZE, cell.CELL_SIZE);
-		if(rect.contains(new Point(mouseX, mouseY))){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+
 
 	
 
@@ -641,5 +713,10 @@ public class Board extends JPanel{
 	public Card getCardShown() {
 		return cardShown;
 	}
+
+	public Solution getCurrentAccusation() {
+		return currentAccusation;
+	}
+	
 	
 }

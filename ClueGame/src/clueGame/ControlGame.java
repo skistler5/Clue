@@ -10,6 +10,7 @@ import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -26,6 +27,7 @@ import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+
 public class ControlGame extends JFrame{
 	private Board board;
 	private JTextField turn;
@@ -34,6 +36,13 @@ public class ControlGame extends JFrame{
 	private JTextField guessResult;
 	JMenuBar menuBar = new JMenuBar();
 	JFrame splash = new JFrame();
+	JPanel controlPanel = new JPanel();
+	private static ControlGame gui;
+	
+	public static void main(String[] args){
+		ControlGame gui = new ControlGame();
+		gui.setVisible(true);
+	}
 
 	public ControlGame(){
 		board = Board.getInstance();
@@ -50,6 +59,10 @@ public class ControlGame extends JFrame{
 		add(createControlPanel(), BorderLayout.SOUTH);
 		add(createCardPanel(), BorderLayout.EAST);
 
+	}
+	
+	public static void errorMessage(){
+		JOptionPane.showMessageDialog(gui, "Invalid cell chosen, pick another", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void createSplashScreen(){
@@ -146,7 +159,7 @@ public class ControlGame extends JFrame{
 	}
 
 	public JPanel createControlPanel(){
-		JPanel controlPanel = new JPanel();
+		
 
 		controlPanel.setLayout(new GridLayout(5,6));
 
@@ -166,8 +179,7 @@ public class ControlGame extends JFrame{
 
 		JLabel guessLabel = new JLabel("Guess:");
 		guess = new JTextField(5);
-		Solution accu = board.createAccusation(board.getCurrentPlayer());
-		guess.setText(accu.person + ", " + accu.room + ", " + accu.weapon);
+		guess.setText(board.getCurrentAccusation().person + ", " + board.getCurrentAccusation().room + ", " + board.getCurrentAccusation().weapon);
 		guess.setEditable(false);
 		controlPanel.add(guessLabel, BorderLayout.EAST);
 		controlPanel.add(guess, BorderLayout.EAST);
@@ -175,30 +187,29 @@ public class ControlGame extends JFrame{
 		JLabel guessResultLabel = new JLabel("Guess Result:");
 
 		guessResult = new JTextField(5);
-		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
-		guess.setEditable(false);
+		guessResult.setText(board.getCardShown().getCardName());
+		guessResult.setEditable(false);
 		controlPanel.add(guessResultLabel, BorderLayout.EAST);
 		controlPanel.add(guessResult, BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
-		//		class ButtonListener implements ActionListener{
-		//		public void actionPerformed(ActionEvent e){
-		//			JDialog dialog = new JDialog();
-		//			dialog.setVisible(true);
-		//		}
-		//	}
+		int count = 0;
+		if(count == 0){
+			board.playerTurn(board.getCurrentPlayer());
+			count++;
+		}
 		nextPlayer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(board.isTargetSelected()){
-					board.playerTurn(board.getNextPlayer());
+					turn(board.getNextPlayer());//also sets next player
 				}
 				else{
-					//error message
+					JOptionPane.showMessageDialog(gui, "Human player has not chosen a target", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				//setVisible(false);
 			}
 		});
-		//add(nextPlayer);
+		add(nextPlayer);
 
 
 		JButton makeAccusation = new JButton("Make an Accusation");
@@ -208,10 +219,15 @@ public class ControlGame extends JFrame{
 		return controlPanel;
 
 	}
-
-
-	public static void main(String[] args){
-		ControlGame gui = new ControlGame();
-		gui.setVisible(true);
+	
+	public void turn(Player p){
+		board.playerTurn(p);
+		board.repaint();
+		menuBar.repaint();
+		board.repaint();
+		controlPanel.repaint();
 	}
+
+
+
 }
