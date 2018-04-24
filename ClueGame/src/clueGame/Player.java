@@ -49,6 +49,15 @@ public class Player {
 	
 	public void addToHand(Card c){
 		playerHand.add(c);
+		if(c.getCardType().equals(CardType.PERSON)){
+			playersSeen.add(c.getCardName());
+		}
+		else if(c.getCardType().equals(CardType.WEAPON)){
+			weaponsSeen.add(c.getCardName());
+		}
+		else{
+			roomsSeen.add(c.getCardName());
+		}
 	}
 	
 	public void addToRoomsSeen(String s){
@@ -170,6 +179,11 @@ public class Player {
 	public ArrayList<String> getPlayersSeen() {
 		return playersSeen;
 	}
+
+	public ArrayList<String> getRoomsSeen() {
+		return roomsSeen;
+	}
+	
 
 	
 }
