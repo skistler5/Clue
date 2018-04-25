@@ -147,7 +147,7 @@ public class Board extends JPanel implements MouseListener{
 		for(Player p: players){
 			p.draw(g);
 			if(!p.isComputer()){
-				calcTargets(p.getRow(), p.getCol(), 3, p);
+				calcTargets(p.getRow(), p.getCol(), dieRoll, p);
 				for(BoardCell b: targets){
 					b.drawTargets(g);
 				}
@@ -161,29 +161,30 @@ public class Board extends JPanel implements MouseListener{
 	
 	public void playerTurn(Player p){
 		humanSelection = false;
-		Random rand = new Random();
-		int numRoll = rand.nextInt(6) + 1;
+		rollDie();
 		if(p.isComputer()){
 			int r = p.getRow();
 			int c = p.getCol();
-			calcTargets(r,c,numRoll);
+			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-			cardShown = handleSuggestion(p, createAccusation(p));
-			if(cardShown.getCardType().equals(CardType.PERSON)){
-				p.addToPlayersSeen(cardShown.getCardName());
-			}
-			else if(cardShown.getCardType().equals(CardType.WEAPON)){
-				p.addToWeaponsSeen(cardShown.getCardName());
-			}
-			else{
-				p.addToRoomsSeen(cardShown.getCardName());
-			}
+//			cardShown = handleSuggestion(p, createAccusation(p));
+//			if(cardShown.getCardType().equals(CardType.PERSON)){
+//				p.addToPlayersSeen(cardShown.getCardName());
+//			}
+//			else if(cardShown.getCardType().equals(CardType.WEAPON)){
+//				p.addToWeaponsSeen(cardShown.getCardName());
+//			}
+//			else{
+//				p.addToRoomsSeen(cardShown.getCardName());
+//			}
 
 		}
 		
 		else{
-			Solution guess = createAccusation(p);
-			cardShown = handleSuggestion(p, guess);
+			calcTargets(p.getRow(),p.getCol(),dieRoll);
+			repaint();
+			//Solution guess = createAccusation(p);
+			//cardShown = handleSuggestion(p, guess);
 		}
 		repaint();
 		if(getNextPlayer().isComputer()){
@@ -673,12 +674,13 @@ public class Board extends JPanel implements MouseListener{
 		return players.get(currentPlayerIdx);
 	}
 	
-	public String getDieRoll(){
-		String num = new String();
+	public void rollDie(){
 		Random rand = new Random();
 		dieRoll = rand.nextInt(6) + 1;
-		num = Integer.toString(dieRoll);		
-		return num;
+	}
+	
+	public String getDieRoll(){
+		return Integer.toString(dieRoll);
 	}
 	public boolean isTargetSelected() {
 		return targetSelected;

@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -32,6 +33,7 @@ public class ControlGame extends JFrame{
 	private JTextField dieRoll;
 	private JTextField guess;
 	private JTextField guessResult;
+	private JPanel controlPanel;
 	JMenuBar menuBar = new JMenuBar();
 	JFrame splash = new JFrame();
 	private static ControlGame gui;
@@ -52,6 +54,11 @@ public class ControlGame extends JFrame{
 		add(createCardPanel(), BorderLayout.EAST);
 		turn(board.getCurrentPlayer());
 
+	}
+	
+	public void update(){
+		updateDiePanel();
+		updateTurnPanel(board.getCurrentPlayer().getPlayerName());
 	}
 	
 	public static void errorMessage(){
@@ -150,41 +157,110 @@ public class ControlGame extends JFrame{
 
 		return playersCards;
 	}
+	
+	private JPanel createDiePanel() {
+		JPanel dicePanel = new JPanel();
 
+		JLabel dieRollLabel = new JLabel("Die Roll:");
+		dieRoll = new JTextField("   ");
+		//want to be able to change the number whenever we roll for each turn
+		dieRoll.setEditable(false);
+
+		dicePanel.add(dieRollLabel);
+		dicePanel.add(dieRoll);
+		dicePanel.setBorder(new TitledBorder(new EtchedBorder(), "Die"));
+
+		return dicePanel;
+	}
+	
+	private void updateDiePanel(){
+		String s = "";
+		String roll = board.getDieRoll();
+		dieRoll.setText(s + roll);
+	}
+
+	private JPanel createTurnPanel() {
+		JPanel turnPanel = new JPanel();
+		turnPanel.setLayout(new GridLayout(2,0));
+		
+		JLabel turnLabel = new JLabel("Whose turn?", JLabel.CENTER);
+		turn = new JTextField();
+
+		turnPanel.add(turnLabel);
+		turnPanel.add(turn);
+		turn.setEditable(false);
+		return turnPanel;
+	}
+	
+	private void updateTurnPanel(String s){
+		turn.setText(s);
+	}
+	
+	private JPanel createGuessResultPanel() {
+		JPanel guessResultPanel = new JPanel();
+
+		JLabel responseLabel = new JLabel("Response");
+		guessResult = new JTextField(8);
+		guessResult.setEditable(false);
+
+		guessResultPanel.add(responseLabel);
+		guessResultPanel.add(guessResult);
+		guessResultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Result"));
+
+		return guessResultPanel;
+	}
+	
+	private JPanel createGuessPanel() {
+		guess = new JTextField(5);
+		JPanel guessPanel = new JPanel();
+		guessPanel.setLayout(new GridLayout(2, 1));
+		JLabel guessLabel = new JLabel("Guess");
+		guess.setEditable(false);
+		Font font = new Font("Verdana", Font.PLAIN, 10);
+		guess.setFont(font);
+
+		guessPanel.add(guessLabel);
+		guessPanel.add(guess);
+		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
+
+		return guessPanel;
+	}
+	
 	public JPanel createControlPanel(){
 		JPanel controlPanel = new JPanel();
 
-		controlPanel.setLayout(new GridLayout(5,6));
+		controlPanel.setLayout(new GridLayout(3,2));
+//
+//		JLabel turnLabel = new JLabel("Whose Turn:");
+//		turn = new JTextField(5);
+//		turn.setText(board.getCurrentPlayer().getPlayerName());
+//		turn.setEditable(false);
+//		controlPanel.add(turnLabel, BorderLayout.EAST);
+		controlPanel.add(createTurnPanel(), BorderLayout.EAST);
 
-		JLabel turnLabel = new JLabel("Whose Turn:");
-		turn = new JTextField(5);
-		turn.setText(board.getCurrentPlayer().getPlayerName());
-		turn.setEditable(false);
-		controlPanel.add(turnLabel, BorderLayout.EAST);
-		controlPanel.add(turn, BorderLayout.EAST);
+//		JLabel dieRollLabel = new JLabel("Die Roll:");
+//		dieRoll = new JTextField(5);
+//		dieRoll.setText(board.getDieRoll());
+//		dieRoll.setEditable(false);
+//		controlPanel.add(dieRollLabel, BorderLayout.EAST);
+//		controlPanel.add(dieRoll, BorderLayout.EAST);
+		controlPanel.add(createDiePanel(), BorderLayout.EAST);
 
-		JLabel dieRollLabel = new JLabel("Die Roll:");
-		dieRoll = new JTextField(5);
-		dieRoll.setText(board.getDieRoll());
-		dieRoll.setEditable(false);
-		controlPanel.add(dieRollLabel, BorderLayout.EAST);
-		controlPanel.add(dieRoll, BorderLayout.EAST);
-
-		JLabel guessLabel = new JLabel("Guess:");
-		guess = new JTextField(5);
-		Solution accu = board.createAccusation(board.getCurrentPlayer());
-		guess.setText(accu.person + ", " + accu.room + ", " + accu.weapon);
-		guess.setEditable(false);
-		controlPanel.add(guessLabel, BorderLayout.EAST);
-		controlPanel.add(guess, BorderLayout.EAST);
+//		JLabel guessLabel = new JLabel("Guess:");
+//		guess = new JTextField(5);
+//		Solution accu = board.createAccusation(board.getCurrentPlayer());
+//		guess.setText(accu.person + ", " + accu.room + ", " + accu.weapon);
+//		guess.setEditable(false);
+//		controlPanel.add(guessLabel, BorderLayout.EAST);
+		controlPanel.add(createGuessPanel(), BorderLayout.EAST);
 
 		JLabel guessResultLabel = new JLabel("Guess Result:");
 
-		guessResult = new JTextField(5);
-		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
-		guessResult.setEditable(false);
-		controlPanel.add(guessResultLabel, BorderLayout.EAST);
-		controlPanel.add(guessResult, BorderLayout.EAST);
+//		guessResult = new JTextField(5);
+//		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
+//		guessResult.setEditable(false);
+//		controlPanel.add(guessResultLabel, BorderLayout.EAST);
+		controlPanel.add(createGuessResultPanel(), BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
 //		class ButtonListener implements ActionListener{
@@ -198,6 +274,7 @@ public class ControlGame extends JFrame{
 				if(board.getHumanSelection()){
 					Player p = board.getNextPlayer();
 					board.playerTurn(p);
+					update();
 				}
 				else{
 					//error message
@@ -222,6 +299,7 @@ public class ControlGame extends JFrame{
 		board.repaint();
 		menuBar.repaint();
 		board.repaint();
+		update();
 	}
 
 
