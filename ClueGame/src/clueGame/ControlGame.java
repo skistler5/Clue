@@ -230,36 +230,13 @@ public class ControlGame extends JFrame{
 		JPanel controlPanel = new JPanel();
 
 		controlPanel.setLayout(new GridLayout(3,2));
-//
-//		JLabel turnLabel = new JLabel("Whose Turn:");
-//		turn = new JTextField(5);
-//		turn.setText(board.getCurrentPlayer().getPlayerName());
-//		turn.setEditable(false);
-//		controlPanel.add(turnLabel, BorderLayout.EAST);
+
 		controlPanel.add(createTurnPanel(), BorderLayout.EAST);
 
-//		JLabel dieRollLabel = new JLabel("Die Roll:");
-//		dieRoll = new JTextField(5);
-//		dieRoll.setText(board.getDieRoll());
-//		dieRoll.setEditable(false);
-//		controlPanel.add(dieRollLabel, BorderLayout.EAST);
-//		controlPanel.add(dieRoll, BorderLayout.EAST);
 		controlPanel.add(createDiePanel(), BorderLayout.EAST);
-
-//		JLabel guessLabel = new JLabel("Guess:");
-//		guess = new JTextField(5);
-//		Solution accu = board.createAccusation(board.getCurrentPlayer());
-//		guess.setText(accu.person + ", " + accu.room + ", " + accu.weapon);
-//		guess.setEditable(false);
-//		controlPanel.add(guessLabel, BorderLayout.EAST);
+		
 		controlPanel.add(createGuessPanel(), BorderLayout.EAST);
 
-		JLabel guessResultLabel = new JLabel("Guess Result:");
-
-//		guessResult = new JTextField(5);
-//		guessResult.setText(board.handleSuggestion(board.getCurrentPlayer(), accu).getCardName());
-//		guessResult.setEditable(false);
-//		controlPanel.add(guessResultLabel, BorderLayout.EAST);
 		controlPanel.add(createGuessResultPanel(), BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
