@@ -115,7 +115,7 @@ public class BoardCell {
 	 */
 	public boolean isRoom(){
 		Character c = new Character(getInitial());
-		return (!c.equals('W') && !door);
+		return (!c.equals('W') && !c.equals('X'));
 	}
 
 	/**

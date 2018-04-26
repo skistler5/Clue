@@ -169,23 +169,47 @@ public class Board extends JPanel implements MouseListener{
 			int c = p.getCol();
 			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-			if(!p.getRoom().equals('X') && !p.getRoom().equals('W')){
-				cardShown = handleSuggestion(p, p.createSuggestion(legend.get(p.getRoom())));
-				if(cardShown.getCardType().equals(CardType.PERSON)){
-					for(Player play: players){
-						if(cardShown.getCardName().equals(play.getPlayerName())){
-							p.addToPlayersSeen(play);
+			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
+				Solution suggestion = p.createSuggestion(legend.get(p.getRoom()));  //create suggestion
+				cardShown = handleSuggestion(p, suggestion);  //return card shown
+				if(cardShown != null){
+					if(cardShown.getCardType().equals(CardType.PERSON)){
+						for(Player player: players){
+							player.addToPlayersSeen(cardShown);
+						}
+					}
+					else if(cardShown.getCardType().equals(CardType.ROOM)){
+						for(Player player: players){
+							player.addToRoomsSeen(cardShown);
+						}
+					}
+					else if(cardShown.getCardType().equals(CardType.WEAPON)){
+						for(Player player: players){
+							player.addToWeaponsSeen(cardShown);
 						}
 					}
 				}
-				else if(cardShown.getCardType().equals(CardType.WEAPON)){
-					p.addToWeaponsSeen(cardShown.getCardName());
-				}
-				else{
-					p.addToRoomsSeen(cardShown.getCardName());
+				if(getNextPlayer().isComputer()){
+					playerTurn(players.get(currentPlayerIdx));
 				}
 			}
-
+//			if(!p.getRoom().equals('X') && !p.getRoom().equals('W')){
+//				cardShown = handleSuggestion(p, p.createSuggestion(legend.get(p.getRoom())));
+//				if(cardShown.getCardType().equals(CardType.PERSON)){
+//					for(Player play: players){
+//						if(cardShown.getCardName().equals(play.getPlayerName())){
+//							p.addToPlayersSeen(play);
+//						}
+//					}
+//				}
+//				else if(cardShown.getCardType().equals(CardType.WEAPON)){
+//					p.addToWeaponsSeen(cardShown.getCardName());
+//				}
+//				else{
+//					p.addToRoomsSeen(cardShown.getCardName());
+//				}
+//			}
+//
 		}
 
 		else{
@@ -195,11 +219,6 @@ public class Board extends JPanel implements MouseListener{
 			cardShown = handleSuggestion(p, guess);
 		}
 		repaint();
-
-
-		if(getNextPlayer().isComputer()){
-			playerTurn(players.get(currentPlayerIdx));
-		}
 	}
 
 

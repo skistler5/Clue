@@ -11,7 +11,7 @@ public class Player {
 	private ArrayList<Card> playerHand = new ArrayList<Card>();
 	private ArrayList<String> roomOptions = new ArrayList<String>();
 	private ArrayList<String> weaponOptions = new ArrayList<String>();
-	private ArrayList<Player> playerOptions = new ArrayList<Player>();
+	private ArrayList<String> playerOptions = new ArrayList<String>();
 
 
 	private int row;
@@ -61,22 +61,30 @@ public class Player {
 		}
 	}
 	
-	public void addToRoomsSeen(String s){
-		roomOptions.remove(s);
+	public void addToRoomsSeen(Card c){
+		roomOptions.remove(c.getCardName());
+	}
+	
+	public void addToRoomsSeen(String r){
+		roomOptions.remove(r);
+	}
+	
+	public void addToPlayersSeen(Card c){
+		playerOptions.remove(c.getCardName());
+		
 	}
 	
 	public void addToPlayersSeen(Player p){
-		playerOptions.remove(p);
-		System.out.println(playerOptions.size());
-		
-		for(Player w : playerOptions){
-		System.out.print(w.getPlayerName());
-		}
+		playerOptions.remove(p.getPlayerName());
 	}
 	
-	public void addToWeaponsSeen(String s){
-		weaponOptions.remove(s);
+	public void addToWeaponsSeen(Card c){
+		weaponOptions.remove(c.getCardName());
 
+	}
+	
+	public void addToWeaponsSeen(String w){
+		weaponOptions.remove(w);
 	}
 	
 	public Solution createSuggestion(String currentRoom) {
@@ -90,10 +98,10 @@ public class Player {
 		int pRand = rand.nextInt(playerOptions.size());
 		int wRand = rand.nextInt(weaponOptions.size());
 
-		Player player = playerOptions.get(pRand);
+		String player = playerOptions.get(pRand);
 		String weapon = weaponOptions.get(wRand);
 
-		return new Solution(player.getPlayerName(), currentRoom, weapon);
+		return new Solution(player, currentRoom, weapon);
 	}
 	
 	public Solution createAccusation() {
@@ -106,11 +114,11 @@ public class Player {
 		int pRand = rand.nextInt(playerOptions.size());
 		int rRand = rand.nextInt(roomOptions.size());
 
-		Player player = playerOptions.get(pRand);
+		String player = playerOptions.get(pRand);
 		String weapon = weaponOptions.get(wRand);
 		String room = roomOptions.get(rRand);
 
-		return new Solution(player.getPlayerName(), room, weapon);
+		return new Solution(player, room, weapon);
 	}
 	
 	public Card disproveSuggestion(Solution suggestion){
@@ -218,7 +226,9 @@ public class Player {
 	}
 	
 	public void setPlayerOptions(ArrayList<Player> p){
-		playerOptions = p;
+		for(Player player: p){
+			playerOptions.add(player.getPlayerName());
+		}
 	}
 	
 	public void setRoomOptions(ArrayList<String> r){
@@ -229,7 +239,7 @@ public class Player {
 		return weaponOptions;
 	}
 
-	public ArrayList<Player> getPlayerOptions() {
+	public ArrayList<String> getPlayerOptions() {
 		return playerOptions;
 	}
 
