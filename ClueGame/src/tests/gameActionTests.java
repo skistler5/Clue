@@ -111,18 +111,31 @@ public class gameActionTests {
 	@Test
 	//testing creating a suggestion
 	public void createSuggestion(){
+		board.clearPlayers();
+		ArrayList<Player> tempPlayers = new ArrayList<Player>();
 		Player testPlayer = new Player("Test Player", 2, 7, 100, 100, 100, "c");
+		tempPlayers.add(testPlayer);
 		Solution suggestion = new Solution("Gary", "Library", "Dog Bone");
+		Player test1 = new Player("Gary", 3, 8, 100, 100, 100, "c");
+		Player test2 = new Player("Shannon", 4, 8, 100, 100, 100, "c");
+		Player test3 = new Player("Stephen", 5, 8, 100, 100, 100, "c");
+		Player test4 = new Player("Bob", 3, 9, 100, 100, 100, "c");
+		tempPlayers.add(test1);
+		tempPlayers.add(test2);
+		tempPlayers.add(test3);
+		tempPlayers.add(test4);
+		board.setPlayers(tempPlayers);
+		board.setPlayersOptions();
+		testPlayer.addToPlayersSeen(test1);
+		testPlayer.addToPlayersSeen(test2);
+		testPlayer.addToPlayersSeen(test3);
+		testPlayer.addToPlayersSeen(test4);
 		testPlayer.addToWeaponsSeen("Dog Bone");
 		testPlayer.addToWeaponsSeen("Rope");
 		testPlayer.addToWeaponsSeen("Shotgun");
 		testPlayer.addToWeaponsSeen("Knife");
-		testPlayer.addToPlayersSeen("Gary");
-		testPlayer.addToPlayersSeen("Shannon");
-		testPlayer.addToPlayersSeen("Stephen");
-		testPlayer.addToPlayersSeen("Bob");
 		testPlayer.setRoom('L');
-		Solution temp = board.createAccusation(testPlayer);
+		Solution temp = testPlayer.createSuggestion(board.getPlayersRoom(testPlayer));
 		boolean test = false;
 		
 		//tests if suggestion has the same room as the player
@@ -132,6 +145,7 @@ public class gameActionTests {
 		if(temp.weapon.equals("Toothpick") || temp.weapon.equals("Icicle")){
 			test = true;
 		}
+		System.out.println(suggestion.weapon);
 		assertTrue(test);
 		
 		//if multiple people not seen, one is selected randomly
@@ -143,8 +157,9 @@ public class gameActionTests {
 		assertTrue(test);
 		
 		testPlayer.addToWeaponsSeen("Toothpick");
-		testPlayer.addToPlayersSeen("Patricia");
-		temp = board.createAccusation(testPlayer);
+		Player test5 = new Player("Patricia", 3, 10, 100, 100, 100, "c");
+		testPlayer.addToPlayersSeen(test5);
+		temp = testPlayer.createAccusation();
 		
 		//if only one weapon not seen it is selected
 		assertTrue(temp.weapon.equals("Icicle"));
@@ -219,6 +234,8 @@ public class gameActionTests {
 		tempPlayers.add(tplayer2);
 		board.setPlayers(tempPlayers);
 
+		board.setPlayersOptions();
+		
 		tplayer.addToHand(new Card("Stephen", CardType.PERSON));
 		tplayer.addToHand(new Card("Gary", CardType.PERSON));
 		tplayer.addToHand(new Card("Shotgun", CardType.WEAPON));

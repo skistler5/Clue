@@ -43,6 +43,7 @@ public class ControlGame extends JFrame{
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
 		board.setCardFiles("players.txt", "weapons.txt");
 		board.initialize();
+		board.setPlayersOptions();
 		board.dealCards();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
@@ -59,6 +60,7 @@ public class ControlGame extends JFrame{
 	public void update(){
 		updateDiePanel();
 		updateTurnPanel(board.getCurrentPlayer().getPlayerName());
+		//update guess panel
 	}
 	
 	public static void errorMessage(){
@@ -224,6 +226,10 @@ public class ControlGame extends JFrame{
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 
 		return guessPanel;
+	}
+	
+	public void updateGuessPanel(Solution s){
+		guess.setText(s.getPerson() + " in the " + s.getRoom() + " with the " + s.getWeapon());
 	}
 	
 	public JPanel createControlPanel(){

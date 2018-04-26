@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Font;
+
 public class Solution {
 	public String person;
 	public String room;
@@ -23,5 +25,17 @@ public class Solution {
 		}
 		
 		return true;
+	}
+
+	public String getPerson() {
+		return person;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public String getWeapon() {
+		return weapon;
 	}
 }
