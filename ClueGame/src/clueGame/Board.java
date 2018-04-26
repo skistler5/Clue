@@ -58,8 +58,8 @@ public class Board extends JPanel implements MouseListener{
 	private boolean humanSelection = false;
 	private Card cardShown = null;
 	private int currentPlayerIdx = 2;
-	
-	private Solution solution = null;
+
+	private Solution finalSolution = new Solution("wrong", "wrong", "wrong");
 
 
 	//variable used for singleton pattern
@@ -169,19 +169,21 @@ public class Board extends JPanel implements MouseListener{
 			int c = p.getCol();
 			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-			cardShown = handleSuggestion(p, p.createSuggestion(legend.get(p.getRoom())));
-			if(cardShown.getCardType().equals(CardType.PERSON)){
-				for(Player player: players){
-					if(cardShown.getCardName().equals(player.getPlayerName())){
-						p.addToPlayersSeen(player);
+			if(!p.getRoom().equals('X') && !p.getRoom().equals('W')){
+				cardShown = handleSuggestion(p, p.createSuggestion(legend.get(p.getRoom())));
+				if(cardShown.getCardType().equals(CardType.PERSON)){
+					for(Player play: players){
+						if(cardShown.getCardName().equals(play.getPlayerName())){
+							p.addToPlayersSeen(play);
+						}
 					}
 				}
-			}
-			else if(cardShown.getCardType().equals(CardType.WEAPON)){
-				p.addToWeaponsSeen(cardShown.getCardName());
-			}
-			else{
-				p.addToRoomsSeen(cardShown.getCardName());
+				else if(cardShown.getCardType().equals(CardType.WEAPON)){
+					p.addToWeaponsSeen(cardShown.getCardName());
+				}
+				else{
+					p.addToRoomsSeen(cardShown.getCardName());
+				}
 			}
 
 		}
@@ -295,18 +297,31 @@ public class Board extends JPanel implements MouseListener{
 
 		int numPlayers = players.size();
 		int count = 0;
-		
+
 		int i = 0;
 
 		for(Card c: deck){
-			if(!solution.contains(c.getCardType())){
-				solution.add(c);
+			if(c.getCardType().equals(CardType.PERSON)){
+				if(finalSolution.getPerson().equals("wrong")){
+					finalSolution.setPerson(c.getCardName());
+					continue;
+				}
+			}
+			else if(c.getCardType().equals(CardType.WEAPON)){
+				if(finalSolution.getWeapon().equals("wrong")){
+					finalSolution.setWeapon(c.getCardName());
+					continue;
+				}
 			}
 			else{
-				players.get(i).addToHand(c);
-				count++;
-				i = count % numPlayers;
+				if(finalSolution.getRoom().equals("wrong")){
+					finalSolution.setRoom(c.getCardName());
+					continue;
+				}
 			}
+			players.get(i).addToHand(c);
+			count++;
+			i = count % numPlayers;
 		}
 		deck.clear();
 		//		for(Player p : players){

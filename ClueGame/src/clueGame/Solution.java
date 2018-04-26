@@ -38,4 +38,17 @@ public class Solution {
 	public String getWeapon() {
 		return weapon;
 	}
+
+	public void setPerson(String person) {
+		this.person = person;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
+	}
+
+	public void setWeapon(String weapon) {
+		this.weapon = weapon;
+	}
+	
 }
