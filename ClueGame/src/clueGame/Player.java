@@ -20,6 +20,7 @@ public class Player {
 	private boolean isComp;
 	private char lastVisitedRoom;
 	private char roomInitial;
+	boolean readyToAccuse = false;
 	
 	public boolean equals(Player p){
 		if(p.getPlayerName().equals(playerName)){
@@ -66,14 +67,22 @@ public class Player {
 	
 	public void addToPlayersSeen(Player p){
 		playerOptions.remove(p);
+		System.out.println(playerOptions.size());
+		
+		for(Player w : playerOptions){
+		System.out.print(w.getPlayerName());
+		}
 	}
 	
 	public void addToWeaponsSeen(String s){
 		weaponOptions.remove(s);
-		System.out.println(weaponOptions.size());
+
 	}
 	
 	public Solution createSuggestion(String currentRoom) {
+		if(playerOptions.contains(this)){
+			playerOptions.remove(this);
+		}
 
 
 		//randomly choose a card from weaponOptions and playerOptions to be part of your suggestion
@@ -88,6 +97,9 @@ public class Player {
 	}
 	
 	public Solution createAccusation() {
+		if(playerOptions.contains(this)){
+			playerOptions.remove(this);
+		}
 		//randomly choose a card from unseen cards to be part of your accusation
 		Random rand = new Random();
 		int wRand = rand.nextInt(weaponOptions.size());

@@ -126,10 +126,15 @@ public class gameActionTests {
 		tempPlayers.add(test4);
 		board.setPlayers(tempPlayers);
 		board.setPlayersOptions();
+//		for(String s: board.getWeapons()){
+//			System.out.print(s + " ");
+//		}
+//		System.out.println("hi");
+//		for(String s : testPlayer.getWeaponOptions()){
+//			System.out.print(s + " ");
+//		}
 		testPlayer.addToPlayersSeen(test1);
 		testPlayer.addToPlayersSeen(test2);
-		testPlayer.addToPlayersSeen(test3);
-		testPlayer.addToPlayersSeen(test4);
 		testPlayer.addToWeaponsSeen("Dog Bone");
 		testPlayer.addToWeaponsSeen("Rope");
 		testPlayer.addToWeaponsSeen("Shotgun");
@@ -145,26 +150,26 @@ public class gameActionTests {
 		if(temp.weapon.equals("Toothpick") || temp.weapon.equals("Icicle")){
 			test = true;
 		}
-		System.out.println(suggestion.weapon);
+
+		//System.out.println(suggestion.weapon);
 		assertTrue(test);
 		
 		//if multiple people not seen, one is selected randomly
 		test = false;
-		if(temp.person.equals("Patricia") || temp.person.equals("Ellie")){
+		if(temp.person.equals("Stephen") || temp.person.equals("Bob")){
 			test = true;
 		}
 		
 		assertTrue(test);
 		
 		testPlayer.addToWeaponsSeen("Toothpick");
-		Player test5 = new Player("Patricia", 3, 10, 100, 100, 100, "c");
-		testPlayer.addToPlayersSeen(test5);
+		testPlayer.addToPlayersSeen(test3);
 		temp = testPlayer.createAccusation();
 		
 		//if only one weapon not seen it is selected
 		assertTrue(temp.weapon.equals("Icicle"));
 		//if only one person not seen it is selected
-		assertTrue(temp.person.equals("Ellie"));
+		assertTrue(temp.person.equals("Bob"));
 		
 		
 		

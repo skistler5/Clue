@@ -58,6 +58,8 @@ public class Board extends JPanel implements MouseListener{
 	private boolean humanSelection = false;
 	private Card cardShown = null;
 	private int currentPlayerIdx = 2;
+	
+	private Solution solution = null;
 
 
 	//variable used for singleton pattern
@@ -82,7 +84,7 @@ public class Board extends JPanel implements MouseListener{
 	 */
 	public void initialize() {
 		clearPlayers();
-		
+
 		try{
 			loadRoomConfig();
 			loadBoardConfig();
@@ -96,7 +98,7 @@ public class Board extends JPanel implements MouseListener{
 		addMouseListener(this);
 		calcAdjacencies();
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override
@@ -116,7 +118,7 @@ public class Board extends JPanel implements MouseListener{
 		int x = e.getX();
 		int y = e.getY();
 		returnCell = board[y/BoardCell.CELL_SIZE][x/BoardCell.CELL_SIZE];
-		
+
 		for(BoardCell cell: targets){
 			if(returnCell.equals(cell)){
 				isValid = true;
@@ -133,7 +135,7 @@ public class Board extends JPanel implements MouseListener{
 		}
 
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -156,9 +158,9 @@ public class Board extends JPanel implements MouseListener{
 		for(BoardCell b: centers){
 			b.drawName(g, this);
 		}
-		
+
 	}
-	
+
 	public void playerTurn(Player p){
 		humanSelection = false;
 		rollDie();
@@ -167,26 +169,32 @@ public class Board extends JPanel implements MouseListener{
 			int c = p.getCol();
 			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-//			cardShown = handleSuggestion(p, createAccusation(p));
-//			if(cardShown.getCardType().equals(CardType.PERSON)){
-//				p.addToPlayersSeen(cardShown.getCardName());
-//			}
-//			else if(cardShown.getCardType().equals(CardType.WEAPON)){
-//				p.addToWeaponsSeen(cardShown.getCardName());
-//			}
-//			else{
-//				p.addToRoomsSeen(cardShown.getCardName());
-//			}
+			cardShown = handleSuggestion(p, p.createSuggestion(legend.get(p.getRoom())));
+			if(cardShown.getCardType().equals(CardType.PERSON)){
+				for(Player player: players){
+					if(cardShown.getCardName().equals(player.getPlayerName())){
+						p.addToPlayersSeen(player);
+					}
+				}
+			}
+			else if(cardShown.getCardType().equals(CardType.WEAPON)){
+				p.addToWeaponsSeen(cardShown.getCardName());
+			}
+			else{
+				p.addToRoomsSeen(cardShown.getCardName());
+			}
 
 		}
-		
+
 		else{
 			calcTargets(p.getRow(),p.getCol(),dieRoll);
 			repaint();
-			//Solution guess = createAccusation(p);
-			//cardShown = handleSuggestion(p, guess);
+			Solution guess = p.createSuggestion(legend.get(p.getRoom()));
+			cardShown = handleSuggestion(p, guess);
 		}
 		repaint();
+
+
 		if(getNextPlayer().isComputer()){
 			playerTurn(players.get(currentPlayerIdx));
 		}
@@ -207,55 +215,55 @@ public class Board extends JPanel implements MouseListener{
 		return players.get(currentPlayerIdx);
 	}
 
-	
-//	public Solution createAccusation(Player p){
-//		Random rand = new Random();
-//		String room = new String();
-//		ArrayList<String> possibleWeapons = new ArrayList<String>();
-//		ArrayList<String> possiblePlayers = new ArrayList<String>();
-//		room = legend.get(p.getRoom());
-//		possibleWeapons = weapons;
-//		for(int i = 0; i < players.size(); i++){
-//			possiblePlayers.add(players.get(i).getPlayerName());
-//		}
-//		
-//		
-//		
-//		for(String s : possibleWeapons){
-//			System.out.print(s + " ");
-//		}
-////		System.out.println(" ");
-////		for(String s : p.getWeaponsSeen()){
-////			System.out.print(s + " ");
-////		}
-////		System.out.println(" ");
-////		
-//		for(int i = 0; i < possibleWeapons.size(); i++){
-//			if(p.getWeaponsSeen().contains(possibleWeapons.get(i))){
-//				possibleWeapons.remove(i);
-//				i--;
-//			}
-//		}
-//		for(int i = 0; i < possiblePlayers.size(); i++){
-//			if(p.getPlayersSeen().contains(possiblePlayers.get(i))){
-//				possiblePlayers.remove(i);
-//				i--;
-//			}
-//		}
-//		
-//		int weaponNum = possibleWeapons.size();
-//		int playerNum = possiblePlayers.size();
-////		System.out.println(p.getPlayerName());
-////		for(String s: possibleWeapons){
-////			System.out.print(s + " ");
-////		}
-//		//System.out.println(p.getWeaponsSeen().size());
-//		int wit = rand.nextInt(weaponNum);
-//		int pit = rand.nextInt(playerNum);
-//		Solution accusation = new Solution(possiblePlayers.get(pit), room, possibleWeapons.get(wit));
-//		
-//		return accusation;
-//	}
+
+	//	public Solution createAccusation(Player p){
+	//		Random rand = new Random();
+	//		String room = new String();
+	//		ArrayList<String> possibleWeapons = new ArrayList<String>();
+	//		ArrayList<String> possiblePlayers = new ArrayList<String>();
+	//		room = legend.get(p.getRoom());
+	//		possibleWeapons = weapons;
+	//		for(int i = 0; i < players.size(); i++){
+	//			possiblePlayers.add(players.get(i).getPlayerName());
+	//		}
+	//		
+	//		
+	//		
+	//		for(String s : possibleWeapons){
+	//			System.out.print(s + " ");
+	//		}
+	////		System.out.println(" ");
+	////		for(String s : p.getWeaponsSeen()){
+	////			System.out.print(s + " ");
+	////		}
+	////		System.out.println(" ");
+	////		
+	//		for(int i = 0; i < possibleWeapons.size(); i++){
+	//			if(p.getWeaponsSeen().contains(possibleWeapons.get(i))){
+	//				possibleWeapons.remove(i);
+	//				i--;
+	//			}
+	//		}
+	//		for(int i = 0; i < possiblePlayers.size(); i++){
+	//			if(p.getPlayersSeen().contains(possiblePlayers.get(i))){
+	//				possiblePlayers.remove(i);
+	//				i--;
+	//			}
+	//		}
+	//		
+	//		int weaponNum = possibleWeapons.size();
+	//		int playerNum = possiblePlayers.size();
+	////		System.out.println(p.getPlayerName());
+	////		for(String s: possibleWeapons){
+	////			System.out.print(s + " ");
+	////		}
+	//		//System.out.println(p.getWeaponsSeen().size());
+	//		int wit = rand.nextInt(weaponNum);
+	//		int pit = rand.nextInt(playerNum);
+	//		Solution accusation = new Solution(possiblePlayers.get(pit), room, possibleWeapons.get(wit));
+	//		
+	//		return accusation;
+	//	}
 
 	public Card handleSuggestion(Player p, Solution suggestion){
 		Card shown = null;
@@ -265,7 +273,7 @@ public class Board extends JPanel implements MouseListener{
 				iter = i;
 			}
 		}
-	
+
 		for(int i = iter; i < (players.size() + iter); i++){
 			Card temp = players.get(i%players.size()).disproveSuggestion(suggestion);
 			if(temp != null){
@@ -282,25 +290,32 @@ public class Board extends JPanel implements MouseListener{
 	 * Deals the cards to the players and clears the deck so that it is empty
 	 */
 	public void dealCards(){
+		ArrayList<Card> solution = new ArrayList<Card>();
 		Collections.shuffle(deck);
-		
+
 		int numPlayers = players.size();
 		int count = 0;
-		int i = 0;
 		
+		int i = 0;
+
 		for(Card c: deck){
-			players.get(i).addToHand(c);
-			count++;
-			i = count % numPlayers;
+			if(!solution.contains(c.getCardType())){
+				solution.add(c);
+			}
+			else{
+				players.get(i).addToHand(c);
+				count++;
+				i = count % numPlayers;
+			}
 		}
 		deck.clear();
-//		for(Player p : players){
-//			System.out.println(p.getPlayerName());
-//			for(String s: p.getPlayersSeen()){
-//				System.out.print(s + " ");
-//			}
-//			System.out.println(" ");
-//		}
+		//		for(Player p : players){
+		//			System.out.println(p.getPlayerName());
+		//			for(String s: p.getPlayersSeen()){
+		//				System.out.print(s + " ");
+		//			}
+		//			System.out.println(" ");
+		//		}
 	}
 
 	/**
@@ -308,6 +323,7 @@ public class Board extends JPanel implements MouseListener{
 	 * @throws FileNotFoundException
 	 */
 	public void loadWeapons() throws FileNotFoundException{
+		weapons.clear();
 		FileReader reader = new FileReader(weaponFile);
 		Scanner input = new Scanner(reader);
 
@@ -316,6 +332,7 @@ public class Board extends JPanel implements MouseListener{
 			Card temp = new Card(line, CardType.WEAPON);
 			deck.add(temp);
 			weapons.add(temp.getCardName());
+			//System.out.println(temp.getCardName());
 		}
 	}
 
@@ -325,6 +342,7 @@ public class Board extends JPanel implements MouseListener{
 	 * @throws FileNotFoundException
 	 */
 	public void loadPeople() throws BadConfigFormatException, FileNotFoundException{
+		players.clear();
 		FileReader reader = new FileReader(peopleFile); 
 		Scanner input = new Scanner(reader);
 		int count = 0;
@@ -350,7 +368,7 @@ public class Board extends JPanel implements MouseListener{
 		}
 		input.close();
 	}
-	
+
 	public void setPlayersOptions(){
 		ArrayList<Player> allPlayers = players;
 		for(Player p: players){
@@ -368,6 +386,7 @@ public class Board extends JPanel implements MouseListener{
 	 * @throws FileNotFoundException
 	 */
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException{
+		rooms.clear();
 		FileReader reader = new FileReader(roomConfigFile); 
 		Scanner input = new Scanner(reader);
 
@@ -408,7 +427,7 @@ public class Board extends JPanel implements MouseListener{
 				board[rowCount][i] = new BoardCell(rowCount,i);
 				BoardCell currentCell = board[rowCount][i]; //holds board[rowCount][i] for less typing
 				currentCell.setInitial(words[i].charAt(0));
-				
+
 				if(words[i].length() > 1){
 					Character c = new Character(words[i].charAt(1)); //need this to compare to other constants
 					if(c.equals('S')){
@@ -572,7 +591,7 @@ public class Board extends JPanel implements MouseListener{
 			player.setRoom(board[player.getRow()][player.getCol()].getInitial());
 		}
 	}
-	
+
 
 	/**
 	 * uses algorithm given to calculate targets
@@ -670,11 +689,11 @@ public class Board extends JPanel implements MouseListener{
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 	}
-	
+
 	public ArrayList<String> getWeapons(){
 		return weapons;
 	}
-	
+
 	public ArrayList<String> getRooms(){
 		return rooms;
 	}
@@ -682,12 +701,12 @@ public class Board extends JPanel implements MouseListener{
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayerIdx);
 	}
-	
+
 	public void rollDie(){
 		Random rand = new Random();
 		dieRoll = rand.nextInt(6) + 1;
 	}
-	
+
 	public String getDieRoll(){
 		return Integer.toString(dieRoll);
 	}
@@ -698,13 +717,13 @@ public class Board extends JPanel implements MouseListener{
 	public Card getCardShown() {
 		return cardShown;
 	}
-	
+
 	public boolean getHumanSelection(){
 		return humanSelection;
 	}
-	
+
 	public String getPlayersRoom(Player p){
 		return legend.get(p.getRoom());
 	}
-	
+
 }
