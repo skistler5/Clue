@@ -21,6 +21,7 @@ public class Player {
 	private char lastVisitedRoom;
 	private char roomInitial;
 	boolean readyToAccuse = false;
+	private Solution accusation = new Solution("","","");
 	
 	public boolean equals(Player p){
 		if(p.getPlayerName().equals(playerName)){
@@ -247,4 +248,20 @@ public class Player {
 		return roomOptions;
 	}
 	
+	
+	public void setReadyToAccuse(boolean b){
+		readyToAccuse = b;
+	}
+	
+	public boolean getReadyToAccuse(){
+		return readyToAccuse;
+	}
+	
+	public void setAccusation(Solution s){
+		accusation = s;
+	}
+	
+	public Solution getAccusation(){
+		return accusation;
+	}
 }

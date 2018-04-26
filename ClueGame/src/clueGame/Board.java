@@ -164,35 +164,57 @@ public class Board extends JPanel implements MouseListener{
 
 	public void playerTurn(Player p){
 		rollDie();
-		if(p.isComputer()){
+		if(p.isComputer()){  //computers turn
 			int r = p.getRow();
 			int c = p.getCol();
 			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
-				playersGuess = p.createSuggestion(legend.get(p.getRoom()));  //create suggestion
-				cardShown = handleSuggestion(p, playersGuess);  //return card shown
-				if(cardShown != null){
-					if(cardShown.getCardType().equals(CardType.PERSON)){  //add card shown to all players cards shown
-						for(Player player: players){
-							player.addToPlayersSeen(cardShown);
+			
+			if(p.getReadyToAccuse()){
+				playersGuess = p.getAccusation();
+			}
+			else{ //player not ready to accuse
+				if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
+					playersGuess = p.createSuggestion(legend.get(p.getRoom()));  //create suggestion
+					cardShown = handleSuggestion(p, playersGuess);  //return card shown
+					if(cardShown != null){
+						if(cardShown.getCardType().equals(CardType.PERSON)){  //add card shown to all players cards shown
+							for(Player player: players){
+								player.addToPlayersSeen(cardShown);
+							}
+						}
+						else if(cardShown.getCardType().equals(CardType.ROOM)){
+							for(Player player: players){
+								player.addToRoomsSeen(cardShown);
+							}
+						}
+						else if(cardShown.getCardType().equals(CardType.WEAPON)){
+							for(Player player: players){
+								player.addToWeaponsSeen(cardShown);
+							}
 						}
 					}
-					else if(cardShown.getCardType().equals(CardType.ROOM)){
-						for(Player player: players){
-							player.addToRoomsSeen(cardShown);
+					else{													//suggestion not disproved
+						boolean solutionInHand = false;
+						for(Card card: p.getPlayerHand()){
+							if(card.getCardName().equals(playersGuess.person) || card.getCardName().equals(playersGuess.room) || card.getCardName().equals(playersGuess.weapon)){
+								solutionInHand = true;
+							}
+						}
+						if(!solutionInHand){
+							p.setReadyToAccuse(true);  //if the player can't disprove his own suggestion then he is ready to accuse
+							p.setAccusation(playersGuess);
 						}
 					}
-					else if(cardShown.getCardType().equals(CardType.WEAPON)){
-						for(Player player: players){
-							player.addToWeaponsSeen(cardShown);
-						}
-					}
+				}
+				else{  //guess not made if not in room
+					playersGuess = new Solution("", "", "");
+					cardShown = null;
 				}
 			}
 		}
 
-		else{
+		else{  //humans turn
 			humanSelection = false;
 			calcTargets(p.getRow(),p.getCol(),dieRoll);
 			repaint();

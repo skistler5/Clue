@@ -61,7 +61,7 @@ public class ControlGame extends JFrame{
 		updateDiePanel();
 		updateTurnPanel(board.getCurrentPlayer().getPlayerName());
 		updateGuessPanel(board.getPlayersGuess());
-		updateGuessResultPanel(board.getCardShown());  //TODO: seems to like returning patricia
+		updateGuessResultPanel(board.getCardShown());  //TODO: seems to like returning Patricia
 	}
 	
 	public static void errorMessage(){
@@ -203,7 +203,7 @@ public class ControlGame extends JFrame{
 		JPanel guessResultPanel = new JPanel();
 
 		JLabel responseLabel = new JLabel("Response");
-		guessResult = new JTextField(8);
+		guessResult = new JTextField(15);
 		guessResult.setEditable(false);
 
 		guessResultPanel.add(responseLabel);
