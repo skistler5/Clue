@@ -53,14 +53,15 @@ public class ControlGame extends JFrame{
 		add(board, BorderLayout.CENTER);
 		add(createControlPanel(), BorderLayout.SOUTH);
 		add(createCardPanel(), BorderLayout.EAST);
-		turn(board.getCurrentPlayer());
+		turn(board.getCurrentPlayer());  
 
 	}
 	
 	public void update(){
 		updateDiePanel();
 		updateTurnPanel(board.getCurrentPlayer().getPlayerName());
-		//update guess panel
+		updateGuessPanel(board.getPlayersGuess());
+		updateGuessResultPanel(board.getCardShown());  //TODO: seems to like returning patricia
 	}
 	
 	public static void errorMessage(){
@@ -212,6 +213,16 @@ public class ControlGame extends JFrame{
 		return guessResultPanel;
 	}
 	
+	public void updateGuessResultPanel(Card c){
+		if(c != null){
+			guessResult.setText(c.getCardName());
+		}
+		else{
+			guessResult.setText("");
+		}
+		
+	}
+	
 	private JPanel createGuessPanel() {
 		guess = new JTextField(5);
 		JPanel guessPanel = new JPanel();
@@ -246,12 +257,6 @@ public class ControlGame extends JFrame{
 		controlPanel.add(createGuessResultPanel(), BorderLayout.EAST);
 
 		JButton nextPlayer = new JButton("Next Player");
-//		class ButtonListener implements ActionListener{
-//			public void actionPerformed(ActionEvent e){
-//				JDialog dialog = new JDialog();
-//				dialog.setVisible(true);
-//			}
-//		}
 		nextPlayer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(board.getHumanSelection()){
