@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,7 +62,7 @@ public class ControlGame extends JFrame{
 		updateDiePanel();
 		updateTurnPanel(board.getCurrentPlayer().getPlayerName());
 		updateGuessPanel(board.getPlayersGuess());
-		updateGuessResultPanel(board.getCardShown());  //TODO: seems to like returning Patricia
+		updateGuessResultPanel(board.getCardShown()); 
 	}
 	
 	public static void errorMessage(){
@@ -105,6 +106,39 @@ public class ControlGame extends JFrame{
 		}
 		detectiveNotes.addActionListener(new DetectiveItemListener());
 		return detectiveNotes;
+	}
+	
+	public JDialog createMakeSuggestion(Player p){
+		JDialog makeSuggestion = new JDialog(this, "Make Suggestion");
+		
+		makeSuggestion.setSize(new Dimension(200, 200));
+		makeSuggestion.setLayout(new FlowLayout());
+		
+		JLabel person = new JLabel("Person");
+		JComboBox personChoice = new JComboBox(p.getPlayerOptions().toArray());
+		
+		JLabel weapon = new JLabel("Weapon");
+		JComboBox weaponChoice = new JComboBox(p.getWeaponOptions().toArray());
+		
+		JLabel room = new JLabel("Room");
+		JTextField roomChoice = new JTextField(10);
+		roomChoice.setText(board.getLegend().get(p.getRoom()));
+		
+		JButton submit = new JButton("Submit");
+		
+		makeSuggestion.add(person, BorderLayout.CENTER);
+		makeSuggestion.add(personChoice, BorderLayout.CENTER);
+		makeSuggestion.add(weapon, BorderLayout.CENTER);
+		makeSuggestion.add(weaponChoice, BorderLayout.CENTER);
+		makeSuggestion.add(room, BorderLayout.CENTER);
+		makeSuggestion.add(roomChoice, BorderLayout.CENTER);
+		makeSuggestion.add(submit, BorderLayout.SOUTH);
+		
+		
+		makeSuggestion.setModal(true);
+		makeSuggestion.setVisible(true);
+		makeSuggestion.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		return makeSuggestion;
 	}
 
 
@@ -260,7 +294,11 @@ public class ControlGame extends JFrame{
 		nextPlayer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(board.getHumanSelection()){
-					Player p = board.getNextPlayer();
+					Player p = board.getCurrentPlayer();
+					if(p.getRoom() != 'W' || p.getRoom() != 'X'){
+						createMakeSuggestion(p);
+					}
+					p = board.getNextPlayer();
 					board.playerTurn(p);
 					update();
 				}

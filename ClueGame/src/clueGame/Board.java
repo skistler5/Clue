@@ -194,7 +194,7 @@ public class Board extends JPanel implements MouseListener{
 							}
 						}
 					}
-					else{													//suggestion not disproved
+					else{	//suggestion not disproved
 						boolean solutionInHand = false;
 						for(Card card: p.getPlayerHand()){
 							if(card.getCardName().equals(playersGuess.person) || card.getCardName().equals(playersGuess.room) || card.getCardName().equals(playersGuess.weapon)){
@@ -218,6 +218,9 @@ public class Board extends JPanel implements MouseListener{
 			humanSelection = false;
 			calcTargets(p.getRow(),p.getCol(),dieRoll);
 			repaint();
+			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
+				
+			}
 			Solution guess = p.createSuggestion(legend.get(p.getRoom()));
 			cardShown = handleSuggestion(p, guess);
 		}
@@ -610,7 +613,6 @@ public class Board extends JPanel implements MouseListener{
 
 
 	public void setConfigFiles(String board, String room) {
-		// TODO Auto-generated method stub
 		boardConfigFile = board;
 		roomConfigFile = room;
 		return;
@@ -620,17 +622,14 @@ public class Board extends JPanel implements MouseListener{
 	public Map<Character, String> getLegend() {
 		//initialize();
 		return legend;	
-		// TODO Auto-generated method stub
 
 	}
 
 	public int getNumRows() {
-		// TODO Auto-generated method stub
 		return row;
 	}
 
 	public int getNumColumns() {
-		// TODO Auto-generated method stub
 		return col;
 	}
 
@@ -639,12 +638,10 @@ public class Board extends JPanel implements MouseListener{
 	}
 
 	public Set<BoardCell> getAdjList(int i, int j) {
-		// TODO Auto-generated method stub
 		return adjMap.get(board[i][j]);
 	}
 
 	public Set<BoardCell> getTargets() {
-		// TODO Auto-generated method stub
 		return targets;
 	}
 
