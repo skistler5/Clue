@@ -44,8 +44,9 @@ public class ControlGame extends JFrame{
 		board.setConfigFiles("ClueBoardLayout.csv", "roomLegend.txt");
 		board.setCardFiles("players.txt", "weapons.txt");
 		board.initialize();
-		board.setPlayersOptions();
 		board.dealCards();
+		board.setPlayersOptions();
+
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 
@@ -117,14 +118,26 @@ public class ControlGame extends JFrame{
 		JLabel person = new JLabel("Person");
 		JComboBox personChoice = new JComboBox(p.getPlayerOptions().toArray());
 		
+		for(String s: p.getWeaponOptions()){
+			System.out.println(s);
+		}
 		JLabel weapon = new JLabel("Weapon");
 		JComboBox weaponChoice = new JComboBox(p.getWeaponOptions().toArray());
 		
 		JLabel room = new JLabel("Room");
 		JTextField roomChoice = new JTextField(10);
 		roomChoice.setText(board.getLegend().get(p.getRoom()));
+		roomChoice.setEditable(false);
+
 		
 		JButton submit = new JButton("Submit");
+		submit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Solution humanSuggestion = new Solution(personChoice.getName(), weaponChoice.getName(), roomChoice.getName());
+				board.setPlayersGuess(humanSuggestion);
+			}
+		});
+		
 		
 		makeSuggestion.add(person, BorderLayout.CENTER);
 		makeSuggestion.add(personChoice, BorderLayout.CENTER);
@@ -137,7 +150,7 @@ public class ControlGame extends JFrame{
 		
 		makeSuggestion.setModal(true);
 		makeSuggestion.setVisible(true);
-		makeSuggestion.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		makeSuggestion.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		return makeSuggestion;
 	}
 
@@ -295,7 +308,8 @@ public class ControlGame extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				if(board.getHumanSelection()){
 					Player p = board.getCurrentPlayer();
-					if(p.getRoom() != 'W' || p.getRoom() != 'X'){
+					System.out.println(board.getCurrentPlayer().getPlayerName());
+					if(p.getRoom() != 'W' && p.getRoom() != 'X'){
 						createMakeSuggestion(p);
 					}
 					p = board.getNextPlayer();

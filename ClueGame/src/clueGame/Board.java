@@ -58,6 +58,8 @@ public class Board extends JPanel implements MouseListener{
 	private boolean humanSelection = false;
 	private Card cardShown = null;
 	private int currentPlayerIdx = 2;
+	private int humanPlayerIdx;
+
 
 	private Solution playersGuess = new Solution("", "", "");
 	private Solution finalSolution = new Solution("wrong", "wrong", "wrong");
@@ -126,8 +128,9 @@ public class Board extends JPanel implements MouseListener{
 			}
 		}
 		if(isValid){
-			players.get(2).setRow(returnCell.getRow());
-			players.get(2).setCol(returnCell.getCol());
+			players.get(humanPlayerIdx).setRow(returnCell.getRow());
+			players.get(humanPlayerIdx).setCol(returnCell.getCol());
+			players.get(humanPlayerIdx).setRoom(returnCell.getInitial());
 			humanSelection = true;
 			repaint();
 		}
@@ -151,8 +154,10 @@ public class Board extends JPanel implements MouseListener{
 			p.draw(g);
 			if(!p.isComputer()){
 				calcTargets(p.getRow(), p.getCol(), dieRoll, p);
-				for(BoardCell b: targets){
-					b.drawTargets(g);
+				if(!humanSelection){
+					for(BoardCell b: targets){
+						b.drawTargets(g);
+					}
 				}
 			}
 		}
@@ -162,6 +167,8 @@ public class Board extends JPanel implements MouseListener{
 
 	}
 
+
+
 	public void playerTurn(Player p){
 		rollDie();
 		if(p.isComputer()){  //computers turn
@@ -169,7 +176,7 @@ public class Board extends JPanel implements MouseListener{
 			int c = p.getCol();
 			calcTargets(r,c,dieRoll);
 			chooseTarget(p);
-			
+
 			if(p.getReadyToAccuse()){
 				playersGuess = p.getAccusation();
 			}
@@ -218,10 +225,10 @@ public class Board extends JPanel implements MouseListener{
 			humanSelection = false;
 			calcTargets(p.getRow(),p.getCol(),dieRoll);
 			repaint();
-			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
-				
-			}
-			Solution guess = p.createSuggestion(legend.get(p.getRoom()));
+			//			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
+			//				
+			//			}
+			Solution guess = playersGuess;
 			cardShown = handleSuggestion(p, guess);
 		}
 		repaint();
@@ -267,7 +274,6 @@ public class Board extends JPanel implements MouseListener{
 	 * Deals the cards to the players and clears the deck so that it is empty
 	 */
 	public void dealCards(){
-		ArrayList<Card> solution = new ArrayList<Card>();
 		Collections.shuffle(deck);
 
 		int numPlayers = players.size();
@@ -298,6 +304,7 @@ public class Board extends JPanel implements MouseListener{
 			count++;
 			i = count % numPlayers;
 		}
+
 		deck.clear();
 	}
 
@@ -342,6 +349,7 @@ public class Board extends JPanel implements MouseListener{
 			Player temp = new Player(words[0], row, col, r, g, b, words[5]);
 			players.add(temp);
 			if(!temp.isComputer()){
+				humanPlayerIdx = count;
 				currentPlayerIdx = count;
 			}
 			Card temp1 = new Card(words[0], CardType.PERSON);
@@ -702,9 +710,18 @@ public class Board extends JPanel implements MouseListener{
 	public String getPlayersRoom(Player p){
 		return legend.get(p.getRoom());
 	}
-	
+
 	public Solution getPlayersGuess(){
 		return playersGuess;
 	}
+
+	public int getHumanPlayerIdx() {
+		return humanPlayerIdx;
+	}
+
+	public void setPlayersGuess(Solution playersGuess) {
+		this.playersGuess = playersGuess;
+	}
+
 
 }

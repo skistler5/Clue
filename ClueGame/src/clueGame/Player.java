@@ -264,4 +264,5 @@ public class Player {
 	public Solution getAccusation(){
 		return accusation;
 	}
+	
 }
