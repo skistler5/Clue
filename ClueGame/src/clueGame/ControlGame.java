@@ -8,6 +8,7 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.SplashScreen;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -78,6 +79,14 @@ public class ControlGame extends JFrame{
 		setSize(900, 900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	public static void createWinSplash(Board board){
+		String message = board.getCurrentPlayer().getPlayerName() + " won the game!";
+		JFrame splashWin = new JFrame("Winner");
+		JOptionPane.showMessageDialog(splashWin, message, "Winner", JOptionPane.INFORMATION_MESSAGE);
+		splashWin.setSize(900, 900);
+		splashWin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
 	public JMenu createFileMenu(){
 		JMenu menu = new JMenu("File");
@@ -109,8 +118,8 @@ public class ControlGame extends JFrame{
 		return detectiveNotes;
 	}
 	
-	public JDialog createMakeSuggestion(Player p){
-		JDialog makeSuggestion = new JDialog(this, "Make Suggestion");
+	public static JDialog createMakeSuggestion(final Player p, final Board board){
+		final JDialog makeSuggestion = new JDialog();
 		
 		makeSuggestion.setSize(new Dimension(200, 200));
 		makeSuggestion.setLayout(new FlowLayout());
@@ -120,16 +129,13 @@ public class ControlGame extends JFrame{
 		for(Player play : board.getPlayers()){
 			playerNames.add(play.getPlayerName());
 		}
-		JComboBox personChoice = new JComboBox(playerNames.toArray());
+		final JComboBox personChoice = new JComboBox(playerNames.toArray());
 		
-//		for(String s: p.getWeaponOptions()){
-//			System.out.println(s);
-//		}
 		JLabel weapon = new JLabel("Weapon");
-		JComboBox weaponChoice = new JComboBox(board.getWeapons().toArray());
+		final JComboBox weaponChoice = new JComboBox(board.getWeapons().toArray());
 		
 		JLabel room = new JLabel("Room");
-		JTextField roomChoice = new JTextField(10);
+		JTextField roomChoice = new JTextField(15);
 		roomChoice.setText(board.getLegend().get(p.getRoom()));
 		roomChoice.setEditable(false);
 
@@ -137,9 +143,9 @@ public class ControlGame extends JFrame{
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Solution humanSuggestion = new Solution(personChoice.getEditor().getItem().toString(), weaponChoice.getEditor().getItem().toString(), board.getLegend().get(p.getRoom()));
+				Solution humanSuggestion = new Solution(personChoice.getSelectedItem().toString(), weaponChoice.getSelectedItem().toString(), board.getLegend().get(p.getRoom()));
 				board.setPlayersGuess(humanSuggestion);
-				System.out.println(board.getPlayersGuess().getPerson());
+				makeSuggestion.dispose();
 			}
 		});
 		
@@ -156,11 +162,51 @@ public class ControlGame extends JFrame{
 		makeSuggestion.setModal(true);
 		makeSuggestion.setVisible(true);
 		
-
-		
-		
-		//setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		return makeSuggestion;
+	}
+	
+	public static JDialog createMakeAccusation(final Player p, final Board board){
+final JDialog makeAccusation = new JDialog();
+		
+		makeAccusation.setSize(new Dimension(200, 200));
+		makeAccusation.setLayout(new FlowLayout());
+		
+		JLabel person = new JLabel("Person");
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for(Player play : board.getPlayers()){
+			playerNames.add(play.getPlayerName());
+		}
+		final JComboBox personChoice = new JComboBox(playerNames.toArray());
+		
+		JLabel weapon = new JLabel("Weapon");
+		final JComboBox weaponChoice = new JComboBox(board.getWeapons().toArray());
+		
+		JLabel room = new JLabel("Room");
+		JComboBox roomChoice = new JComboBox(board.getRooms().toArray());
+
+		JButton submit = new JButton("Submit");
+		submit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Solution humanSuggestion = new Solution(personChoice.getSelectedItem().toString(), weaponChoice.getSelectedItem().toString(), board.getLegend().get(p.getRoom()));
+				board.setPlayersGuess(humanSuggestion);
+				makeAccusation.dispose();
+			}
+		});
+		
+		
+		makeAccusation.add(person, BorderLayout.CENTER);
+		makeAccusation.add(personChoice, BorderLayout.CENTER);
+		makeAccusation.add(weapon, BorderLayout.CENTER);
+		makeAccusation.add(weaponChoice, BorderLayout.CENTER);
+		makeAccusation.add(room, BorderLayout.CENTER);
+		makeAccusation.add(roomChoice, BorderLayout.CENTER);
+		makeAccusation.add(submit, BorderLayout.SOUTH);
+		
+		
+		makeAccusation.setModal(true);
+		makeAccusation.setVisible(true);
+		
+		return makeAccusation;
 	}
 	
 	public void actionPerformed(ActionEvent e){
@@ -322,10 +368,7 @@ public class ControlGame extends JFrame{
 				if(board.getHumanSelection()){
 					Player p = board.getCurrentPlayer();
 					JDialog s= new JDialog();
-					
-					if(p.getRoom() != 'W' && p.getRoom() != 'X' && !p.isComputer()){
-						s = createMakeSuggestion(p);
-					}
+		
 					s.dispose();
 					
 					p = board.getNextPlayer();

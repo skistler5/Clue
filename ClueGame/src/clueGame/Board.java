@@ -58,7 +58,7 @@ public class Board extends JPanel implements MouseListener{
 	private boolean humanSelection = false;
 	private Card cardShown = null;
 	private int currentPlayerIdx = 2;
-	private int humanPlayerIdx;
+	public static int humanPlayerIdx;
 
 
 	private Solution playersGuess = new Solution("", "", "");
@@ -128,9 +128,7 @@ public class Board extends JPanel implements MouseListener{
 			}
 		}
 		if(isValid){
-			players.get(humanPlayerIdx).setRow(returnCell.getRow());
-			players.get(humanPlayerIdx).setCol(returnCell.getCol());
-			players.get(humanPlayerIdx).setRoom(returnCell.getInitial());
+			moveHuman(returnCell.getRow(), returnCell.getCol(), returnCell.getInitial());
 			humanSelection = true;
 			repaint();
 		}
@@ -167,7 +165,11 @@ public class Board extends JPanel implements MouseListener{
 
 	}
 
-
+	public void moveHuman(int r, int c, char initial){
+		players.get(humanPlayerIdx).setRow(r);
+		players.get(humanPlayerIdx).setCol(c);
+		players.get(humanPlayerIdx).setRoom(initial);
+	}
 
 	public void playerTurn(Player p){
 		rollDie();
@@ -179,6 +181,9 @@ public class Board extends JPanel implements MouseListener{
 
 			if(p.getReadyToAccuse()){
 				playersGuess = p.getAccusation();
+				if(playersGuess.equals(finalSolution)){
+					ControlGame.createWinSplash(this);
+				}
 			}
 			else{ //player not ready to accuse
 				if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
@@ -224,12 +229,47 @@ public class Board extends JPanel implements MouseListener{
 		else{  //humans turn
 			humanSelection = false;
 			calcTargets(p.getRow(),p.getCol(),dieRoll);
+			if(p.getReadyToAccuse()){
+				playersGuess = p.getAccusation();
+				if(playersGuess.equals(finalSolution)){
+					ControlGame.createWinSplash(this);
+				}
+			}
+			if(board[p.getRow()][p.getCol()].isRoom()){
+				ControlGame.createMakeSuggestion(p, this);
+				if(cardShown != null){
+					if(cardShown.getCardType().equals(CardType.PERSON)){  //add card shown to all players cards shown
+						for(Player player: players){
+							player.addToPlayersSeen(cardShown);
+						}
+					}
+					else if(cardShown.getCardType().equals(CardType.ROOM)){
+						for(Player player: players){
+							player.addToRoomsSeen(cardShown);
+						}
+					}
+					else if(cardShown.getCardType().equals(CardType.WEAPON)){
+						for(Player player: players){
+							player.addToWeaponsSeen(cardShown);
+						}
+					}
+				}
+				else{	//suggestion not disproved
+					boolean solutionInHand = false;
+					for(Card card: p.getPlayerHand()){
+						if(card.getCardName().equals(playersGuess.person) || card.getCardName().equals(playersGuess.room) || card.getCardName().equals(playersGuess.weapon)){
+							solutionInHand = true;
+						}
+					}
+					if(!solutionInHand){
+						p.setReadyToAccuse(true);  //if the player can't disprove his own suggestion then he is ready to accuse
+						p.setAccusation(playersGuess);
+					}
+				}
+			}
 			repaint();
-			//			if(board[p.getRow()][p.getCol()].isRoom()){ //if player in room
-			//				
-			//			}
 			Solution guess = playersGuess;
-			cardShown = handleSuggestion(p, guess);
+			cardShown = handleSuggestion(players.get(humanPlayerIdx), guess);
 		}
 		repaint();
 	}
