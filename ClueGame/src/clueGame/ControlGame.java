@@ -116,13 +116,17 @@ public class ControlGame extends JFrame{
 		makeSuggestion.setLayout(new FlowLayout());
 		
 		JLabel person = new JLabel("Person");
-		JComboBox personChoice = new JComboBox(p.getPlayerOptions().toArray());
-		
-		for(String s: p.getWeaponOptions()){
-			System.out.println(s);
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for(Player play : board.getPlayers()){
+			playerNames.add(play.getPlayerName());
 		}
+		JComboBox personChoice = new JComboBox(playerNames.toArray());
+		
+//		for(String s: p.getWeaponOptions()){
+//			System.out.println(s);
+//		}
 		JLabel weapon = new JLabel("Weapon");
-		JComboBox weaponChoice = new JComboBox(p.getWeaponOptions().toArray());
+		JComboBox weaponChoice = new JComboBox(board.getWeapons().toArray());
 		
 		JLabel room = new JLabel("Room");
 		JTextField roomChoice = new JTextField(10);
@@ -133,8 +137,9 @@ public class ControlGame extends JFrame{
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Solution humanSuggestion = new Solution(personChoice.getName(), weaponChoice.getName(), roomChoice.getName());
+				Solution humanSuggestion = new Solution(personChoice.getEditor().getItem().toString(), weaponChoice.getEditor().getItem().toString(), board.getLegend().get(p.getRoom()));
 				board.setPlayersGuess(humanSuggestion);
+				System.out.println(board.getPlayersGuess().getPerson());
 			}
 		});
 		
@@ -150,8 +155,16 @@ public class ControlGame extends JFrame{
 		
 		makeSuggestion.setModal(true);
 		makeSuggestion.setVisible(true);
-		makeSuggestion.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+
+		
+		
+		//setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		return makeSuggestion;
+	}
+	
+	public void actionPerformed(ActionEvent e){
+		dispose();
 	}
 
 
@@ -308,10 +321,13 @@ public class ControlGame extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				if(board.getHumanSelection()){
 					Player p = board.getCurrentPlayer();
-					System.out.println(board.getCurrentPlayer().getPlayerName());
-					if(p.getRoom() != 'W' && p.getRoom() != 'X'){
-						createMakeSuggestion(p);
+					JDialog s= new JDialog();
+					
+					if(p.getRoom() != 'W' && p.getRoom() != 'X' && !p.isComputer()){
+						s = createMakeSuggestion(p);
 					}
+					s.dispose();
+					
 					p = board.getNextPlayer();
 					board.playerTurn(p);
 					update();

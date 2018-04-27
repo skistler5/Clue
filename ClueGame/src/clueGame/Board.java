@@ -722,6 +722,7 @@ public class Board extends JPanel implements MouseListener{
 	public void setPlayersGuess(Solution playersGuess) {
 		this.playersGuess = playersGuess;
 	}
+	
 
 
 }
